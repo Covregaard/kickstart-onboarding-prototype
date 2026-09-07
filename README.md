@@ -45,3 +45,9 @@ push. GitHub Pages oppdaterer seg selv i løpet av et minutt eller to.
 
 Førstevalget følger nettleseren: norsk for `nb`/`nn`/`no`, ellers engelsk.
 Valget huskes i `localStorage` og gjelder på tvers av prototypene.
+
+## Cache
+
+Filreferansene i HTML-en er versjonert (`assets/kickstart.css?v=2`). GitHub
+Pages lar nettleseren cache dem i noen minutter, så **bump tallet når du
+endrer CSS eller JS** — ellers ser testere den gamle versjonen en stund.
