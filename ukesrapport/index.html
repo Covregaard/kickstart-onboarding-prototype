@@ -11,8 +11,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="../assets/kickstart.css?v=5">
-<script src="../assets/ks.js?v=5"></script>
+<link rel="stylesheet" href="../assets/kickstart.css?v=6">
+<script src="../assets/ks.js?v=6"></script>
 <style>
   .ctx {
     display: flex; align-items: baseline; justify-content: space-between;
@@ -302,7 +302,7 @@
           <span data-i18n="wr.reveal.more">Vil du utdype?</span>
         </button>
         <div class="field" id="bra-wrap" hidden>
-          <textarea id="bra" data-bind="bra" data-i18n-ph="wr.s4.ph"></textarea>
+          <textarea id="bra" data-bind="braTekst" data-i18n-ph="wr.s4.ph"></textarea>
         </div>
       </section>
 
@@ -321,7 +321,7 @@
           <span data-i18n="wr.reveal.more">Vil du utdype?</span>
         </button>
         <div class="field" id="utfordring-wrap" hidden>
-          <textarea id="utfordring" data-bind="utfordring" data-i18n-ph="wr.s5.ph"></textarea>
+          <textarea id="utfordring" data-bind="utfordringTekst" data-i18n-ph="wr.s5.ph"></textarea>
         </div>
 
         <div class="options">
@@ -350,7 +350,7 @@
           <span data-i18n="wr.reveal.own">Skriv ditt eget</span>
         </button>
         <div class="field" id="neste-wrap" hidden>
-          <textarea id="neste" data-bind="neste" data-i18n-ph="wr.s6.ph"></textarea>
+          <textarea id="neste" data-bind="nesteTekst" data-i18n-ph="wr.s6.ph"></textarea>
         </div>
       </section>
 
