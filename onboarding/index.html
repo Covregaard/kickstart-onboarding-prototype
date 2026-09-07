@@ -1,0 +1,957 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<title>Kickstart Onboarding</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Klikkbar prototype. Krever tilgangskode.">
+<meta name="theme-color" content="#fffee9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="../assets/kickstart.css">
+<script src="../assets/ks.js"></script>
+<style>
+  /* Komponenter som bare denne prototypen bruker */
+  .intro-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .intro-list li {
+    display: grid; grid-template-columns: 30px 1fr; gap: 12px;
+    align-items: baseline; padding: 12px 0;
+    border-top: 1px solid var(--line); font-size: 15px;
+  }
+  .intro-list li:last-child { border-bottom: 1px solid var(--line); }
+  .intro-list .num {
+    font-size: 12px; font-weight: 700; letter-spacing: .06em;
+    color: var(--ink-3); font-variant-numeric: tabular-nums;
+  }
+  .intro-list .sub { display: block; font-size: 13px; color: var(--ink-2); }
+
+  .coach {
+    display: grid; grid-template-columns: 56px 1fr; gap: 15px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 16px; padding: 16px;
+  }
+  .avatar {
+    width: 56px; height: 56px; border-radius: 999px;
+    display: grid; place-items: center;
+    font-family: var(--font-head); font-size: 19px; font-weight: 500;
+    color: var(--on-soft);
+  }
+  .avatar[data-tone="a"] { background: var(--soft-a); }
+  .avatar[data-tone="b"] { background: var(--soft-b); }
+  .coach .role {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .11em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .coach .name {
+    font-family: var(--font-head); font-size: 21px; font-weight: 500;
+    line-height: 1.15; margin: 2px 0 0; letter-spacing: -.01em;
+  }
+  .coach .bio { font-size: 14px; color: var(--ink-2); margin: 8px 0 0; }
+
+  .sum { display: flex; flex-direction: column; }
+  .sum-row {
+    display: grid; grid-template-columns: 1fr auto; gap: 12px 14px;
+    align-items: baseline; padding: 14px 0; border-top: 1px solid var(--line);
+  }
+  .sum-row:last-child { border-bottom: 1px solid var(--line); }
+  .sum-k {
+    grid-column: 1; font-size: 11.5px; font-weight: 600;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .sum-v { grid-column: 1; font-size: 15px; margin-top: 4px; }
+  .sum-v .muted { color: var(--ink-3); }
+  .sum-v .quote { display: block; font-size: 13.5px; color: var(--ink-2); font-style: italic; margin-top: 4px; }
+  .edit {
+    grid-column: 2; grid-row: 1 / span 2; align-self: center;
+    background: none; border: 0; padding: 4px;
+    font-size: 13px; font-weight: 600; color: var(--ink-2);
+    text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+  }
+  .edit:hover { color: var(--ink); }
+
+  .done-next {
+    background: var(--surface); border: 1.5px solid var(--line);
+    border-radius: 16px; padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .done-next .k { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+  .done-next .v { font-family: var(--font-head); font-size: 20px; font-weight: 500; letter-spacing: -.01em; }
+  .done-next .d { font-size: 14px; color: var(--ink-2); }
+
+  .step-top { margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-top">
+      <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="langswitch" role="group" data-i18n-aria="lang.label" aria-label="Språk">
+        <button type="button" data-lang="no" aria-pressed="true">NO</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+
+    <div>
+      <p class="eyebrow" data-i18n="gate.eyebrow">Kickstart · Prototyper</p>
+      <h1 data-i18n="gate.title">Klikkbar prototype</h1>
+      <p class="lede" data-i18n="gate.lede">Prototypene er under arbeid og deles bare med utvalgte. Skriv inn koden du har fått for å åpne dem.</p>
+    </div>
+
+    <form class="gate-form" id="gate-form">
+      <label for="code" data-i18n="gate.label">Tilgangskode</label>
+      <input type="password" id="code" name="code" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="••••••••••">
+      <p class="gate-err" id="gate-err" hidden role="status">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
+        <span data-i18n="gate.error">Feil kode.</span>
+      </p>
+      <button class="btn btn-primary" type="submit" data-i18n="gate.submit">Åpne</button>
+    </form>
+
+    <p class="fine" data-i18n="gate.fine">Prototypene lagrer ingenting.</p>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="stage-head">
+    <span class="mark">Kickstart</span>
+    <span class="cap" data-i18n="ob.stagecap">Onboarding · klikkbar prototype</span>
+  </div>
+
+  <div class="phone">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="sigs" aria-hidden="true">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.5" width="3" height="3.5" rx="1"/><rect x="4.6" y="5.4" width="3" height="5.6" rx="1"/><rect x="9.2" y="2.9" width="3" height="8.1" rx="1"/><rect x="13.8" y="0" width="3" height="11" rx="1"/></svg>
+        <svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x=".6" y=".6" width="19" height="9.8" rx="3" stroke="currentColor" stroke-width="1.1" opacity=".5"/><rect x="2.2" y="2.2" width="15" height="6.6" rx="1.8" fill="currentColor"/><path d="M21.6 4v3c.9-.3 1.4-.8 1.4-1.5S22.5 4.3 21.6 4Z" fill="currentColor" opacity=".5"/></svg>
+      </span>
+    </div>
+
+    <header class="appbar">
+      <button class="iconbtn" id="back" type="button" aria-label="Tilbake">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>
+      </button>
+      <span class="appbar-title">Kickstart</span>
+      <div class="langswitch" role="group" data-i18n-aria="lang.label" aria-label="Språk">
+        <button type="button" data-lang="no" aria-pressed="true">NO</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </header>
+
+    <div class="progress" id="progress" data-state="hidden">
+      <div class="track" id="track" aria-hidden="true"></div>
+      <span class="progress-label" id="progress-label">Steg 1 av 7</span>
+    </div>
+
+    <main class="screen" id="screen">
+
+      <!-- 0 · Velkommen -->
+      <section class="step is-active" data-step="0">
+        <div>
+          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="eyebrow step-top" data-i18n="s0.eyebrow">Velkommen inn</p>
+          <h1 data-i18n="s0.h">Du har plassen din. Nå gjør vi klar planen din.</h1>
+          <p class="lede" data-i18n="s0.lede">Før oppstartssamtalen vil vi bli litt bedre kjent med deg.</p>
+        </div>
+
+        <ul class="intro-list">
+          <li><span class="num">01</span><span><span data-i18n="s0.1.t">Samtykker og litt praktisk</span><span class="sub" data-i18n="s0.1.d">Hva vi får lov til å sende deg</span></span></li>
+          <li><span class="num">02</span><span><span data-i18n="s0.2.t">Målene dine</span><span class="sub" data-i18n="s0.2.d">Hva du faktisk vil oppnå på 16 uker</span></span></li>
+          <li><span class="num">03</span><span><span data-i18n="s0.3.t">Erfaringen din</span><span class="sub" data-i18n="s0.3.d">Kondisjon og styrke</span></span></li>
+          <li><span class="num">04</span><span><span data-i18n="s0.4.t">Hils på teamet ditt</span><span class="sub" data-i18n="s0.4.d">Ernæringsfysiologen og treneren din</span></span></li>
+        </ul>
+
+        <p class="fine" data-i18n="s0.fine">Du kan endre svarene dine når som helst i appen.</p>
+      </section>
+
+      <!-- 1 · Samtykker -->
+      <section class="step" data-step="1">
+        <div>
+          <p class="eyebrow" data-i18n="s1.eyebrow">Samtykker</p>
+          <h2 data-i18n="s1.h">Først spør vi om lov</h2>
+          <p class="lede" data-i18n="s1.lede">De to første er valgfrie.</p>
+        </div>
+
+        <div class="options">
+          <button class="opt" type="button" data-consent="epost" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="opt-t"><span data-i18n="s1.email.t">E-post</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></span>
+              <span class="opt-d" data-i18n="s1.email.d">Ukesmenyer, oppskrifter og en påminnelse før hver oppstart.</span>
+            </span>
+          </button>
+
+          <button class="opt" type="button" data-consent="push" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="opt-t"><span data-i18n="s1.push.t">Push-varsler</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></span>
+              <span class="opt-d" data-i18n="s1.push.d">Beskjed når treneren legger ut en ny økt.</span>
+            </span>
+          </button>
+
+          <button class="opt" type="button" data-consent="risiko" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="opt-t"><span data-i18n="s1.risk.t">Trening på eget ansvar</span><span class="req" data-i18n="common.required">Påkrevd</span></span>
+              <span class="opt-d" data-i18n="s1.risk.d">Jeg er kjent med at fysisk trening innebærer risiko for skade.</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="field">
+          <label for="helse" data-i18n="s1.health.label">Er det noe vi bør vite allerede nå?</label>
+          <p class="hint" data-i18n="s1.health.hint">Skader, sykdom, medisiner eller graviditet.</p>
+          <textarea id="helse" data-bind="helse" data-i18n-ph="s1.health.ph"></textarea>
+        </div>
+      </section>
+
+      <!-- 2 · Hovedmål -->
+      <section class="step" data-step="2">
+        <div>
+          <p class="eyebrow" data-i18n="s2.eyebrow">Målet ditt</p>
+          <h2 data-i18n="s2.h">Hva vil du oppnå?</h2>
+          <p class="lede" data-i18n="s2.lede">Velg det som passer.</p>
+        </div>
+
+        <div class="options" id="goals"></div>
+
+        <div class="field" id="goal-other-field" hidden>
+          <label for="goal-other" data-i18n="s2.other.label">Hva vil du oppnå?</label>
+          <input type="text" id="goal-other" data-bind="malAnnet" data-i18n-ph="s2.other.ph">
+        </div>
+      </section>
+
+      <!-- 3 · Kondisjon -->
+      <section class="step" data-step="3">
+        <div>
+          <p class="eyebrow" data-i18n="s3.eyebrow">Erfaring · 1 av 2</p>
+          <h2 data-i18n="s3.h">Kondisjonstrening</h2>
+          <p class="lede" data-i18n="s3.lede">Hvor vil du plassere deg selv i dag?</p>
+        </div>
+
+        <div class="scale">
+          <div class="scale-row" role="group" data-scale="kondis" data-i18n-aria="s3.aria"></div>
+          <div class="scale-ends">
+            <span data-i18n="scale.low">1 · Helt fersk</span>
+            <span data-i18n="scale.high">5 · Erfaren</span>
+          </div>
+          <div class="scale-read is-empty" data-read="kondis"><span class="n" data-i18n="scale.empty">Velg et tall fra 1 til 5</span></div>
+        </div>
+
+        <div class="field">
+          <label for="kondis-kommentar"><span data-i18n="common.tellmore">Fortell oss mer</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></label>
+          <textarea id="kondis-kommentar" data-bind="kondisKommentar" data-i18n-ph="s3.ph"></textarea>
+        </div>
+      </section>
+
+      <!-- 4 · Styrke -->
+      <section class="step" data-step="4">
+        <div>
+          <p class="eyebrow" data-i18n="s4.eyebrow">Erfaring · 2 av 2</p>
+          <h2 data-i18n="s4.h">Styrketrening</h2>
+          <p class="lede" data-i18n="s4.lede">Samme øvelse en gang til.</p>
+        </div>
+
+        <div class="scale">
+          <div class="scale-row" role="group" data-scale="styrke" data-i18n-aria="s4.aria"></div>
+          <div class="scale-ends">
+            <span data-i18n="scale.low">1 · Helt fersk</span>
+            <span data-i18n="scale.high">5 · Erfaren</span>
+          </div>
+          <div class="scale-read is-empty" data-read="styrke"><span class="n" data-i18n="scale.empty">Velg et tall fra 1 til 5</span></div>
+        </div>
+
+        <div class="field">
+          <label for="styrke-kommentar"><span data-i18n="common.tellmore">Fortell oss mer</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></label>
+          <textarea id="styrke-kommentar" data-bind="styrkeKommentar" data-i18n-ph="s4.ph"></textarea>
+        </div>
+      </section>
+
+      <!-- 5 · Fellesskap -->
+      <section class="step" data-step="5">
+        <div>
+          <p class="eyebrow" data-i18n="s5.eyebrow">Fellesskapet</p>
+          <h2 data-i18n="s5.h">Skal vi melde deg inn i fellesgruppene?</h2>
+          <p class="lede" data-i18n="s5.lede">Kickstarterne har egne grupper.</p>
+        </div>
+
+        <div class="panel"><p data-i18n="s5.panel">Mange sier fellesskapet er grunnen til at de holder ut.</p></div>
+
+        <div class="options">
+          <button class="opt" type="button" data-community="ja" data-shape="round" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="opt-t" data-i18n="s5.yes.t">Ja, meld meg inn</span>
+              <span class="opt-d" data-i18n="s5.yes.d">Du kan melde deg ut når som helst.</span>
+            </span>
+          </button>
+          <button class="opt" type="button" data-community="nei" data-shape="round" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="opt-t" data-i18n="s5.no.t">Nei takk</span>
+              <span class="opt-d" data-i18n="s5.no.d">Helt greit.</span>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 6 · Veiledere -->
+      <section class="step" data-step="6">
+        <div>
+          <p class="eyebrow" data-i18n="s6.eyebrow">Teamet ditt</p>
+          <h2 data-i18n="s6.h">Her er veilederne dine</h2>
+          <p class="lede" data-i18n="s6.lede">Disse to følger deg gjennom hele programmet.</p>
+        </div>
+
+        <div class="coach">
+          <span class="avatar" data-tone="a" aria-hidden="true">KS</span>
+          <div>
+            <span class="role" data-i18n="s6.kef.role">Klinisk ernæringsfysiolog</span>
+            <p class="name">Kristiane Stormoen</p>
+            <p class="bio" data-i18n="s6.kef.bio">Kristiane setter opp kostholdsplanen din.</p>
+          </div>
+        </div>
+
+        <div class="coach">
+          <span class="avatar" data-tone="b" aria-hidden="true">IH</span>
+          <div>
+            <span class="role" data-i18n="s6.coach.role">Idrettsfysiolog og trener</span>
+            <p class="name">Ingrid Hansen</p>
+            <p class="bio" data-i18n="s6.coach.bio">Ingrid legger treningen din etter nivået ditt.</p>
+          </div>
+        </div>
+
+        <p class="fine" data-i18n="s6.fine">Du når begge to i chatten i appen.</p>
+      </section>
+
+      <!-- 7 · Oppsummering -->
+      <section class="step" data-step="7">
+        <div>
+          <p class="eyebrow" data-i18n="s7.eyebrow">Nesten i mål</p>
+          <h2 data-i18n="s7.h">Sjekk at alt stemmer</h2>
+          <p class="lede" data-i18n="s7.lede">Dette er det Kristiane og Ingrid får se.</p>
+        </div>
+        <div class="sum" id="summary"></div>
+      </section>
+
+      <!-- 8 · Ferdig -->
+      <section class="step" data-step="8">
+        <div>
+          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="eyebrow step-top" data-i18n="s8.eyebrow">Sendt inn</p>
+          <h1 data-i18n="s8.h">Takk. Nå er vi klare for deg.</h1>
+          <p class="lede" data-i18n="s8.lede">Svarene dine ligger hos Kristiane og Ingrid.</p>
+        </div>
+
+        <div class="done-next">
+          <span class="k" data-i18n="s8.next.k">Neste steg</span>
+          <span class="v" data-i18n="s8.next.v">Oppstartssamtale</span>
+          <span class="d" data-i18n="s8.next.d">Vi tar kontakt innen to virkedager.</span>
+        </div>
+
+        <div class="done-next">
+          <span class="k" data-i18n="s8.wait.k">Mens du venter</span>
+          <span class="v" data-i18n="s8.wait.v">Kom i gang-guiden</span>
+          <span class="d" data-i18n="s8.wait.d">Fem korte punkter om den første uka.</span>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="actionbar">
+      <p class="alert" id="alert" data-state="hidden" role="status">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
+        <span id="alert-text"></span>
+      </p>
+      <button class="btn btn-primary" id="next" type="button">Kom i gang</button>
+      <button class="btn btn-ghost" id="secondary" type="button" hidden></button>
+    </footer>
+  </div>
+
+  <div class="stage-foot">
+    <button class="btn-text" id="restart" type="button" data-i18n="btn.restart">Start prototypen på nytt</button>
+  </div>
+</div>
+
+<script>
+KS.addDict({
+  "common.optional": "Valgfritt",
+  "common.required": "Påkrevd",
+  "common.change":   "Endre",
+  "common.unanswered": "Ikke besvart",
+  "common.tellmore": "Fortell oss mer",
+
+  "btn.start":    "Kom i gang",
+  "btn.continue": "Fortsett",
+  "btn.summary":  "Se oppsummeringen",
+  "btn.submit":   "Send inn svarene",
+  "btn.restart":  "Start prototypen på nytt",
+  "btn.menu":     "Tilbake til menyen",
+
+  "progress.step": "Steg {n} av {total}",
+  "ob.stagecap":   "Onboarding · klikkbar prototype",
+
+  "alert.risk":      "Du må bekrefte at du trener på eget ansvar for å gå videre.",
+  "alert.goal":      "Velg minst ett mål. Du kan krysse av for flere.",
+  "alert.cardio":    "Velg et tall fra 1 til 5 for kondisjonstrening.",
+  "alert.strength":  "Velg et tall fra 1 til 5 for styrketrening.",
+  "alert.community": "Velg ja eller nei for fellesgruppene.",
+
+  "s0.eyebrow": "Velkommen inn",
+  "s0.h":    "Du har plassen din. Nå gjør vi klar planen din.",
+  "s0.lede": "Før oppstartssamtalen vil vi bli litt bedre kjent med deg. Det tar rundt tre minutter, og svarene går rett til veilederne dine.",
+  "s0.1.t": "Samtykker og litt praktisk", "s0.1.d": "Hva vi får lov til å sende deg",
+  "s0.2.t": "Målene dine",               "s0.2.d": "Hva du faktisk vil oppnå på 16 uker",
+  "s0.3.t": "Erfaringen din",            "s0.3.d": "Kondisjon og styrke — uansett utgangspunkt",
+  "s0.4.t": "Hils på teamet ditt",       "s0.4.d": "Ernæringsfysiologen og treneren din",
+  "s0.fine": "Du kan endre svarene dine når som helst i appen.",
+
+  "s1.eyebrow": "Samtykker",
+  "s1.h":    "Først spør vi om lov",
+  "s1.lede": "De to første er valgfrie. Den siste må du bekrefte før vi kan sette i gang treningen.",
+  "s1.email.t": "E-post",
+  "s1.email.d": "Ukesmenyer, oppskrifter og en påminnelse før hver oppstart. Vi sender ikke reklame.",
+  "s1.push.t":  "Push-varsler",
+  "s1.push.d":  "Beskjed når treneren legger ut en ny økt, og når det nærmer seg fellestrening.",
+  "s1.risk.t":  "Trening på eget ansvar",
+  "s1.risk.d":  "Jeg er kjent med at fysisk trening innebærer risiko for skade, og at jeg trener på eget ansvar. Jeg sier fra til veilederne mine om helseforhold som kan påvirke treningen.",
+  "s1.health.label": "Er det noe vi bør vite allerede nå?",
+  "s1.health.hint":  "Skader, sykdom, medisiner eller graviditet. Valgfritt — vi tar det uansett opp i oppstartssamtalen.",
+  "s1.health.ph":    "F.eks. «Vond høyre skulder etter en fallskade i fjor.»",
+
+  "s2.eyebrow": "Målet ditt",
+  "s2.h":    "Hva vil du oppnå?",
+  "s2.lede": "Velg det som passer — du kan krysse av for flere. Dette styrer hvordan trening og kosthold settes opp.",
+  "s2.other.label": "Hva vil du oppnå?",
+  "s2.other.ph":    "F.eks. «Klare Birken på ski til vinteren.»",
+  "goal.vekt.t": "Ned i vekt",          "goal.vekt.d": "Endre kroppssammensetning og få ned vekta.",
+  "goal.form.t": "Bedre fysisk form",   "goal.form.d": "Mer overskudd i hverdagen og bedre kondisjon.",
+  "goal.sterk.t": "Bli sterkere",       "goal.sterk.d": "Bygge muskler og tåle mer, både på trening og ellers.",
+  "goal.ernaering.t": "Hjelp til ernæring", "goal.ernaering.d": "Lære hva, når og hvor mye jeg bør spise.",
+  "goal.annet.t": "Noe annet",          "goal.annet.d": "Fortell oss kort hva du vil oppnå.",
+
+  "scale.low":   "1 · Helt fersk",
+  "scale.high":  "5 · Erfaren",
+  "scale.empty": "Velg et tall fra 1 til 5",
+
+  "s3.eyebrow": "Erfaring · 1 av 2",
+  "s3.h":    "Kondisjonstrening",
+  "s3.lede": "Hvor vil du plassere deg selv i dag? Det finnes ikke noe feil svar — vi møter deg der du er.",
+  "s3.aria": "Skala 1 til 5 for kondisjonstrening",
+  "s3.ph":   "F.eks. «Går tur med hunden hver dag, men har aldri løpt en hel kilometer.»",
+  "kondis.1.t": "Helt fersk",    "kondis.1.d": "Det er lenge siden sist, og jeg blir fort andpusten.",
+  "kondis.2.t": "Litt erfaring", "kondis.2.d": "Jeg går turer eller trener av og til, uten fast plan.",
+  "kondis.3.t": "Jevn trener",   "kondis.3.d": "1–2 økter i uka, og jeg kjenner formen min.",
+  "kondis.4.t": "Godt trent",    "kondis.4.d": "3–4 økter i uka. Jeg holder jevnt tempo lenge.",
+  "kondis.5.t": "Erfaren",       "kondis.5.d": "Jeg trener systematisk, med intervaller og plan.",
+
+  "s4.eyebrow": "Erfaring · 2 av 2",
+  "s4.h":    "Styrketrening",
+  "s4.lede": "Samme øvelse en gang til. Vær ærlig — det er slik vi treffer på nivået fra første økt.",
+  "s4.aria": "Skala 1 til 5 for styrketrening",
+  "s4.ph":   "F.eks. «Har brukt apparater på treningssenter, men er usikker på frivekter.»",
+  "styrke.1.t": "Helt fersk",    "styrke.1.d": "Jeg har aldri løftet vekter, eller det er mange år siden.",
+  "styrke.2.t": "Litt erfaring", "styrke.2.d": "Jeg har prøvd apparater og kroppsvekt, men uten fast plan.",
+  "styrke.3.t": "Jevn trener",   "styrke.3.d": "Jeg styrketrener av og til og kan de vanligste øvelsene.",
+  "styrke.4.t": "Godt trent",    "styrke.4.d": "Fast styrkeøkt i uka. Jeg er trygg på knebøy og markløft.",
+  "styrke.5.t": "Erfaren",       "styrke.5.d": "Mange år med styrke, og jeg følger et program med progresjon.",
+
+  "s5.eyebrow": "Fellesskapet",
+  "s5.h":    "Skal vi melde deg inn i fellesgruppene?",
+  "s5.lede": "Kickstarterne har egne grupper der dere deler økter, oppskrifter og heiarop underveis.",
+  "s5.panel": "Mange sier fellesskapet er grunnen til at de holder ut hele programmet. Vi legger deg inn med fornavnet ditt og stedet du trener.",
+  "s5.yes.t": "Ja, meld meg inn", "s5.yes.d": "Du kan melde deg ut når som helst.",
+  "s5.no.t":  "Nei takk",         "s5.no.d":  "Helt greit. Du får nøyaktig samme oppfølging fra veilederne dine.",
+
+  "s6.eyebrow": "Teamet ditt",
+  "s6.h":    "Her er veilederne dine",
+  "s6.lede": "Disse to følger deg gjennom hele programmet. De leser svarene dine før dere møtes.",
+  "s6.kef.role": "Klinisk ernæringsfysiolog",
+  "s6.kef.bio":  "Kristiane setter opp kostholdsplanen din og justerer den underveis. Hun er opptatt av mat du faktisk liker — en plan du ikke klarer å følge, virker ikke.",
+  "s6.coach.role": "Idrettsfysiolog og trener",
+  "s6.coach.bio":  "Ingrid legger treningen din etter nivået ditt og følger deg opp uke for uke. Hun graderer øktene når det trengs, både opp og ned.",
+  "s6.fine": "Du når begge to i chatten i appen. Svartid er vanligvis under én virkedag.",
+
+  "s7.eyebrow": "Nesten i mål",
+  "s7.h":    "Sjekk at alt stemmer",
+  "s7.lede": "Dette er det Kristiane og Ingrid får se før oppstartssamtalen.",
+  "sum.consents":  "Samtykker",
+  "sum.goal":      "Hovedmål",
+  "sum.cardio":    "Kondisjonstrening",
+  "sum.strength":  "Styrketrening",
+  "sum.community": "Fellesgrupper",
+  "sum.guides":    "Veilederne dine",
+  "sum.risk":      "Trener på eget ansvar — bekreftet",
+  "sum.yesto":     "Ja til {list}",
+  "sum.nomarketing": "Nei til e-post og push",
+  "sum.email": "e-post", "sum.push": "push", "sum.and": "og",
+  "sum.of5":   "av 5",
+
+  "s8.eyebrow": "Sendt inn",
+  "s8.h":    "Takk. Nå er vi klare for deg.",
+  "s8.lede": "Svarene dine ligger hos Kristiane og Ingrid. Neste steg er oppstartssamtalen — der går vi gjennom målene dine og legger planen for de neste 16 ukene.",
+  "s8.next.k": "Neste steg", "s8.next.v": "Oppstartssamtale",
+  "s8.next.d": "Vi tar kontakt innen to virkedager for å avtale tid. Vil du velge tid selv, kan du booke nå.",
+  "s8.wait.k": "Mens du venter", "s8.wait.v": "Kom i gang-guiden",
+  "s8.wait.d": "Fem korte punkter om hva som skjer den første uka, og hva du bør ha klart til første økt."
+}, {
+  "common.optional": "Optional",
+  "common.required": "Required",
+  "common.change":   "Change",
+  "common.unanswered": "Not answered",
+  "common.tellmore": "Tell us more",
+
+  "btn.start":    "Get started",
+  "btn.continue": "Continue",
+  "btn.summary":  "See summary",
+  "btn.submit":   "Submit answers",
+  "btn.restart":  "Restart prototype",
+  "btn.menu":     "Back to menu",
+
+  "progress.step": "Step {n} of {total}",
+  "ob.stagecap":   "Onboarding · clickable prototype",
+
+  "alert.risk":      "You need to confirm that you train at your own risk to continue.",
+  "alert.goal":      "Pick at least one goal. You can choose more than one.",
+  "alert.cardio":    "Pick a number from 1 to 5 for cardio training.",
+  "alert.strength":  "Pick a number from 1 to 5 for strength training.",
+  "alert.community": "Choose yes or no for the group chats.",
+
+  "s0.eyebrow": "Welcome",
+  "s0.h":    "Your spot is booked. Now we build your plan.",
+  "s0.lede": "Before your kick-off call we'd like to get to know you a little. It takes about three minutes, and your answers go straight to your guides.",
+  "s0.1.t": "Consents and practicalities", "s0.1.d": "What we're allowed to send you",
+  "s0.2.t": "Your goals",                 "s0.2.d": "What you actually want out of 16 weeks",
+  "s0.3.t": "Your experience",            "s0.3.d": "Cardio and strength — wherever you're starting from",
+  "s0.4.t": "Meet your team",             "s0.4.d": "Your nutritionist and your coach",
+  "s0.fine": "You can change your answers any time in the app.",
+
+  "s1.eyebrow": "Consents",
+  "s1.h":    "First, we ask permission",
+  "s1.lede": "The first two are optional. The last one you need to confirm before we can start training.",
+  "s1.email.t": "Email",
+  "s1.email.d": "Weekly menus, recipes and a reminder before each start. No marketing.",
+  "s1.push.t":  "Push notifications",
+  "s1.push.d":  "A heads-up when your coach posts a new session, and before group training.",
+  "s1.risk.t":  "Training at your own risk",
+  "s1.risk.d":  "I understand that physical training carries a risk of injury, and that I train at my own risk. I will tell my guides about any health conditions that could affect my training.",
+  "s1.health.label": "Anything we should know up front?",
+  "s1.health.hint":  "Injuries, illness, medication or pregnancy. Optional — we'll cover it in the kick-off call either way.",
+  "s1.health.ph":    "e.g. “Sore right shoulder after a fall last year.”",
+
+  "s2.eyebrow": "Your goal",
+  "s2.h":    "What do you want to achieve?",
+  "s2.lede": "Pick what fits — you can choose more than one. This shapes how your training and nutrition are set up.",
+  "s2.other.label": "What do you want to achieve?",
+  "s2.other.ph":    "e.g. “Finish the Birkebeiner ski race this winter.”",
+  "goal.vekt.t": "Lose weight",       "goal.vekt.d": "Change body composition and bring the weight down.",
+  "goal.form.t": "Get fitter",        "goal.form.d": "More energy day to day and better cardio.",
+  "goal.sterk.t": "Get stronger",     "goal.sterk.d": "Build muscle and handle more, in training and outside it.",
+  "goal.ernaering.t": "Help with nutrition", "goal.ernaering.d": "Learn what, when and how much to eat.",
+  "goal.annet.t": "Something else",   "goal.annet.d": "Tell us briefly what you want to achieve.",
+
+  "scale.low":   "1 · Complete beginner",
+  "scale.high":  "5 · Experienced",
+  "scale.empty": "Pick a number from 1 to 5",
+
+  "s3.eyebrow": "Experience · 1 of 2",
+  "s3.h":    "Cardio training",
+  "s3.lede": "Where would you place yourself today? There's no wrong answer — we meet you where you are.",
+  "s3.aria": "Scale 1 to 5 for cardio training",
+  "s3.ph":   "e.g. “I walk the dog every day but have never run a full kilometre.”",
+  "kondis.1.t": "Complete beginner", "kondis.1.d": "It's been a long time, and I get out of breath quickly.",
+  "kondis.2.t": "Some experience",   "kondis.2.d": "I walk or train now and then, without a fixed plan.",
+  "kondis.3.t": "Regular",           "kondis.3.d": "1–2 sessions a week, and I know my own fitness.",
+  "kondis.4.t": "Well trained",      "kondis.4.d": "3–4 sessions a week. I hold a steady pace for a long time.",
+  "kondis.5.t": "Experienced",       "kondis.5.d": "I train systematically, with intervals and a plan.",
+
+  "s4.eyebrow": "Experience · 2 of 2",
+  "s4.h":    "Strength training",
+  "s4.lede": "Same exercise once more. Be honest — that's how we get the level right from session one.",
+  "s4.aria": "Scale 1 to 5 for strength training",
+  "s4.ph":   "e.g. “I've used gym machines but I'm unsure about free weights.”",
+  "styrke.1.t": "Complete beginner", "styrke.1.d": "I've never lifted weights, or it was many years ago.",
+  "styrke.2.t": "Some experience",   "styrke.2.d": "I've tried machines and bodyweight, but without a fixed plan.",
+  "styrke.3.t": "Regular",           "styrke.3.d": "I lift now and then and know the common exercises.",
+  "styrke.4.t": "Well trained",      "styrke.4.d": "A regular strength session each week. I'm confident with squats and deadlifts.",
+  "styrke.5.t": "Experienced",       "styrke.5.d": "Years of strength training, following a program with progression.",
+
+  "s5.eyebrow": "The community",
+  "s5.h":    "Should we add you to the group chats?",
+  "s5.lede": "Kickstarters have their own groups where you share sessions, recipes and encouragement along the way.",
+  "s5.panel": "Many say the community is the reason they make it through the whole program. We add you with your first name and where you train.",
+  "s5.yes.t": "Yes, add me", "s5.yes.d": "You can leave at any time.",
+  "s5.no.t":  "No thanks",   "s5.no.d":  "That's fine. You get exactly the same follow-up from your guides.",
+
+  "s6.eyebrow": "Your team",
+  "s6.h":    "Meet your guides",
+  "s6.lede": "These two follow you through the whole program. They read your answers before you meet.",
+  "s6.kef.role": "Clinical nutritionist",
+  "s6.kef.bio":  "Kristiane builds your nutrition plan and adjusts it as you go. She cares about food you actually like — a plan you can't stick to doesn't work.",
+  "s6.coach.role": "Exercise physiologist and coach",
+  "s6.coach.bio":  "Ingrid builds your training around your level and follows up week by week. She scales sessions when needed, up as well as down.",
+  "s6.fine": "You can reach both of them in the app chat. They usually reply within one working day.",
+
+  "s7.eyebrow": "Almost done",
+  "s7.h":    "Check that everything's right",
+  "s7.lede": "This is what Kristiane and Ingrid see before your kick-off call.",
+  "sum.consents":  "Consents",
+  "sum.goal":      "Main goal",
+  "sum.cardio":    "Cardio training",
+  "sum.strength":  "Strength training",
+  "sum.community": "Group chats",
+  "sum.guides":    "Your guides",
+  "sum.risk":      "Training at own risk — confirmed",
+  "sum.yesto":     "Yes to {list}",
+  "sum.nomarketing": "No to email and push",
+  "sum.email": "email", "sum.push": "push", "sum.and": "and",
+  "sum.of5":   "of 5",
+
+  "s8.eyebrow": "Submitted",
+  "s8.h":    "Thanks. We're ready for you.",
+  "s8.lede": "Your answers are with Kristiane and Ingrid. Next up is the kick-off call, where we go through your goals and set the plan for the next 16 weeks.",
+  "s8.next.k": "Next step", "s8.next.v": "Kick-off call",
+  "s8.next.d": "We'll be in touch within two working days to book a time. Want to pick a time yourself? Book now.",
+  "s8.wait.k": "While you wait", "s8.wait.v": "Getting started guide",
+  "s8.wait.d": "Five short points on what happens in week one, and what to have ready for your first session."
+});
+
+(function () {
+  "use strict";
+
+  var FORM_STEPS = 7;                                   // steg 1–7 teller i progresjonen
+  var GOALS = ["vekt", "form", "sterk", "ernaering", "annet"];
+  var t = function (k) { return KS.t(k); };
+
+  var blank = {
+    consents: { epost: false, push: false, risiko: false },
+    helse: "",
+    mal: [],
+    malAnnet: "",
+    kondis: null, kondisKommentar: "",
+    styrke: null, styrkeKommentar: "",
+    fellesgrupper: null
+  };
+
+  var state = JSON.parse(JSON.stringify(blank));
+  var step = 0;
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  var elScreen    = $("#screen");
+  var elTrack     = $("#track");
+  var elProgress  = $("#progress");
+  var elProgLabel = $("#progress-label");
+  var elBack      = $("#back");
+  var elNext      = $("#next");
+  var elSecondary = $("#secondary");
+  var elAlert     = $("#alert");
+  var elAlertText = $("#alert-text");
+
+  var checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg>';
+
+  /* ---------- Mål (bygges fra ordlista så språkbytte er gratis) ---------- */
+  function buildGoals() {
+    var box = $("#goals");
+    box.textContent = "";
+    GOALS.forEach(function (key) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "opt";
+      b.setAttribute("data-goal", key);
+      var on = state.mal.indexOf(key) !== -1;
+      b.classList.toggle("is-on", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      b.innerHTML =
+        '<span class="tick" aria-hidden="true">' + checkSvg + '</span>' +
+        '<span><span class="opt-t"></span><span class="opt-d"></span></span>';
+      $(".opt-t", b).textContent = t("goal." + key + ".t");
+      $(".opt-d", b).textContent = t("goal." + key + ".d");
+      b.addEventListener("click", function () {
+        var at = state.mal.indexOf(key);
+        if (at === -1) { state.mal.push(key); } else { state.mal.splice(at, 1); }
+        var now = state.mal.indexOf(key) !== -1;
+        b.classList.toggle("is-on", now);
+        b.setAttribute("aria-pressed", now ? "true" : "false");
+        $("#goal-other-field").hidden = state.mal.indexOf("annet") === -1;
+        clearAlert();
+      });
+      box.appendChild(b);
+    });
+  }
+
+  /* ---------- Skala ---------- */
+  function buildScales() {
+    $$("[data-scale]").forEach(function (row) {
+      var key = row.getAttribute("data-scale");
+      if (row.childElementCount) { return; }          // bygg bare én gang
+      for (var i = 1; i <= 5; i++) {
+        (function (value) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "dot";
+          b.textContent = String(value);
+          b.setAttribute("aria-pressed", "false");
+          b.setAttribute("data-value", String(value));
+          b.addEventListener("click", function () { pickScale(key, value); });
+          row.appendChild(b);
+        })(i);
+      }
+    });
+  }
+
+  function paintScale(key) {
+    var value = state[key];
+    var row = $('[data-scale="' + key + '"]');
+    $$(".dot", row).forEach(function (d) {
+      var on = Number(d.getAttribute("data-value")) === value;
+      d.classList.toggle("is-on", on);
+      d.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+
+    var read = $('[data-read="' + key + '"]');
+    read.textContent = "";
+    if (value === null) {
+      read.className = "scale-read is-empty";
+      var e = document.createElement("span");
+      e.className = "n";
+      e.textContent = t("scale.empty");
+      read.appendChild(e);
+      return;
+    }
+    read.className = "scale-read";
+    var n = document.createElement("span");
+    n.className = "n";
+    n.textContent = value + " · " + t(key + "." + value + ".t");
+    var d = document.createElement("span");
+    d.className = "d";
+    d.textContent = t(key + "." + value + ".d");
+    read.appendChild(n); read.appendChild(d);
+  }
+
+  function pickScale(key, value) {
+    state[key] = value;
+    paintScale(key);
+    clearAlert();
+  }
+
+  /* ---------- Samtykker og fellesgrupper ---------- */
+  $$("[data-consent]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var key = btn.getAttribute("data-consent");
+      state.consents[key] = !state.consents[key];
+      btn.classList.toggle("is-on", state.consents[key]);
+      btn.setAttribute("aria-pressed", state.consents[key] ? "true" : "false");
+      clearAlert();
+    });
+  });
+
+  $$("[data-community]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      state.fellesgrupper = btn.getAttribute("data-community") === "ja";
+      $$("[data-community]").forEach(function (b) {
+        var on = b === btn;
+        b.classList.toggle("is-on", on);
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      clearAlert();
+    });
+  });
+
+  $$("[data-bind]").forEach(function (f) {
+    f.addEventListener("input", function () { state[f.getAttribute("data-bind")] = f.value; });
+  });
+
+  /* ---------- Validering ---------- */
+  function blocker(n) {
+    if (n === 1 && !state.consents.risiko)  { return t("alert.risk"); }
+    if (n === 2 && state.mal.length === 0)  { return t("alert.goal"); }
+    if (n === 3 && state.kondis === null)   { return t("alert.cardio"); }
+    if (n === 4 && state.styrke === null)   { return t("alert.strength"); }
+    if (n === 5 && state.fellesgrupper === null) { return t("alert.community"); }
+    return null;
+  }
+
+  function clearAlert() {
+    elAlert.setAttribute("data-state", "hidden");
+    elNext.setAttribute("data-blocked", blocker(step) ? "yes" : "no");
+  }
+
+  /* ---------- Oppsummering ---------- */
+  function row(key, value, target, quote) {
+    var r = document.createElement("div");
+    r.className = "sum-row";
+
+    var k = document.createElement("span");
+    k.className = "sum-k";
+    k.textContent = key;
+
+    var v = document.createElement("span");
+    v.className = "sum-v";
+    if (value) {
+      v.textContent = value;
+    } else {
+      var m = document.createElement("span");
+      m.className = "muted";
+      m.textContent = t("common.unanswered");
+      v.appendChild(m);
+    }
+    if (quote) {
+      var q = document.createElement("span");
+      q.className = "quote";
+      q.textContent = "«" + quote + "»";
+      v.appendChild(q);
+    }
+
+    var b = document.createElement("button");
+    b.className = "edit";
+    b.type = "button";
+    b.textContent = t("common.change");
+    b.setAttribute("aria-label", t("common.change") + ": " + key);
+    b.addEventListener("click", function () { go(target); });
+
+    r.appendChild(k); r.appendChild(v); r.appendChild(b);
+    return r;
+  }
+
+  function buildSummary() {
+    var box = $("#summary");
+    box.textContent = "";
+
+    var yes = [];
+    if (state.consents.epost) { yes.push(t("sum.email")); }
+    if (state.consents.push)  { yes.push(t("sum.push")); }
+    var consents = state.consents.risiko ? t("sum.risk") : "";
+    if (consents) {
+      consents += ". " + (yes.length
+        ? t("sum.yesto").replace("{list}", yes.join(" " + t("sum.and") + " "))
+        : t("sum.nomarketing"));
+    }
+    box.appendChild(row(t("sum.consents"), consents, 1, state.helse));
+
+    var goals = state.mal.map(function (k) {
+      return (k === "annet" && state.malAnnet) ? state.malAnnet : t("goal." + k + ".t");
+    }).join(" · ");
+    box.appendChild(row(t("sum.goal"), goals, 2));
+
+    box.appendChild(row(t("sum.cardio"),
+      state.kondis ? state.kondis + " " + t("sum.of5") + " · " + t("kondis." + state.kondis + ".t") : "",
+      3, state.kondisKommentar));
+
+    box.appendChild(row(t("sum.strength"),
+      state.styrke ? state.styrke + " " + t("sum.of5") + " · " + t("styrke." + state.styrke + ".t") : "",
+      4, state.styrkeKommentar));
+
+    box.appendChild(row(t("sum.community"),
+      state.fellesgrupper === null ? "" : t(state.fellesgrupper ? "s5.yes.t" : "s5.no.t"),
+      5));
+
+    box.appendChild(row(t("sum.guides"), "Kristiane Stormoen · Ingrid Hansen", 6));
+  }
+
+  /* ---------- Knappetekster ---------- */
+  function paintChrome() {
+    if (step === 0)      { elNext.textContent = t("btn.start"); }
+    else if (step === 6) { elNext.textContent = t("btn.summary"); }
+    else if (step === 7) { elNext.textContent = t("btn.submit"); }
+    else if (step === 8) { elNext.textContent = t("btn.menu"); }
+    else                 { elNext.textContent = t("btn.continue"); }
+
+    elSecondary.hidden = step !== 8;
+    elSecondary.textContent = t("btn.restart");
+
+    elBack.setAttribute("aria-label", step === 0 ? t("btn.menu") : t("nav.back"));
+
+    if (step >= 1 && step <= FORM_STEPS) {
+      elProgLabel.textContent = t("progress.step")
+        .replace("{n}", String(step))
+        .replace("{total}", String(FORM_STEPS));
+    }
+  }
+
+  /* ---------- Navigasjon ---------- */
+  function go(n) {
+    step = n;
+    $$(".step").forEach(function (s) {
+      s.classList.toggle("is-active", Number(s.getAttribute("data-step")) === n);
+    });
+
+    if (n === 7) { buildSummary(); }
+
+    var inForm = n >= 1 && n <= FORM_STEPS;
+    elProgress.setAttribute("data-state", inForm ? "shown" : "hidden");
+    if (inForm) {
+      $$(".seg", elTrack).forEach(function (seg, i) {
+        seg.classList.toggle("is-done", i < n - 1);
+        seg.classList.toggle("is-now", i === n - 1);
+      });
+    }
+
+    paintChrome();
+    clearAlert();
+    elScreen.scrollTop = 0;
+  }
+
+  elNext.addEventListener("click", function () {
+    if (step === 8) { location.href = "../"; return; }
+    var why = blocker(step);
+    if (why) {
+      elAlertText.textContent = why;
+      elAlert.setAttribute("data-state", "shown");
+      return;
+    }
+    go(step + 1);
+  });
+
+  elBack.addEventListener("click", function () {
+    if (step === 0) { location.href = "../"; return; }   // steg 0: tilbake til menyen
+    go(step - 1);
+  });
+
+  elSecondary.addEventListener("click", reset);
+  $("#restart").addEventListener("click", reset);
+
+  function reset() {
+    state = JSON.parse(JSON.stringify(blank));
+    $$("[data-consent], [data-community]").forEach(function (b) {
+      b.classList.remove("is-on");
+      b.setAttribute("aria-pressed", "false");
+    });
+    $$("[data-bind]").forEach(function (f) { f.value = ""; });
+    $("#goal-other-field").hidden = true;
+    buildGoals();
+    paintScale("kondis");
+    paintScale("styrke");
+    go(0);
+  }
+
+  /* ---------- Språkbytte: tegn alt JS-generert på nytt ---------- */
+  KS.onLang(function () {
+    buildGoals();
+    paintScale("kondis");
+    paintScale("styrke");
+    paintChrome();
+    if (step === 7) { buildSummary(); }
+    var why = blocker(step);
+    if (why && elAlert.getAttribute("data-state") === "shown") { elAlertText.textContent = why; }
+  });
+
+  /* ---------- Oppstart ---------- */
+  for (var i = 0; i < FORM_STEPS; i++) {
+    elTrack.appendChild(document.createElement("span")).className = "seg";
+  }
+  buildScales();
+  buildGoals();
+  KS.init();
+  go(0);
+})();
+</script>
+
+</body>
+</html>
