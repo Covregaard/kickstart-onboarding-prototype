@@ -479,6 +479,82 @@ textarea:focus, input:focus { border-color: var(--line-strong); }
 .scale-read.is-empty .n { color: var(--ink-3); font-weight: 500; }
 
 /* ==========================================================================
+   Merkelapper – flervalg med ett trykk, i stedet for fritekst
+   ========================================================================== */
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-size: 14px;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .14s ease, background .14s ease, transform .1s ease;
+}
+.chip:hover { border-color: var(--line-strong); }
+.chip:active { transform: scale(.97); }
+.chip.is-on {
+  background: var(--sel-bg);
+  border-color: var(--sel-line);
+  font-weight: 600;
+}
+.chip svg {
+  width: 13px; height: 13px; flex: none;
+  opacity: 0; margin-left: -20px;
+  transition: opacity .14s ease, margin .14s ease;
+}
+.chip.is-on svg { opacity: 1; margin-left: 0; }
+
+/* ==========================================================================
+   Teller – for tall man ellers ville skrevet i en setning
+   ========================================================================== */
+
+.stepper {
+  display: inline-flex; align-items: center;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.stepper button {
+  width: 46px; height: 46px;
+  border: 0; background: none;
+  font-size: 22px; line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+}
+.stepper button:hover:not(:disabled) { background: rgba(128,128,128,.12); }
+.stepper button:disabled { color: var(--ink-3); opacity: .45; cursor: default; }
+.stepper .val {
+  min-width: 52px; text-align: center;
+  font-family: var(--font-head); font-size: 24px; font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.stepper-row { display: flex; align-items: center; gap: 14px; }
+.stepper-row .unit-label { font-size: 14px; color: var(--ink-2); }
+
+/* ==========================================================================
+   Vis mer – fritekst som ligger sammenslått til den trengs
+   ========================================================================== */
+
+.reveal {
+  align-self: flex-start;
+  background: none; border: 0; padding: 6px 0;
+  font-size: 14px; font-weight: 600; color: var(--ink-2);
+  display: inline-flex; align-items: center; gap: 8px;
+  cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.reveal:hover { color: var(--ink); }
+.reveal svg { transition: transform .18s ease; }
+.reveal[aria-expanded="true"] svg { transform: rotate(45deg); }
+
+/* ==========================================================================
    Infopanel
    ========================================================================== */
 
