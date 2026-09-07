@@ -11,6 +11,7 @@ ingen backend. Alt en tester taster inn forsvinner når fanen lukkes.
 ```
 index.html              Meny – oversikt over prototypene
 onboarding/index.html   Onboarding etter påmelding (9 skjermer)
+ukesrapport/index.html  Ukentlig innsjekk (10 skjermer, to veier inn)
 assets/kickstart.css    Delt design-system (farger, typografi, komponenter)
 assets/ks.js            Delt: tilgangskode, språkvalg, oversetting
 ```
@@ -43,8 +44,14 @@ push. GitHub Pages oppdaterer seg selv i løpet av et minutt eller to.
 
 ## Språk
 
-Førstevalget følger nettleseren: norsk for `nb`/`nn`/`no`, ellers engelsk.
-Valget huskes i `localStorage` og gjelder på tvers av prototypene.
+**Norsk er standard.** EN-bryteren står alltid i toppen — også på låseskjermen —
+og valget huskes i `localStorage` på tvers av prototypene.
+
+## Eksempeldata
+
+Ukesrapporten viser en trend over egenvurderingen og en vektendring. Ukene før
+denne er hardkodet eksempeldata (`HISTORY` og `LAST_WEIGHT` øverst i skriptet),
+og er merket som det i grensesnittet. Det er ingen backend bak noen av tallene.
 
 ## Cache
 

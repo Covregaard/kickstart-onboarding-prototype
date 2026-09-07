@@ -78,8 +78,8 @@ window.KS = (function () {
   function detectLang() {
     var saved = read(LANG_KEY);
     if (saved === "no" || saved === "en") { return saved; }
-    var nav = (navigator.language || "").toLowerCase();
-    return (nav.indexOf("nb") === 0 || nav.indexOf("nn") === 0 || nav.indexOf("no") === 0) ? "no" : "en";
+    /* Norsk er standard. EN-bryteren står alltid i toppen, og valget huskes. */
+    return "no";
   }
 
   function t(key) {

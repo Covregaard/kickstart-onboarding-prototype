@@ -11,8 +11,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="../assets/kickstart.css?v=3">
-<script src="../assets/ks.js?v=3"></script>
+<link rel="stylesheet" href="../assets/kickstart.css?v=4">
+<script src="../assets/ks.js?v=4"></script>
 <style>
   /* Komponenter som bare denne prototypen bruker */
   .intro-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -51,36 +51,6 @@
     line-height: 1.15; margin: 2px 0 0; letter-spacing: -.01em;
   }
   .coach .bio { font-size: 14px; color: var(--ink-2); margin: 8px 0 0; }
-
-  .sum { display: flex; flex-direction: column; }
-  .sum-row {
-    display: grid; grid-template-columns: 1fr auto; gap: 12px 14px;
-    align-items: baseline; padding: 14px 0; border-top: 1px solid var(--line);
-  }
-  .sum-row:last-child { border-bottom: 1px solid var(--line); }
-  .sum-k {
-    grid-column: 1; font-size: 11.5px; font-weight: 600;
-    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
-  }
-  .sum-v { grid-column: 1; font-size: 15px; margin-top: 4px; }
-  .sum-v .muted { color: var(--ink-3); }
-  .sum-v .quote { display: block; font-size: 13.5px; color: var(--ink-2); font-style: italic; margin-top: 4px; }
-  .edit {
-    grid-column: 2; grid-row: 1 / span 2; align-self: center;
-    background: none; border: 0; padding: 4px;
-    font-size: 13px; font-weight: 600; color: var(--ink-2);
-    text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
-  }
-  .edit:hover { color: var(--ink); }
-
-  .done-next {
-    background: var(--surface); border: 1.5px solid var(--line);
-    border-radius: 16px; padding: 16px 18px;
-    display: flex; flex-direction: column; gap: 4px;
-  }
-  .done-next .k { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
-  .done-next .v { font-family: var(--font-head); font-size: 20px; font-weight: 500; letter-spacing: -.01em; }
-  .done-next .d { font-size: 14px; color: var(--ink-2); }
 
   .step-top { margin-top: 16px; }
 </style>
