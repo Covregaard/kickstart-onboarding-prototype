@@ -1,0 +1,1230 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex, nosnippet">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="Klikkbar prototype. Krever tilgangskode.">
+<meta name="theme-color" content="#fffee9">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
+<style>*{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Kickstart Onboarding</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+<style>
+  /* ---------- Tokens: lifted from kickstart.no's own CSS custom properties ---------- */
+  :root {
+    color-scheme: light;
+
+    --stage:        #d9e6ed;   /* ks primary-300 */
+    --stage-ink:    #375a6e;
+
+    --app-bg:       #fffee9;   /* ks brand-accent-soft */
+    --surface:      #ffffff;
+    --surface-2:    #faf9ec;
+
+    --ink:          #182436;   /* ks brand-primary */
+    --ink-2:        #4d5f72;
+    --ink-3:        #7f8f9e;
+
+    --line:         #e6e6d4;
+    --line-strong:  #cdd4da;
+
+    --accent:       #f7fe75;   /* ks brand-accent */
+    --accent-deep:  #dae700;   /* ks secondary-600 */
+    --accent-ink:   #182436;
+
+    --sel-bg:       #fffda9;   /* ks brand-accent-alt */
+    --sel-line:     #182436;
+
+    --soft-a:       #c1e4ef;   /* ks brand-primary-soft */
+    --soft-b:       #fee4d0;   /* ks accent-skin-soft */
+    --on-soft:      #182436;
+
+    --ok:           #009966;
+    --danger:       #b3000a;
+    --focus:        #182436;
+
+    --shadow-phone: 0 32px 70px -24px rgba(24,36,54,.45), 0 4px 12px rgba(24,36,54,.14);
+    --shadow-bar:   0 -10px 20px -14px rgba(24,36,54,.35);
+
+    --font-head: "GT Planar", "Inter", system-ui, sans-serif;
+    --font-body: "Inter", system-ui, -apple-system, sans-serif;
+  }
+
+  :root:not([data-theme="light"]) { }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --stage:       #0b131e;
+      --stage-ink:   #8ba3b8;
+      --app-bg:      #121d2c;
+      --surface:     #1a2739;
+      --surface-2:   #223146;
+      --ink:         #f2f6f8;
+      --ink-2:       #a9b9c9;
+      --ink-3:       #7d8fa2;
+      --line:        #2c3d53;
+      --line-strong: #3b5069;
+      --sel-bg:      #2e3a1c;
+      --sel-line:    #f7fe75;
+      --soft-a:      #2b4b5e;
+      --soft-b:      #4d3a2d;
+      --on-soft:     #f2f6f8;
+      --ok:          #4ad6a0;
+      --danger:      #ff8a8a;
+      --focus:       #f7fe75;
+      --shadow-phone: 0 32px 70px -24px rgba(0,0,0,.7), 0 4px 12px rgba(0,0,0,.4);
+      --shadow-bar:   0 -10px 20px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --stage:       #0b131e;
+    --stage-ink:   #8ba3b8;
+    --app-bg:      #121d2c;
+    --surface:     #1a2739;
+    --surface-2:   #223146;
+    --ink:         #f2f6f8;
+    --ink-2:       #a9b9c9;
+    --ink-3:       #7d8fa2;
+    --line:        #2c3d53;
+    --line-strong: #3b5069;
+    --sel-bg:      #2e3a1c;
+    --sel-line:    #f7fe75;
+    --soft-a:      #2b4b5e;
+    --soft-b:      #4d3a2d;
+    --on-soft:     #f2f6f8;
+    --ok:          #4ad6a0;
+    --danger:      #ff8a8a;
+    --focus:       #f7fe75;
+    --shadow-phone: 0 32px 70px -24px rgba(0,0,0,.7), 0 4px 12px rgba(0,0,0,.4);
+    --shadow-bar:   0 -10px 20px -14px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--stage);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :where(button, input, textarea) { font: inherit; color: inherit; }
+  :where(a) { color: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+
+  h1, h2, h3 {
+    font-family: var(--font-head);
+    font-weight: 300;
+    line-height: 1.04;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  /* ---------- Tilgangskode ---------- */
+  /* Låsen vises som standard. Uten JS forblir den på, og prototypen lekker ikke ut. */
+  body:not(.is-open) .stage { display: none; }
+
+  .gate {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: var(--app-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 22px;
+    overflow-y: auto;
+  }
+  body.is-open .gate { display: none; }
+
+  .gate-card {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .gate-card h1 { font-size: 36px; }
+  .gate-card .lede { max-width: none; }
+
+  .gate-form { display: flex; flex-direction: column; gap: 10px; }
+  .gate-form label { font-size: 13.5px; font-weight: 600; }
+  .gate-form input {
+    width: 100%;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 17px;
+    letter-spacing: .06em;
+    color: var(--ink);
+  }
+  .gate-form input:focus { border-color: var(--line-strong); }
+  .gate-form .btn { margin-top: 4px; }
+  .gate-err {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--danger);
+    display: flex; gap: 7px; align-items: flex-start;
+  }
+  .gate-err[hidden] { display: none; }
+
+  /* ---------- Stage (desktop chrome around the prototype) ---------- */
+  .stage {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 0;
+  }
+
+  .stage-head, .stage-foot { display: none; }
+
+  /* ---------- Phone ---------- */
+  .phone {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--app-bg);
+    overflow: hidden;
+    min-height: 100dvh;
+  }
+
+  .statusbar { display: none; }
+
+  .appbar {
+    flex: none;
+    display: grid;
+    grid-template-columns: 40px 1fr 40px;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px 10px;
+    background: var(--app-bg);
+  }
+
+  .appbar-title {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+
+  .iconbtn {
+    width: 40px; height: 40px;
+    display: grid; place-items: center;
+    background: none;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .iconbtn:hover { background: rgba(128,128,128,.13); }
+  .iconbtn[data-state="hidden"] { visibility: hidden; pointer-events: none; }
+
+  /* Progress */
+  .progress {
+    flex: none;
+    padding: 0 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .progress[data-state="hidden"] { visibility: hidden; }
+  .track { display: flex; gap: 4px; }
+  .seg {
+    height: 4px;
+    flex: 1;
+    border-radius: 99px;
+    background: var(--line-strong);
+    transition: background .3s ease;
+  }
+  .seg.is-done { background: var(--ink); }
+  .seg.is-now  { background: var(--accent-deep); }
+  .progress-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* Scrollable screen body */
+  .screen {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 6px 20px 26px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .step { display: none; flex-direction: column; gap: 20px; }
+  .step.is-active { display: flex; animation: rise .34s cubic-bezier(.22,.7,.3,1) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    .step.is-active { animation: none; }
+    .seg { transition: none; }
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 10px;
+  }
+
+  .step h1 { font-size: 34px; }
+  .step h2 { font-size: 29px; }
+  .lede { margin: 12px 0 0; color: var(--ink-2); font-size: 15.5px; max-width: 34ch; }
+  .fine { margin: 0; font-size: 13px; color: var(--ink-3); }
+
+  .zigzag { display: block; width: 62px; height: 12px; }
+
+  /* ---------- Option rows ---------- */
+  .options { display: flex; flex-direction: column; gap: 10px; }
+
+  .opt {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 14px;
+    align-items: start;
+    width: 100%;
+    text-align: left;
+    padding: 15px 16px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: border-color .16s ease, background .16s ease, transform .1s ease;
+  }
+  .opt:hover { border-color: var(--line-strong); }
+  .opt:active { transform: scale(.99); }
+  .opt.is-on { background: var(--sel-bg); border-color: var(--sel-line); }
+
+  .opt-t { font-weight: 600; font-size: 15.5px; display: block; }
+  .opt-d { display: block; font-size: 13.5px; color: var(--ink-2); margin-top: 3px; }
+  .opt.is-on .opt-d { color: var(--ink); opacity: .82; }
+
+  .tick {
+    width: 24px; height: 24px;
+    border-radius: 7px;
+    border: 1.5px solid var(--line-strong);
+    background: var(--surface);
+    display: grid; place-items: center;
+    margin-top: 1px;
+  }
+  .opt[data-shape="round"] .tick { border-radius: 999px; }
+  .tick svg { width: 14px; height: 14px; opacity: 0; transform: scale(.6); transition: opacity .14s ease, transform .14s ease; }
+  .opt.is-on .tick { background: var(--accent); border-color: var(--accent-ink); }
+  .opt.is-on .tick svg { opacity: 1; transform: none; color: var(--accent-ink); }
+
+  .req {
+    display: inline-block;
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: .09em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 99px;
+    background: var(--ink); color: var(--app-bg);
+    margin-left: 8px; vertical-align: 2px;
+  }
+  .opt-opt {
+    display: inline-block;
+    font-size: 10.5px; font-weight: 600;
+    letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-3); margin-left: 8px; vertical-align: 2px;
+  }
+
+  /* ---------- Free text ---------- */
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field > label { font-size: 13.5px; font-weight: 600; }
+  .field .hint { font-size: 13px; color: var(--ink-3); margin: -4px 0 0; }
+  textarea, input[type="text"] {
+    width: 100%;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 15px;
+    resize: vertical;
+    color: var(--ink);
+  }
+  textarea { min-height: 84px; }
+  textarea::placeholder, input::placeholder { color: var(--ink-3); }
+  textarea:focus, input:focus { border-color: var(--line-strong); }
+
+  /* ---------- Scale ---------- */
+  .scale { display: flex; flex-direction: column; gap: 10px; }
+  .scale-row { display: flex; gap: 7px; }
+  .dot {
+    flex: 1;
+    aspect-ratio: 1 / 1;
+    min-width: 0;
+    border: 1.5px solid var(--line-strong);
+    background: var(--surface);
+    border-radius: 13px;
+    font-size: 17px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease, transform .1s ease;
+  }
+  .dot:hover { border-color: var(--ink-3); }
+  .dot:active { transform: scale(.95); }
+  .dot.is-on {
+    background: var(--accent);
+    border-color: var(--accent-ink);
+    color: var(--accent-ink);
+    font-weight: 700;
+  }
+  .scale-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); }
+  .scale-read {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 13px 15px;
+    min-height: 74px;
+  }
+  .scale-read .n { font-weight: 700; font-size: 14.5px; display: block; }
+  .scale-read .d { font-size: 13.5px; color: var(--ink-2); margin-top: 3px; display: block; }
+  .scale-read.is-empty .n { color: var(--ink-3); font-weight: 500; }
+
+  /* ---------- Cards / info ---------- */
+  .panel {
+    background: var(--soft-a);
+    color: var(--on-soft);
+    border-radius: 16px;
+    padding: 16px 18px;
+  }
+  .panel p { margin: 0; font-size: 14.5px; }
+
+  .intro-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  .intro-list li {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 12px;
+    align-items: baseline;
+    padding: 12px 0;
+    border-top: 1px solid var(--line);
+    font-size: 15px;
+  }
+  .intro-list li:last-child { border-bottom: 1px solid var(--line); }
+  .intro-list .num {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: .06em;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .intro-list .sub { display: block; font-size: 13px; color: var(--ink-2); }
+
+  .coach {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 15px;
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+  }
+  .avatar {
+    width: 56px; height: 56px;
+    border-radius: 999px;
+    display: grid; place-items: center;
+    font-family: var(--font-head);
+    font-size: 19px; font-weight: 500;
+    letter-spacing: .01em;
+    color: var(--on-soft);
+  }
+  .avatar[data-tone="a"] { background: var(--soft-a); }
+  .avatar[data-tone="b"] { background: var(--soft-b); }
+  .coach .role {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: .11em; text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .coach .name { font-family: var(--font-head); font-size: 21px; font-weight: 500; line-height: 1.15; margin: 2px 0 0; letter-spacing: -.01em; }
+  .coach .bio { font-size: 14px; color: var(--ink-2); margin: 8px 0 0; }
+
+  /* ---------- Summary ---------- */
+  .sum { display: flex; flex-direction: column; gap: 0; }
+  .sum-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px 14px;
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+  }
+  .sum-row:last-child { border-bottom: 1px solid var(--line); }
+  .sum-k { font-size: 11.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); grid-column: 1; }
+  .sum-v { grid-column: 1; font-size: 15px; margin-top: 4px; }
+  .sum-v .muted { color: var(--ink-3); }
+  .sum-v .quote { display: block; font-size: 13.5px; color: var(--ink-2); font-style: italic; margin-top: 4px; }
+  .edit {
+    grid-column: 2; grid-row: 1 / span 2;
+    align-self: center;
+    background: none; border: 0;
+    font-size: 13px; font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    padding: 4px;
+    color: var(--ink-2);
+  }
+  .edit:hover { color: var(--ink); }
+
+  /* ---------- Done ---------- */
+  .done-next {
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .done-next .k { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+  .done-next .v { font-family: var(--font-head); font-size: 20px; font-weight: 500; letter-spacing: -.01em; }
+  .done-next .d { font-size: 14px; color: var(--ink-2); }
+
+  /* ---------- Action bar ---------- */
+  .actionbar {
+    flex: none;
+    padding: 12px 20px calc(14px + env(safe-area-inset-bottom, 0px));
+    background: var(--app-bg);
+    box-shadow: var(--shadow-bar);
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .alert {
+    font-size: 13px;
+    color: var(--danger);
+    font-weight: 500;
+    display: flex;
+    gap: 7px;
+    align-items: flex-start;
+  }
+  .alert[data-state="hidden"] { display: none; }
+
+  .btn {
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 999px;
+    border: 1.5px solid transparent;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .1s ease, opacity .16s ease, background .16s ease;
+  }
+  .btn:active { transform: scale(.985); }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-ink); }
+  .btn-primary[data-blocked="yes"] { opacity: .42; }
+  .btn-ghost { background: none; color: var(--ink); border-color: var(--line-strong); }
+  .btn-text {
+    background: none; border: 0; padding: 8px;
+    font-size: 14px; font-weight: 600; color: var(--ink-2);
+    text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+  }
+  .btn-text:hover { color: var(--ink); }
+
+  /* ---------- Desktop: put it in a device ---------- */
+  @media (min-width: 800px) {
+    .stage { padding: 34px 20px 40px; justify-content: center; }
+
+    .stage-head {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      color: var(--stage-ink);
+    }
+    .stage-head .mark {
+      font-family: var(--font-head);
+      font-size: 15px; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--ink);
+    }
+    .stage-head .cap { font-size: 13px; }
+
+    .stage-foot { display: flex; gap: 16px; align-items: center; color: var(--stage-ink); }
+    .stage-foot .btn-text { color: var(--stage-ink); }
+    .stage-foot .btn-text:hover { color: var(--ink); }
+
+    .phone {
+      width: 390px;
+      min-height: 0;
+      height: min(844px, calc(100dvh - 150px));
+      border-radius: 44px;
+      border: 10px solid #182436;
+      box-shadow: var(--shadow-phone);
+    }
+    :root[data-theme="dark"] .phone { border-color: #2c3d53; }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .phone { border-color: #2c3d53; }
+    }
+
+    .statusbar {
+      flex: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 26px 2px;
+      font-size: 13px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--ink);
+    }
+    .statusbar .sigs { display: flex; align-items: center; gap: 5px; }
+  }
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div>
+      <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <p class="eyebrow" style="margin-top:16px">Kickstart · Onboarding</p>
+      <h1>Klikkbar prototype</h1>
+      <p class="lede">Denne prototypen er under arbeid og deles bare med utvalgte. Skriv inn koden du har fått for å åpne den.</p>
+    </div>
+
+    <form class="gate-form" id="gate-form">
+      <label for="code">Tilgangskode</label>
+      <input type="password" id="code" name="code" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="••••••••••">
+      <p class="gate-err" id="gate-err" hidden role="status">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
+        <span>Feil kode. Sjekk lenken eller meldingen du fikk fra Kickstart.</span>
+      </p>
+      <button class="btn btn-primary" type="submit">Åpne prototypen</button>
+    </form>
+
+    <p class="fine">Prototypen lagrer ingenting. Svarene du taster inn forsvinner når du lukker fanen.</p>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="stage-head">
+    <span class="mark">Kickstart</span>
+    <span class="cap">Onboarding · klikkbar prototype</span>
+  </div>
+
+  <div class="phone">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="sigs" aria-hidden="true">
+        <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7.5" width="3" height="3.5" rx="1"/><rect x="4.6" y="5.4" width="3" height="5.6" rx="1"/><rect x="9.2" y="2.9" width="3" height="8.1" rx="1"/><rect x="13.8" y="0" width="3" height="11" rx="1"/></svg>
+        <svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x=".6" y=".6" width="19" height="9.8" rx="3" stroke="currentColor" stroke-width="1.1" opacity=".5"/><rect x="2.2" y="2.2" width="15" height="6.6" rx="1.8" fill="currentColor"/><path d="M21.6 4v3c.9-.3 1.4-.8 1.4-1.5S22.5 4.3 21.6 4Z" fill="currentColor" opacity=".5"/></svg>
+      </span>
+    </div>
+
+    <header class="appbar">
+      <button class="iconbtn" id="back" type="button" aria-label="Tilbake" data-state="hidden">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>
+      </button>
+      <span class="appbar-title">Kickstart</span>
+      <span></span>
+    </header>
+
+    <div class="progress" id="progress" data-state="hidden">
+      <div class="track" id="track" aria-hidden="true"></div>
+      <span class="progress-label" id="progress-label">Steg 1 av 7</span>
+    </div>
+
+    <main class="screen" id="screen">
+
+      <!-- 0 · Velkommen -->
+      <section class="step is-active" data-step="0" aria-label="Velkommen">
+        <div>
+          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="eyebrow" style="margin-top:16px">Velkommen inn</p>
+          <h1>Du har plassen din. Nå gjør vi klar planen din.</h1>
+          <p class="lede">Før oppstartssamtalen vil vi bli litt bedre kjent med deg. Det tar rundt tre minutter, og svarene går rett til veilederne dine.</p>
+        </div>
+
+        <ul class="intro-list">
+          <li><span class="num">01</span><span>Samtykker og litt praktisk<span class="sub">Hva vi får lov til å sende deg</span></span></li>
+          <li><span class="num">02</span><span>Målene dine<span class="sub">Hva du faktisk vil oppnå på 16 uker</span></span></li>
+          <li><span class="num">03</span><span>Erfaringen din<span class="sub">Kondisjon og styrke — uansett utgangspunkt</span></span></li>
+          <li><span class="num">04</span><span>Hils på teamet ditt<span class="sub">Ernæringsfysiologen og treneren din</span></span></li>
+        </ul>
+
+        <p class="fine">Du kan endre svarene dine når som helst i appen.</p>
+      </section>
+
+      <!-- 1 · Samtykker -->
+      <section class="step" data-step="1" aria-label="Samtykker">
+        <div>
+          <p class="eyebrow">Samtykker</p>
+          <h2>Først spør vi om lov</h2>
+          <p class="lede">De to første er valgfrie. Den siste må du bekrefte før vi kan sette i gang treningen.</p>
+        </div>
+
+        <div class="options">
+          <button class="opt" type="button" data-consent="epost" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="opt-t">E-post<span class="opt-opt">Valgfritt</span></span>
+              <span class="opt-d">Ukesmenyer, oppskrifter og en påminnelse før hver oppstart. Vi sender ikke reklame.</span>
+            </span>
+          </button>
+
+          <button class="opt" type="button" data-consent="push" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="opt-t">Push-varsler<span class="opt-opt">Valgfritt</span></span>
+              <span class="opt-d">Beskjed når treneren legger ut en ny økt, og når det nærmer seg fellestrening.</span>
+            </span>
+          </button>
+
+          <button class="opt" type="button" data-consent="risiko" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="opt-t">Trening på eget ansvar<span class="req">Påkrevd</span></span>
+              <span class="opt-d">Jeg er kjent med at fysisk trening innebærer risiko for skade, og at jeg trener på eget ansvar. Jeg sier fra til veilederne mine om helseforhold som kan påvirke treningen.</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="field">
+          <label for="helse">Er det noe vi bør vite allerede nå?</label>
+          <p class="hint">Skader, sykdom, medisiner eller graviditet. Valgfritt — vi tar det uansett opp i oppstartssamtalen.</p>
+          <textarea id="helse" data-bind="helse" placeholder="F.eks. «Vond høyre skulder etter en fallskade i fjor.»"></textarea>
+        </div>
+      </section>
+
+      <!-- 2 · Hovedmål -->
+      <section class="step" data-step="2" aria-label="Hovedmålsetning">
+        <div>
+          <p class="eyebrow">Målet ditt</p>
+          <h2>Hva vil du oppnå?</h2>
+          <p class="lede">Velg det som passer — du kan krysse av for flere. Dette styrer hvordan trening og kosthold settes opp.</p>
+        </div>
+
+        <div class="options" id="goals">
+          <button class="opt" type="button" data-goal="vekt" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span><span class="opt-t">Ned i vekt</span><span class="opt-d">Endre kroppssammensetning og få ned vekta.</span></span>
+          </button>
+          <button class="opt" type="button" data-goal="form" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span><span class="opt-t">Bedre fysisk form</span><span class="opt-d">Mer overskudd i hverdagen og bedre kondisjon.</span></span>
+          </button>
+          <button class="opt" type="button" data-goal="sterk" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span><span class="opt-t">Bli sterkere</span><span class="opt-d">Bygge muskler og tåle mer, både på trening og ellers.</span></span>
+          </button>
+          <button class="opt" type="button" data-goal="ernaering" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span><span class="opt-t">Hjelp til ernæring</span><span class="opt-d">Lære hva, når og hvor mye jeg bør spise.</span></span>
+          </button>
+          <button class="opt" type="button" data-goal="annet" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span><span class="opt-t">Noe annet</span><span class="opt-d">Fortell oss kort hva du vil oppnå.</span></span>
+          </button>
+        </div>
+
+        <div class="field" id="goal-other-field" style="display:none">
+          <label for="goal-other">Hva vil du oppnå?</label>
+          <input type="text" id="goal-other" data-bind="malAnnet" placeholder="F.eks. «Klare Birken på ski til vinteren.»">
+        </div>
+      </section>
+
+      <!-- 3 · Kondisjon -->
+      <section class="step" data-step="3" aria-label="Erfaring med kondisjonstrening">
+        <div>
+          <p class="eyebrow">Erfaring · 1 av 2</p>
+          <h2>Kondisjonstrening</h2>
+          <p class="lede">Hvor vil du plassere deg selv i dag? Det finnes ikke noe feil svar — vi møter deg der du er.</p>
+        </div>
+
+        <div class="scale">
+          <div class="scale-row" role="group" aria-label="Skala 1 til 5 for kondisjonstrening" data-scale="kondis"></div>
+          <div class="scale-ends"><span>1 · Helt fersk</span><span>5 · Erfaren</span></div>
+          <div class="scale-read is-empty" data-read="kondis"><span class="n">Velg et tall fra 1 til 5</span></div>
+        </div>
+
+        <div class="field">
+          <label for="kondis-kommentar">Fortell oss mer <span class="opt-opt">Valgfritt</span></label>
+          <textarea id="kondis-kommentar" data-bind="kondisKommentar" placeholder="F.eks. «Går tur med hunden hver dag, men har aldri løpt en hel kilometer.»"></textarea>
+        </div>
+      </section>
+
+      <!-- 4 · Styrke -->
+      <section class="step" data-step="4" aria-label="Erfaring med styrketrening">
+        <div>
+          <p class="eyebrow">Erfaring · 2 av 2</p>
+          <h2>Styrketrening</h2>
+          <p class="lede">Samme øvelse en gang til. Vær ærlig — det er slik vi treffer på nivået fra første økt.</p>
+        </div>
+
+        <div class="scale">
+          <div class="scale-row" role="group" aria-label="Skala 1 til 5 for styrketrening" data-scale="styrke"></div>
+          <div class="scale-ends"><span>1 · Helt fersk</span><span>5 · Erfaren</span></div>
+          <div class="scale-read is-empty" data-read="styrke"><span class="n">Velg et tall fra 1 til 5</span></div>
+        </div>
+
+        <div class="field">
+          <label for="styrke-kommentar">Fortell oss mer <span class="opt-opt">Valgfritt</span></label>
+          <textarea id="styrke-kommentar" data-bind="styrkeKommentar" placeholder="F.eks. «Har brukt apparater på treningssenter, men er usikker på frivekter.»"></textarea>
+        </div>
+      </section>
+
+      <!-- 5 · Fellesskap -->
+      <section class="step" data-step="5" aria-label="Fellesgrupper">
+        <div>
+          <p class="eyebrow">Fellesskapet</p>
+          <h2>Skal vi melde deg inn i fellesgruppene?</h2>
+          <p class="lede">Kickstarterne har egne grupper der dere deler økter, oppskrifter og heiarop underveis.</p>
+        </div>
+
+        <div class="panel">
+          <p>Mange sier fellesskapet er grunnen til at de holder ut hele programmet. Vi legger deg inn med fornavnet ditt og stedet du trener.</p>
+        </div>
+
+        <div class="options">
+          <button class="opt" type="button" data-community="ja" data-shape="round" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span><span class="opt-t">Ja, meld meg inn</span><span class="opt-d">Du kan melde deg ut når som helst.</span></span>
+          </button>
+          <button class="opt" type="button" data-community="nei" data-shape="round" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span><span class="opt-t">Nei takk</span><span class="opt-d">Helt greit. Du får nøyaktig samme oppfølging fra veilederne dine.</span></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- 6 · Veiledere -->
+      <section class="step" data-step="6" aria-label="Dine veiledere">
+        <div>
+          <p class="eyebrow">Teamet ditt</p>
+          <h2>Her er veilederne dine</h2>
+          <p class="lede">Disse to følger deg gjennom hele programmet. De leser svarene dine før dere møtes.</p>
+        </div>
+
+        <div class="coach">
+          <span class="avatar" data-tone="a" aria-hidden="true">KS</span>
+          <div>
+            <span class="role">Klinisk ernæringsfysiolog</span>
+            <p class="name">Kristiane Stormoen</p>
+            <p class="bio">Kristiane setter opp kostholdsplanen din og justerer den underveis. Hun er opptatt av mat du faktisk liker — en plan du ikke klarer å følge, virker ikke.</p>
+          </div>
+        </div>
+
+        <div class="coach">
+          <span class="avatar" data-tone="b" aria-hidden="true">IH</span>
+          <div>
+            <span class="role">Idrettsfysiolog og trener</span>
+            <p class="name">Ingrid Hansen</p>
+            <p class="bio">Ingrid legger treningen din etter nivået ditt og følger deg opp uke for uke. Hun graderer øktene når det trengs, både opp og ned.</p>
+          </div>
+        </div>
+
+        <p class="fine">Du når begge to i chatten i appen. Svartid er vanligvis under én virkedag.</p>
+      </section>
+
+      <!-- 7 · Oppsummering -->
+      <section class="step" data-step="7" aria-label="Oppsummering">
+        <div>
+          <p class="eyebrow">Nesten i mål</p>
+          <h2>Sjekk at alt stemmer</h2>
+          <p class="lede">Dette er det Kristiane og Ingrid får se før oppstartssamtalen.</p>
+        </div>
+        <div class="sum" id="summary"></div>
+      </section>
+
+      <!-- 8 · Ferdig -->
+      <section class="step" data-step="8" aria-label="Ferdig">
+        <div>
+          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <p class="eyebrow" style="margin-top:16px">Sendt inn</p>
+          <h1>Takk. Nå er vi klare for deg.</h1>
+          <p class="lede">Svarene dine ligger hos Kristiane og Ingrid. Neste steg er oppstartssamtalen — der går vi gjennom målene dine og legger planen for de neste 16 ukene.</p>
+        </div>
+
+        <div class="done-next">
+          <span class="k">Neste steg</span>
+          <span class="v">Oppstartssamtale</span>
+          <span class="d">Vi tar kontakt innen to virkedager for å avtale tid. Vil du velge tid selv, kan du booke nå.</span>
+        </div>
+
+        <div class="done-next">
+          <span class="k">Mens du venter</span>
+          <span class="v">Kom i gang-guiden</span>
+          <span class="d">Fem korte punkter om hva som skjer den første uka, og hva du bør ha klart til første økt.</span>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="actionbar">
+      <p class="alert" id="alert" data-state="hidden" role="status">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
+        <span id="alert-text"></span>
+      </p>
+      <button class="btn btn-primary" id="next" type="button">Kom i gang</button>
+      <button class="btn btn-ghost" id="secondary" type="button" style="display:none">Book oppstartssamtale</button>
+    </footer>
+  </div>
+
+  <div class="stage-foot">
+    <button class="btn-text" id="restart" type="button">Start prototypen på nytt</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* =======================================================================
+     TILGANGSKODE — endre verdien under for å bytte kode.
+     Merk: dette er en enkel sperre mot tilfeldige besøkende, ikke ekte
+     sikkerhet. Koden ligger i kildekoden og kan leses av den som ser etter.
+     Prototypen inneholder ingen persondata, så det er ingenting å lekke.
+     ======================================================================= */
+  var ACCESS_CODE = "kickstart26";
+
+  var gate     = document.getElementById("gate");
+  var gateForm = document.getElementById("gate-form");
+  var gateErr  = document.getElementById("gate-err");
+  var codeInput = document.getElementById("code");
+
+  function remember() {
+    try { sessionStorage.setItem("ks-onboarding-open", "1"); } catch (e) { /* privat vindu */ }
+  }
+  function wasOpened() {
+    try { return sessionStorage.getItem("ks-onboarding-open") === "1"; } catch (e) { return false; }
+  }
+
+  function unlock() {
+    document.body.classList.add("is-open");
+    gate.setAttribute("aria-hidden", "true");
+  }
+
+  gateForm.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var given = (codeInput.value || "").trim().toLowerCase();
+    if (given === ACCESS_CODE.toLowerCase()) {
+      gateErr.hidden = true;
+      remember();
+      unlock();
+    } else {
+      gateErr.hidden = false;
+      codeInput.select();
+    }
+  });
+
+  /* Kode i lenka: ...#kickstart26 åpner prototypen direkte */
+  var fromHash = (location.hash || "").replace(/^#/, "").trim().toLowerCase();
+  if (fromHash === ACCESS_CODE.toLowerCase()) { remember(); unlock(); }
+  else if (wasOpened()) { unlock(); }
+  else { setTimeout(function () { codeInput.focus(); }, 60); }
+
+  var FORM_STEPS = 7; // steg 1–7 teller i progresjonen
+
+  var GOALS = {
+    vekt:      "Ned i vekt",
+    form:      "Bedre fysisk form",
+    sterk:     "Bli sterkere",
+    ernaering: "Hjelp til ernæring",
+    annet:     "Noe annet"
+  };
+
+  var KONDIS = [
+    { t: "Helt fersk",    d: "Det er lenge siden sist, og jeg blir fort andpusten." },
+    { t: "Litt erfaring", d: "Jeg går turer eller trener av og til, uten fast plan." },
+    { t: "Jevn trener",   d: "1–2 økter i uka, og jeg kjenner formen min." },
+    { t: "Godt trent",    d: "3–4 økter i uka. Jeg holder jevnt tempo lenge." },
+    { t: "Erfaren",       d: "Jeg trener systematisk, med intervaller og plan." }
+  ];
+
+  var STYRKE = [
+    { t: "Helt fersk",    d: "Jeg har aldri løftet vekter, eller det er mange år siden." },
+    { t: "Litt erfaring", d: "Jeg har prøvd apparater og kroppsvekt, men uten fast plan." },
+    { t: "Jevn trener",   d: "Jeg styrketrener av og til og kan de vanligste øvelsene." },
+    { t: "Godt trent",    d: "Fast styrkeøkt i uka. Jeg er trygg på knebøy og markløft." },
+    { t: "Erfaren",       d: "Mange år med styrke, og jeg følger et program med progresjon." }
+  ];
+
+  var SCALES = { kondis: KONDIS, styrke: STYRKE };
+
+  var blank = {
+    consents: { epost: false, push: false, risiko: false },
+    helse: "",
+    mal: [],
+    malAnnet: "",
+    kondis: null, kondisKommentar: "",
+    styrke: null, styrkeKommentar: "",
+    fellesgrupper: null
+  };
+
+  var state = JSON.parse(JSON.stringify(blank));
+  var step = 0;
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  var elScreen    = $("#screen");
+  var elTrack     = $("#track");
+  var elProgress  = $("#progress");
+  var elProgLabel = $("#progress-label");
+  var elBack      = $("#back");
+  var elNext      = $("#next");
+  var elSecondary = $("#secondary");
+  var elAlert     = $("#alert");
+  var elAlertText = $("#alert-text");
+
+  /* ---------- Skala-knapper ---------- */
+  $$("[data-scale]").forEach(function (row) {
+    var key = row.getAttribute("data-scale");
+    for (var i = 1; i <= 5; i++) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "dot";
+      b.textContent = String(i);
+      b.setAttribute("aria-pressed", "false");
+      b.setAttribute("data-value", String(i));
+      b.addEventListener("click", pickScale.bind(null, key, i));
+      row.appendChild(b);
+    }
+  });
+
+  function pickScale(key, value) {
+    state[key] = value;
+    var row = $('[data-scale="' + key + '"]');
+    $$(".dot", row).forEach(function (d) {
+      var on = Number(d.getAttribute("data-value")) === value;
+      d.classList.toggle("is-on", on);
+      d.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    var read = $('[data-read="' + key + '"]');
+    var item = SCALES[key][value - 1];
+    read.classList.remove("is-empty");
+    read.innerHTML = '<span class="n"></span><span class="d"></span>';
+    $(".n", read).textContent = value + " · " + item.t;
+    $(".d", read).textContent = item.d;
+    clearAlert();
+  }
+
+  /* ---------- Samtykker ---------- */
+  $$("[data-consent]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var key = btn.getAttribute("data-consent");
+      state.consents[key] = !state.consents[key];
+      btn.classList.toggle("is-on", state.consents[key]);
+      btn.setAttribute("aria-pressed", state.consents[key] ? "true" : "false");
+      clearAlert();
+    });
+  });
+
+  /* ---------- Mål (flervalg) ---------- */
+  $$("[data-goal]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var key = btn.getAttribute("data-goal");
+      var at = state.mal.indexOf(key);
+      if (at === -1) { state.mal.push(key); } else { state.mal.splice(at, 1); }
+      var on = state.mal.indexOf(key) !== -1;
+      btn.classList.toggle("is-on", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+      $("#goal-other-field").style.display = state.mal.indexOf("annet") !== -1 ? "flex" : "none";
+      clearAlert();
+    });
+  });
+
+  /* ---------- Fellesgrupper (enkeltvalg) ---------- */
+  $$("[data-community]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      state.fellesgrupper = btn.getAttribute("data-community") === "ja";
+      $$("[data-community]").forEach(function (b) {
+        var on = b === btn;
+        b.classList.toggle("is-on", on);
+        b.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+      clearAlert();
+    });
+  });
+
+  /* ---------- Fritekst ---------- */
+  $$("[data-bind]").forEach(function (f) {
+    f.addEventListener("input", function () { state[f.getAttribute("data-bind")] = f.value; });
+  });
+
+  /* ---------- Validering ---------- */
+  function blocker(n) {
+    if (n === 1 && !state.consents.risiko) {
+      return "Du må bekrefte at du trener på eget ansvar for å gå videre.";
+    }
+    if (n === 2 && state.mal.length === 0) {
+      return "Velg minst ett mål. Du kan krysse av for flere.";
+    }
+    if (n === 3 && state.kondis === null) {
+      return "Velg et tall fra 1 til 5 for kondisjonstrening.";
+    }
+    if (n === 4 && state.styrke === null) {
+      return "Velg et tall fra 1 til 5 for styrketrening.";
+    }
+    if (n === 5 && state.fellesgrupper === null) {
+      return "Velg ja eller nei for fellesgruppene.";
+    }
+    return null;
+  }
+
+  function clearAlert() {
+    elAlert.setAttribute("data-state", "hidden");
+    elNext.setAttribute("data-blocked", blocker(step) ? "yes" : "no");
+  }
+
+  /* ---------- Oppsummering ---------- */
+  function row(key, value, target, quote) {
+    var r = document.createElement("div");
+    r.className = "sum-row";
+
+    var k = document.createElement("span");
+    k.className = "sum-k";
+    k.textContent = key;
+
+    var v = document.createElement("span");
+    v.className = "sum-v";
+    if (value) {
+      v.textContent = value;
+    } else {
+      var m = document.createElement("span");
+      m.className = "muted";
+      m.textContent = "Ikke besvart";
+      v.appendChild(m);
+    }
+    if (quote) {
+      var q = document.createElement("span");
+      q.className = "quote";
+      q.textContent = "«" + quote + "»";
+      v.appendChild(q);
+    }
+
+    var b = document.createElement("button");
+    b.className = "edit";
+    b.type = "button";
+    b.textContent = "Endre";
+    b.setAttribute("aria-label", "Endre: " + key);
+    b.addEventListener("click", function () { go(target); });
+
+    r.appendChild(k); r.appendChild(v); r.appendChild(b);
+    return r;
+  }
+
+  function buildSummary() {
+    var box = $("#summary");
+    box.textContent = "";
+
+    var ja = [];
+    if (state.consents.epost) { ja.push("e-post"); }
+    if (state.consents.push) { ja.push("push"); }
+    var samtykke = state.consents.risiko ? "Trener på eget ansvar — bekreftet" : "";
+    if (ja.length) { samtykke += ". Ja til " + ja.join(" og "); }
+    else if (samtykke) { samtykke += ". Nei til e-post og push"; }
+    box.appendChild(row("Samtykker", samtykke, 1, state.helse));
+
+    var mal = state.mal.map(function (k) {
+      return k === "annet" && state.malAnnet ? state.malAnnet : GOALS[k];
+    }).join(" · ");
+    box.appendChild(row("Hovedmål", mal, 2));
+
+    box.appendChild(row(
+      "Kondisjonstrening",
+      state.kondis ? state.kondis + " av 5 · " + KONDIS[state.kondis - 1].t : "",
+      3, state.kondisKommentar
+    ));
+
+    box.appendChild(row(
+      "Styrketrening",
+      state.styrke ? state.styrke + " av 5 · " + STYRKE[state.styrke - 1].t : "",
+      4, state.styrkeKommentar
+    ));
+
+    box.appendChild(row(
+      "Fellesgrupper",
+      state.fellesgrupper === null ? "" : (state.fellesgrupper ? "Ja, meld meg inn" : "Nei takk"),
+      5
+    ));
+
+    box.appendChild(row("Veilederne dine", "Kristiane Stormoen · Ingrid Hansen", 6));
+  }
+
+  /* ---------- Navigasjon ---------- */
+  function go(n) {
+    step = n;
+    $$(".step").forEach(function (s) {
+      s.classList.toggle("is-active", Number(s.getAttribute("data-step")) === n);
+    });
+
+    if (n === 7) { buildSummary(); }
+
+    var inForm = n >= 1 && n <= FORM_STEPS;
+    elProgress.setAttribute("data-state", inForm ? "shown" : "hidden");
+    if (inForm) {
+      elProgLabel.textContent = "Steg " + n + " av " + FORM_STEPS;
+      $$(".seg", elTrack).forEach(function (seg, i) {
+        seg.classList.toggle("is-done", i < n - 1);
+        seg.classList.toggle("is-now", i === n - 1);
+      });
+    }
+
+    elBack.setAttribute("data-state", (n > 0 && n < 8) ? "shown" : "hidden");
+
+    if (n === 0)      { elNext.textContent = "Kom i gang"; }
+    else if (n === 6) { elNext.textContent = "Se oppsummeringen"; }
+    else if (n === 7) { elNext.textContent = "Send inn svarene"; }
+    else if (n === 8) { elNext.textContent = "Book oppstartssamtale"; }
+    else              { elNext.textContent = "Fortsett"; }
+
+    elSecondary.style.display = n === 8 ? "block" : "none";
+    elSecondary.textContent = "Start prototypen på nytt";
+
+    clearAlert();
+    elScreen.scrollTop = 0;
+  }
+
+  elNext.addEventListener("click", function () {
+    if (step === 8) { reset(); return; }
+    var why = blocker(step);
+    if (why) {
+      elAlertText.textContent = why;
+      elAlert.setAttribute("data-state", "shown");
+      return;
+    }
+    go(step + 1);
+  });
+
+  elBack.addEventListener("click", function () { if (step > 0) { go(step - 1); } });
+  elSecondary.addEventListener("click", reset);
+  $("#restart").addEventListener("click", reset);
+
+  function reset() {
+    state = JSON.parse(JSON.stringify(blank));
+    $$(".opt").forEach(function (b) { b.classList.remove("is-on"); b.setAttribute("aria-pressed", "false"); });
+    $$(".dot").forEach(function (d) { d.classList.remove("is-on"); d.setAttribute("aria-pressed", "false"); });
+    $$("[data-read]").forEach(function (r) {
+      r.className = "scale-read is-empty";
+      r.innerHTML = '<span class="n"></span>';
+      $(".n", r).textContent = "Velg et tall fra 1 til 5";
+    });
+    $$("[data-bind]").forEach(function (f) { f.value = ""; });
+    $("#goal-other-field").style.display = "none";
+    go(0);
+  }
+
+  /* ---------- Init ---------- */
+  for (var i = 0; i < FORM_STEPS; i++) { elTrack.appendChild(document.createElement("span")).className = "seg"; }
+  go(0);
+})();
+</script>
+</body>
+</html>
