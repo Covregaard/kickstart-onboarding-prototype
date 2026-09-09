@@ -58,3 +58,39 @@ og er merket som det i grensesnittet. Det er ingen backend bak noen av tallene.
 Filreferansene i HTML-en er versjonert (`assets/kickstart.css?v=2`). GitHub
 Pages lar nettleseren cache dem i noen minutter, så **bump tallet når du
 endrer CSS eller JS** — ellers ser testere den gamle versjonen en stund.
+
+## Tilbakemelding fra ansatte
+
+Nederst på hver side ligger en mørk linje som viser hvilken skjerm du står på,
+med en **Kommenter**-knapp. Linja er bevisst mørk og lik i begge temaer, så den
+ikke forveksles med prototypen over.
+
+Hver skjerm har sin egen lenke, så en kommentar kan peke rett på skjermen den
+gjelder:
+
+```
+.../ukesrapport/?kode=kickstart26#steg-4
+```
+
+Adressefeltet oppdaterer seg mens du klikker deg gjennom — kopier lenken der og
+del den, så åpner mottakeren nøyaktig samme skjerm.
+
+### Koble på Google Skjema
+
+Knappen åpner et skjema med **Skjerm** og **Lenke** ferdig utfylt, så den ansatte
+bare skriver navn og kommentar. Slik kobler du det på:
+
+1. Lag et Google Skjema med fire spørsmål, i denne rekkefølgen:
+   **Skjerm** (kort svar), **Lenke** (kort svar), **Navn** (kort svar),
+   **Kommentar** (langt svar).
+2. Trykk ⋮ → **Få forhåndsutfylt lenke**. Skriv hva som helst i Skjerm og Lenke,
+   og trykk **Få lenke**.
+3. Den kopierte adressen ser slik ut:
+   `.../viewform?usp=pp_url&entry.1234567=Skjerm&entry.7654321=Lenke`
+4. Åpne `assets/review.js` og fyll inn `FORM` øverst:
+   `url` er alt fram til og med `viewform`, og de to `entry.`-ID-ene i
+   `screenField` og `linkField`.
+5. Bump `?v=` i de tre HTML-filene, commit og push.
+
+Er skjemaet ikke koblet på, kopierer knappen skjermnavn og lenke til
+utklippstavla i stedet — så den gjør fortsatt nytte fra dag én.

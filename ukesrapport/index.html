@@ -11,8 +11,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="../assets/kickstart.css?v=6">
-<script src="../assets/ks.js?v=6"></script>
+<link rel="stylesheet" href="../assets/kickstart.css?v=7">
+<script src="../assets/ks.js?v=7"></script>
+<script src="../assets/review.js?v=7"></script>
 <style>
   .ctx {
     display: flex; align-items: baseline; justify-content: space-between;
@@ -443,6 +444,17 @@
 
 <script>
 KS.addDict({
+  "review.proto": "Ukesrapport",
+  "review.0": "Start",
+  "review.1": "Ukas tall",
+  "review.2": "Egenvurdering",
+  "review.3": "Ukas fokus",
+  "review.4": "Gikk bra",
+  "review.5": "Utfordringer",
+  "review.6": "Neste uke",
+  "review.7": "Oppsummering",
+  "review.8": "Kvittering",
+  "review.9": "Registrer vekt",
   "common.optional": "Valgfritt",
   "common.change":   "Endre",
   "common.unanswered": "Ikke besvart",
@@ -611,6 +623,17 @@ KS.addDict({
   "wr.s9.lede": "Vi noterer vekta for denne uka. Resten av rapporten kan du ta senere.",
   "wr.s9.fine": "Vil du likevel ta hele rapporten? Gå tilbake og velg full ukesrapport."
 }, {
+  "review.proto": "Weekly check-in",
+  "review.0": "Start",
+  "review.1": "Numbers",
+  "review.2": "Self-assessment",
+  "review.3": "This week\u2019s focus",
+  "review.4": "Went well",
+  "review.5": "Challenges",
+  "review.6": "Next week",
+  "review.7": "Summary",
+  "review.8": "Receipt",
+  "review.9": "Log weight",
   "common.optional": "Optional",
   "common.change":   "Change",
   "common.unanswered": "Not answered",
@@ -1217,6 +1240,7 @@ KS.addDict({
     paintChrome();
     clearAlert();
     elScreen.scrollTop = 0;
+    KSReview.setScreen(n, t("review.proto"), t("review." + n));
   }
 
   $("#path-full").addEventListener("click", function () { mode = "full"; go(1); });
@@ -1274,6 +1298,7 @@ KS.addDict({
     paintScale();
     paintChallenge();
     paintChrome();
+    KSReview.setScreen(step, t("review.proto"), t("review." + step));
     if (step === 7) { buildSummary(); }
     if (step === 8) { buildReceipt(); }
     var why = blocker(step);
@@ -1291,6 +1316,14 @@ KS.addDict({
   paintSessions();
   paintScale();
   go(0);
+  KSReview.init({
+    onRoute: function (id) {
+      var n = Number(id);
+      if (n === 9) { mode = "quick"; }
+      else if (n >= 1 && n <= 7) { mode = "full"; }
+      if (n >= 0 && n <= 9) { go(n); }
+    }
+  });
 })();
 </script>
 

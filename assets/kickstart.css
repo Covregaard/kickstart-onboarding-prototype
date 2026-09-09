@@ -40,6 +40,12 @@
   --shadow-phone: 0 32px 70px -24px rgba(24,36,54,.45), 0 4px 12px rgba(24,36,54,.14);
   --shadow-bar:   0 -10px 20px -14px rgba(24,36,54,.35);
 
+  /* Tilbakemeldingslinja er verktøy, ikke innhold: samme uttrykk i begge temaer */
+  --reviewbar-h: 62px;
+  --review-bg:   #182436;
+  --review-ink:  #fffee9;
+  --review-line: rgba(247,254,117,.28);
+
   --font-head: "GT Planar", "Inter", system-ui, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
 }
@@ -204,6 +210,8 @@ body.is-open .gate { display: none; }
   overflow: hidden;
   min-height: 100dvh;
 }
+body.has-review .stage { min-height: calc(100dvh - var(--reviewbar-h)); }
+body.has-review .phone { min-height: calc(100dvh - var(--reviewbar-h)); }
 .statusbar { display: none; }
 
 .appbar {
@@ -605,6 +613,60 @@ textarea:focus, input:focus { border-color: var(--line-strong); }
 .done-next .d { font-size: 14px; color: var(--ink-2); }
 
 /* ==========================================================================
+   Tilbakemeldingslinje
+   Verktøy, ikke innhold. Derfor samme mørke uttrykk i begge temaer, så den
+   aldri forveksles med prototypen den ligger under.
+   ========================================================================== */
+
+.reviewbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--review-bg);
+  color: var(--review-ink);
+  border-top: 1px solid var(--review-line);
+}
+body.has-review .stage { padding-bottom: var(--reviewbar-h); }
+body:not(.is-open) .reviewbar { display: none; }
+
+.review-what { display: flex; flex-direction: column; min-width: 0; }
+.review-k {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  opacity: .62;
+}
+.review-label {
+  font-size: 14px; font-weight: 500;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.review-btn {
+  flex: none;
+  padding: 10px 18px;
+  border: 0; border-radius: 999px;
+  background: var(--accent); color: var(--accent-ink);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer;
+  transition: transform .1s ease;
+}
+.review-btn:active { transform: scale(.97); }
+.reviewbar :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.review-toast {
+  position: fixed; z-index: 41;
+  left: 16px; right: 16px; bottom: calc(var(--reviewbar-h) + 12px);
+  margin: 0;
+  padding: 12px 15px;
+  border-radius: 12px;
+  background: var(--review-bg);
+  color: var(--review-ink);
+  border: 1px solid var(--review-line);
+  font-size: 13.5px;
+  box-shadow: 0 12px 28px -12px rgba(0,0,0,.5);
+}
+
+/* ==========================================================================
    Desktop: vis prototypen i en telefon
    ========================================================================== */
 
@@ -632,10 +694,16 @@ textarea:focus, input:focus { border-color: var(--line-strong); }
     width: 390px;
     min-height: 0;
     height: min(844px, calc(100dvh - 150px));
+  }
+  body.has-review .phone {
+    min-height: 0;
+    height: min(844px, calc(100dvh - 150px - var(--reviewbar-h)));
     border-radius: 44px;
     border: 10px solid var(--bezel);
     box-shadow: var(--shadow-phone);
   }
+
+  .review-toast { left: auto; right: 20px; max-width: 380px; }
 
   .statusbar {
     flex: none;

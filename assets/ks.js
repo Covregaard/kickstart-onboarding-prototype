@@ -145,11 +145,27 @@ window.KS = (function () {
       }
     });
 
-    /* Kode i lenka: ...#kickstart26 åpner direkte */
+    /* Kode i lenka. To former:
+         ?kode=kickstart26        anbefalt — lar hash-en peke på en skjerm
+         #kickstart26             beholdt, så gamle lenker fortsatt virker  */
+    var wanted = ACCESS_CODE.toLowerCase();
+    var fromQuery = "";
+    try {
+      fromQuery = (new URLSearchParams(location.search).get("kode") || "").trim().toLowerCase();
+    } catch (e) { /* svært gamle nettlesere */ }
     var fromHash = (location.hash || "").replace(/^#/, "").trim().toLowerCase();
-    if (fromHash === ACCESS_CODE.toLowerCase()) { markOpen(); unlock(); }
-    else if (wasOpened()) { unlock(); }
-    else { setTimeout(function () { input.focus(); }, 60); }
+
+    if (fromQuery === wanted) {
+      markOpen(); unlock();
+    } else if (fromHash === wanted) {
+      markOpen(); unlock();
+      /* Frigjør hash-en, ellers kan den ikke peke på en skjerm */
+      try { history.replaceState(null, "", location.pathname + location.search); } catch (e) { /* file:// */ }
+    } else if (wasOpened()) {
+      unlock();
+    } else {
+      setTimeout(function () { input.focus(); }, 60);
+    }
   }
 
   function wireSwitches() {

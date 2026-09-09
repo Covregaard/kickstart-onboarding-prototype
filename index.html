@@ -11,8 +11,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/kickstart.css?v=6">
-<script src="assets/ks.js?v=6"></script>
+<link rel="stylesheet" href="assets/kickstart.css?v=7">
+<script src="assets/ks.js?v=7"></script>
+<script src="assets/review.js?v=7"></script>
 </head>
 <body>
 
@@ -146,7 +147,8 @@ KS.addDict({
   "menu.kickoff.name":    "Oppstartssamtale",
   "menu.kickoff.desc":    "Booking og forberedelse før første møte med veilederne.",
   "menu.fine":            "Prototypene har ingen backend. De viser hvordan flyten oppleves, ikke hvordan den er bygget.",
-  "menu.foot":            "Deles kun internt"
+  "menu.foot":            "Deles kun internt",
+  "review.proto":         "Meny"
 }, {
   "menu.stagecap":        "Prototypes · work in progress",
   "menu.eyebrow":         "Pick a prototype",
@@ -163,9 +165,14 @@ KS.addDict({
   "menu.kickoff.name":    "Kick-off call",
   "menu.kickoff.desc":    "Booking and preparation before the first meeting with the guides.",
   "menu.fine":            "The prototypes have no backend. They show how the flow feels, not how it is built.",
-  "menu.foot":            "Shared internally only"
+  "menu.foot":            "Shared internally only",
+  "review.proto":         "Menu"
 });
 KS.init();
+
+KSReview.init({});
+KSReview.setScreen(null, KS.t("review.proto"), "");
+KS.onLang(function () { KSReview.setScreen(null, KS.t("review.proto"), ""); });
 </script>
 
 </body>
