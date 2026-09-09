@@ -75,10 +75,20 @@ gjelder:
 Adressefeltet oppdaterer seg mens du klikker deg gjennom — kopier lenken der og
 del den, så åpner mottakeren nøyaktig samme skjerm.
 
-### Koble på Google Skjema
+### Google Skjema
 
-Knappen åpner et skjema med **Skjerm** og **Lenke** ferdig utfylt, så den ansatte
-bare skriver navn og kommentar. Slik kobler du det på:
+Knappen åpner skjemaet **Ukesrapport – tilbakemelding** med **Skjerm** og
+**Lenke** ferdig utfylt, så den ansatte bare skriver navn og kommentar.
+Feltene er koblet på i `assets/review.js`:
+
+| Felt | entry-ID |
+|---|---|
+| Skjerm | `entry.501586322` |
+| Lenke | `entry.878069715` |
+| Navn | `entry.187012233` (fylles av den ansatte) |
+| Kommentar | `entry.1849973500` (fylles av den ansatte) |
+
+Skal du bytte til et annet skjema, finner du de nye ID-ene slik:
 
 1. Lag et Google Skjema med fire spørsmål, i denne rekkefølgen:
    **Skjerm** (kort svar), **Lenke** (kort svar), **Navn** (kort svar),

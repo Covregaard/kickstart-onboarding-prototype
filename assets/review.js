@@ -35,9 +35,11 @@ window.KSReview = (function () {
      utklippstavla i stedet, så den gjør fortsatt nytte.
      ======================================================================= */
   var FORM = {
-    url:         "",   // f.eks. "https://docs.google.com/forms/d/e/1FAIpQL.../viewform"
-    screenField: "",   // f.eks. "entry.1234567"
-    linkField:   ""    // f.eks. "entry.7654321"
+    url:         "https://docs.google.com/forms/d/e/1FAIpQLSdBhbtY7l1av_I-GZepLl_T43xSlFkrM30rqIQkz8Kt9351-g/viewform",
+    screenField: "entry.501586322",   // Skjerm
+    linkField:   "entry.878069715"    // Lenke
+    /* Skjemaet har også entry.187012233 (Navn) og entry.1849973500 (Kommentar).
+       De fylles ikke ut herfra — det er dem den ansatte skriver selv. */
   };
 
   var current = { id: null, proto: "", label: "" };
