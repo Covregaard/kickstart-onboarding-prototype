@@ -11,9 +11,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="../assets/kickstart.css?v=8">
-<script src="../assets/ks.js?v=8"></script>
-<script src="../assets/review.js?v=8"></script>
+<link rel="stylesheet" href="../assets/kickstart.css?v=9">
+<script src="../assets/ks.js?v=9"></script>
+<script src="../assets/review.js?v=9"></script>
 <style>
   .ctx {
     display: flex; align-items: baseline; justify-content: space-between;
@@ -183,7 +183,7 @@
         <div>
           <p class="eyebrow" data-i18n="wr.s0.eyebrow">Ukesrapport</p>
           <h1 data-i18n="wr.s0.h">Hvordan har uka vært?</h1>
-          <p class="lede" data-i18n="wr.s0.lede">Kristiane og Ingrid leser rapporten før neste oppfølging. Har du dårlig tid, kan du bare registrere vekta.</p>
+          <p class="lede" data-i18n="wr.s0.lede">Kristiane leser rapporten før neste oppfølging. Har du dårlig tid, kan du bare registrere vekta.</p>
         </div>
 
         <div class="options">
@@ -250,7 +250,7 @@
         <div>
           <p class="eyebrow" data-i18n="wr.s2.eyebrow">Egenvurdering</p>
           <h2 data-i18n="wr.s2.h">Hvordan har uka vært?</h2>
-          <p class="lede" data-i18n="wr.s2.lede">Din egen opplevelse, ikke tallene. Det er den veilederne trenger for å justere planen.</p>
+          <p class="lede" data-i18n="wr.s2.lede">Din egen opplevelse av uka. Den hjelper oss å følge deg opp og se hva du trenger underveis.</p>
         </div>
 
         <div class="scale">
@@ -268,7 +268,7 @@
         <div>
           <p class="eyebrow" data-i18n="wr.s3.eyebrow">Fokus</p>
           <h2 data-i18n="wr.s3.h">Gikk det som planlagt?</h2>
-          <p class="lede" data-i18n="wr.s3.lede">Dette satte du deg forrige uke.</p>
+          <p class="lede" data-i18n="wr.s3.lede">Dette fokuset satte du deg for denne uka.</p>
         </div>
 
         <div class="prefill">
@@ -300,10 +300,11 @@
 
         <button type="button" class="reveal" data-reveal="bra-wrap" aria-expanded="false">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          <span data-i18n="wr.reveal.more">Vil du utdype?</span>
+          <span data-i18n="wr.reveal.more">Noe du vil legge til?</span>
         </button>
         <div class="field" id="bra-wrap" hidden>
           <textarea id="bra" data-bind="braTekst" data-i18n-ph="wr.s4.ph"></textarea>
+          <p class="wordcount" data-count-for="bra" aria-live="polite"></p>
         </div>
       </section>
 
@@ -312,17 +313,18 @@
         <div>
           <p class="eyebrow" data-i18n="wr.s5.eyebrow">Motbakker</p>
           <h2 id="s5-h" data-i18n="wr.s5.h">Hva sto i veien?</h2>
-          <p class="lede" id="s5-lede" data-i18n="wr.s5.lede">Trykk på det som stemmer. Er det ingenting, hopper du bare videre.</p>
+          <p class="lede" id="s5-lede" data-i18n="wr.s5.lede">Trykk på det som stemmer. Gikk uka bra, hopper du bare videre.</p>
         </div>
 
         <div class="chips" id="chips-utfordring" role="group" data-i18n-aria="wr.s5.aria"></div>
 
         <button type="button" class="reveal" data-reveal="utfordring-wrap" aria-expanded="false">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          <span data-i18n="wr.reveal.more">Vil du utdype?</span>
+          <span data-i18n="wr.reveal.more">Noe du vil legge til?</span>
         </button>
         <div class="field" id="utfordring-wrap" hidden>
           <textarea id="utfordring" data-bind="utfordringTekst" data-i18n-ph="wr.s5.ph"></textarea>
+          <p class="wordcount" data-count-for="utfordring" aria-live="polite"></p>
         </div>
 
         <div class="options">
@@ -330,7 +332,7 @@
             <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
               <span class="opt-t" data-i18n="wr.s5.help.t">Ta dette opp med meg</span>
-              <span class="opt-d" data-i18n="wr.s5.help.d">Rapporten flagges, og veilederen tar kontakt før neste økt.</span>
+              <span class="opt-d" data-i18n="wr.s5.help.d">Rapporten flagges, og vi tar kontakt med deg.</span>
             </span>
           </button>
         </div>
@@ -352,6 +354,7 @@
         </button>
         <div class="field" id="neste-wrap" hidden>
           <textarea id="neste" data-bind="nesteTekst" data-i18n-ph="wr.s6.ph"></textarea>
+          <p class="wordcount" data-count-for="neste" aria-live="polite"></p>
         </div>
       </section>
 
@@ -360,7 +363,7 @@
         <div>
           <p class="eyebrow" data-i18n="wr.s7.eyebrow">Nesten sendt</p>
           <h2 data-i18n="wr.s7.h">Sjekk at alt stemmer</h2>
-          <p class="lede" data-i18n="wr.s7.lede">Dette er det veilederne dine får se.</p>
+          <p class="lede" data-i18n="wr.s7.lede">Dette er det Kristiane får se.</p>
         </div>
         <div class="sum" id="summary"></div>
       </section>
@@ -371,7 +374,7 @@
           <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <p class="eyebrow step-top" data-i18n="wr.s8.eyebrow">Sendt inn</p>
           <h1 id="s8-h" data-i18n="wr.s8.h">Takk. Uke 6 er i boks.</h1>
-          <p class="lede" id="s8-lede" data-i18n="wr.s8.lede">Rapporten ligger hos Kristiane og Ingrid.</p>
+          <p class="lede" id="s8-lede" data-i18n="wr.s8.lede">Rapporten ligger hos Kristiane.</p>
         </div>
 
         <div class="stat" id="weight-stat" hidden>
@@ -389,14 +392,14 @@
 
         <div class="done-next" id="flagged" hidden>
           <span class="k" data-i18n="wr.s8.flagk">Flagget</span>
-          <span class="v" data-i18n="wr.s8.flagv">Veilederen tar kontakt</span>
-          <span class="d" data-i18n="wr.s8.flagd">Du ba om at utfordringene tas opp. Rapporten er merket, og du hører fra oss før neste økt.</span>
+          <span class="v" data-i18n="wr.s8.flagv">Vi tar kontakt med deg</span>
+          <span class="d" data-i18n="wr.s8.flagd">Du ba om at utfordringene tas opp. Rapporten er merket, og du hører fra oss.</span>
         </div>
 
         <div class="done-next">
-          <span class="k" data-i18n="wr.s8.nextk">Neste steg</span>
-          <span class="v" data-i18n="wr.s8.nextv">Oppfølging torsdag</span>
-          <span class="d" data-i18n="wr.s8.nextd">Ingrid ser over rapporten og justerer treningsplanen din før neste økt.</span>
+          <span class="k" data-i18n="wr.s8.nextk">Neste rapport</span>
+          <span class="v" data-i18n="wr.s8.nextv">Uke 7 · innen søndag kveld</span>
+          <span class="d" data-i18n="wr.s8.nextd">Ta den når uka er ferdig, mens du husker hvordan den var.</span>
         </div>
       </section>
 
@@ -479,14 +482,16 @@ KS.addDict({
   "wr.alert.weight": "Skriv inn vekta for å lagre. Vil du hoppe over, gå tilbake og velg full ukesrapport.",
   "wr.alert.number": "Skriv vekta som tall, for eksempel 84,6.",
 
-  "wr.reveal.more":  "Vil du utdype?",
+  "wr.reveal.more":  "Noe du vil legge til?",
+  "wr.wc.count":     "{n} / {max} ord",
+  "wr.wc.over":      "Prøv å korte ned litt",
   "wr.reveal.less":  "Skjul feltet",
   "wr.reveal.own":   "Skriv ditt eget",
   "wr.reveal.focus": "Endre fokusteksten",
 
   "wr.s0.eyebrow": "Ukesrapport",
   "wr.s0.h":    "Hvordan har uka vært?",
-  "wr.s0.lede": "Kristiane og Ingrid leser rapporten før neste oppfølging. Har du dårlig tid, kan du bare registrere vekta.",
+  "wr.s0.lede": "Kristiane leser rapporten før neste oppfølging. Har du dårlig tid, kan du bare registrere vekta.",
   "wr.s0.fine": "Du kan endre eller fylle ut resten fram til søndag kveld.",
   "wr.path.full.time": "2 minutter",
   "wr.path.full.name": "Full ukesrapport",
@@ -510,7 +515,7 @@ KS.addDict({
 
   "wr.s2.eyebrow": "Egenvurdering",
   "wr.s2.h":    "Hvordan har uka vært?",
-  "wr.s2.lede": "Din egen opplevelse, ikke tallene. Det er den veilederne trenger for å justere planen.",
+  "wr.s2.lede": "Din egen opplevelse av uka. Den hjelper oss å følge deg opp og se hva du trenger underveis.",
   "wr.s2.aria": "Skala 1 til 5 for hvordan uka har vært",
   "wr.scale.low":  "1 · Tung uke",
   "wr.scale.high": "5 · Toppuke",
@@ -522,7 +527,7 @@ KS.addDict({
 
   "wr.s3.eyebrow": "Fokus",
   "wr.s3.h":    "Gikk det som planlagt?",
-  "wr.s3.lede": "Dette satte du deg forrige uke.",
+  "wr.s3.lede": "Dette fokuset satte du deg for denne uka.",
   "wr.s3.from": "Ditt fokus denne uka",
   "wr.s3.label": "Denne ukens fokus",
   "wr.s3.aria": "Hvordan gikk det med fokuset",
@@ -542,20 +547,23 @@ KS.addDict({
   "bra.sovn.t":      "Sov godt",
   "bra.overskudd.t": "Mer overskudd",
   "bra.turer.t":     "Gikk mye",
-  "bra.matlaging.t": "Laget mat selv",
+  "bra.planla.t":    "Planla/preppet måltider",
+  "bra.reise.t":     "Rutiner på reise",
+  "bra.sosialt.t":   "Kontroll i sosiale lag",
+  "bra.selvsnakk.t": "Positivt selvsnakk",
   "bra.rytme.t":     "Fast måltidsrytme",
   "bra.snacks.t":    "Sa nei til snacks",
   "bra.vann.t":      "Drakk nok vann",
 
   "wr.s5.eyebrow": "Motbakker",
   "wr.s5.h":    "Hva sto i veien?",
-  "wr.s5.lede": "Trykk på det som stemmer. Er det ingenting, hopper du bare videre.",
+  "wr.s5.lede": "Trykk på det som stemmer. Gikk uka bra, hopper du bare videre.",
   "wr.s5.h.low":    "Hva gjorde uka tung?",
-  "wr.s5.lede.low": "Du satte 1 eller 2 på uka. Trykk på det som traff, så vet veilederne hvor de skal begynne.",
+  "wr.s5.lede.low": "Du satte 1 eller 2 på uka. Trykk på det som traff, så vet vi hvor vi skal begynne.",
   "wr.s5.aria": "Utfordringer denne uka",
   "wr.s5.ph":   "F.eks. «Reiste bort tre dager og fikk verken trent eller handlet.»",
   "wr.s5.help.t": "Ta dette opp med meg",
-  "wr.s5.help.d": "Rapporten flagges, og veilederen tar kontakt før neste økt.",
+  "wr.s5.help.d": "Rapporten flagges, og vi tar kontakt med deg.",
   "chal.tid.t":        "Tidsklemma",
   "chal.reise.t":      "Bortreist",
   "chal.syk.t":        "Sykdom",
@@ -563,7 +571,8 @@ KS.addDict({
   "chal.kveldssug.t":  "Kveldssug",
   "chal.sovn.t":       "Sov dårlig",
   "chal.stress.t":     "Stress på jobb",
-  "chal.vondt.t":      "Vondt eller skade",
+  "chal.skade.t":      "Skade",
+  "chal.planlegging.t": "Dårlig planlegging",
   "chal.motivasjon.t": "Lav motivasjon",
   "chal.alkohol.t":    "Alkohol",
 
@@ -583,7 +592,7 @@ KS.addDict({
 
   "wr.s7.eyebrow": "Nesten sendt",
   "wr.s7.h":    "Sjekk at alt stemmer",
-  "wr.s7.lede": "Dette er det veilederne dine får se.",
+  "wr.s7.lede": "Dette er det Kristiane får se.",
   "wr.sum.date":      "Dato",
   "wr.sum.weight":    "Vekt",
   "wr.sum.sessions":  "Treningsøkter",
@@ -599,18 +608,18 @@ KS.addDict({
 
   "wr.s8.eyebrow": "Sendt inn",
   "wr.s8.h":       "Takk. Uke 6 er i boks.",
-  "wr.s8.lede":    "Rapporten ligger hos Kristiane og Ingrid.",
+  "wr.s8.lede":    "Rapporten ligger hos Kristiane.",
   "wr.s8.h.quick":    "Vekta er lagret.",
   "wr.s8.lede.quick": "Resten av rapporten kan du ta når det passer — fram til søndag kveld.",
   "wr.s8.weightk": "Vekt denne uka",
   "wr.s8.trendk":  "Egenvurdering · uke 1–6",
   "wr.s8.trendnote": "Ukene før er eksempeldata i prototypen.",
   "wr.s8.flagk": "Flagget",
-  "wr.s8.flagv": "Veilederen tar kontakt",
-  "wr.s8.flagd": "Du ba om at utfordringene tas opp. Rapporten er merket, og du hører fra oss før neste økt.",
-  "wr.s8.nextk": "Neste steg",
-  "wr.s8.nextv": "Oppfølging torsdag",
-  "wr.s8.nextd": "Ingrid ser over rapporten og justerer treningsplanen din før neste økt.",
+  "wr.s8.flagv": "Vi tar kontakt med deg",
+  "wr.s8.flagd": "Du ba om at utfordringene tas opp. Rapporten er merket, og du hører fra oss.",
+  "wr.s8.nextk": "Neste rapport",
+  "wr.s8.nextv": "Uke 7 · innen søndag kveld",
+  "wr.s8.nextd": "Ta den når uka er ferdig, mens du husker hvordan den var.",
   "wr.s8.thisweek": "Denne uka",
   "wr.s8.down":  "ned {n} kg fra forrige uke",
   "wr.s8.up":    "opp {n} kg fra forrige uke",
@@ -658,14 +667,16 @@ KS.addDict({
   "wr.alert.weight": "Enter your weight to save. To skip it, go back and choose the full report.",
   "wr.alert.number": "Write the weight as a number, for example 84.6.",
 
-  "wr.reveal.more":  "Want to add detail?",
+  "wr.reveal.more":  "Anything to add?",
+  "wr.wc.count":     "{n} / {max} words",
+  "wr.wc.over":      "Try trimming it a little",
   "wr.reveal.less":  "Hide the field",
   "wr.reveal.own":   "Write your own",
   "wr.reveal.focus": "Edit the focus text",
 
   "wr.s0.eyebrow": "Weekly check-in",
   "wr.s0.h":    "How has your week been?",
-  "wr.s0.lede": "Kristiane and Ingrid read your report before the next follow-up. Short on time? Just log your weight.",
+  "wr.s0.lede": "Kristiane reads your report before the next follow-up. Short on time? Just log your weight.",
   "wr.s0.fine": "You can edit or finish the rest until Sunday evening.",
   "wr.path.full.time": "2 minutes",
   "wr.path.full.name": "Full check-in",
@@ -689,7 +700,7 @@ KS.addDict({
 
   "wr.s2.eyebrow": "Self-assessment",
   "wr.s2.h":    "How has your week been?",
-  "wr.s2.lede": "Your own experience, not the numbers. That's what your guides need to adjust the plan.",
+  "wr.s2.lede": "Your own experience of the week. It helps us follow up with you and see what you need along the way.",
   "wr.s2.aria": "Scale 1 to 5 for how the week has been",
   "wr.scale.low":  "1 · Tough week",
   "wr.scale.high": "5 · Great week",
@@ -701,7 +712,7 @@ KS.addDict({
 
   "wr.s3.eyebrow": "Focus",
   "wr.s3.h":    "Did it go to plan?",
-  "wr.s3.lede": "This is what you set yourself last week.",
+  "wr.s3.lede": "This is the focus you set yourself for this week.",
   "wr.s3.from": "Your focus this week",
   "wr.s3.label": "This week's focus",
   "wr.s3.aria": "How the focus went",
@@ -721,20 +732,23 @@ KS.addDict({
   "bra.sovn.t":      "Slept well",
   "bra.overskudd.t": "More energy",
   "bra.turer.t":     "Walked a lot",
-  "bra.matlaging.t": "Cooked from scratch",
+  "bra.planla.t":    "Planned or prepped meals",
+  "bra.reise.t":     "Routines while travelling",
+  "bra.sosialt.t":   "In control at social events",
+  "bra.selvsnakk.t": "Positive self-talk",
   "bra.rytme.t":     "Steady meal rhythm",
   "bra.snacks.t":    "Said no to snacks",
   "bra.vann.t":      "Drank enough water",
 
   "wr.s5.eyebrow": "Obstacles",
   "wr.s5.h":    "What got in the way?",
-  "wr.s5.lede": "Tap what fits. If nothing did, just move on.",
+  "wr.s5.lede": "Tap what fits. If the week went well, just move on.",
   "wr.s5.h.low":    "What made the week tough?",
-  "wr.s5.lede.low": "You rated the week 1 or 2. Tap what hit home, so your guides know where to start.",
+  "wr.s5.lede.low": "You rated the week 1 or 2. Tap what hit home, so we know where to start.",
   "wr.s5.aria": "Challenges this week",
   "wr.s5.ph":   "e.g. “Away for three days and got neither training nor shopping done.”",
   "wr.s5.help.t": "Bring this up with me",
-  "wr.s5.help.d": "Your report gets flagged, and your guide gets in touch before the next session.",
+  "wr.s5.help.d": "Your report gets flagged, and we'll get in touch with you.",
   "chal.tid.t":        "No time",
   "chal.reise.t":      "Travelling",
   "chal.syk.t":        "Illness",
@@ -742,7 +756,8 @@ KS.addDict({
   "chal.kveldssug.t":  "Evening cravings",
   "chal.sovn.t":       "Slept badly",
   "chal.stress.t":     "Stress at work",
-  "chal.vondt.t":      "Pain or injury",
+  "chal.skade.t":      "Injury",
+  "chal.planlegging.t": "Poor planning",
   "chal.motivasjon.t": "Low motivation",
   "chal.alkohol.t":    "Alcohol",
 
@@ -762,7 +777,7 @@ KS.addDict({
 
   "wr.s7.eyebrow": "Almost sent",
   "wr.s7.h":    "Check that everything's right",
-  "wr.s7.lede": "This is what your guides will see.",
+  "wr.s7.lede": "This is what Kristiane will see.",
   "wr.sum.date":      "Date",
   "wr.sum.weight":    "Weight",
   "wr.sum.sessions":  "Training sessions",
@@ -778,18 +793,18 @@ KS.addDict({
 
   "wr.s8.eyebrow": "Submitted",
   "wr.s8.h":       "Thanks. Week 6 is done.",
-  "wr.s8.lede":    "Your report is with Kristiane and Ingrid.",
+  "wr.s8.lede":    "Your report is with Kristiane.",
   "wr.s8.h.quick":    "Weight saved.",
   "wr.s8.lede.quick": "You can do the rest of the report whenever it suits — until Sunday evening.",
   "wr.s8.weightk": "Weight this week",
   "wr.s8.trendk":  "Self-assessment · weeks 1–6",
   "wr.s8.trendnote": "Earlier weeks are example data in this prototype.",
   "wr.s8.flagk": "Flagged",
-  "wr.s8.flagv": "Your guide will be in touch",
-  "wr.s8.flagd": "You asked for the challenges to be picked up. Your report is marked, and you'll hear from us before the next session.",
-  "wr.s8.nextk": "Next step",
-  "wr.s8.nextv": "Follow-up on Thursday",
-  "wr.s8.nextd": "Ingrid reviews your report and adjusts your training plan before the next session.",
+  "wr.s8.flagv": "We'll be in touch",
+  "wr.s8.flagd": "You asked for the challenges to be picked up. Your report is marked, and you'll hear from us.",
+  "wr.s8.nextk": "Next report",
+  "wr.s8.nextv": "Week 7 · by Sunday evening",
+  "wr.s8.nextd": "Do it when the week is done, while you still remember how it went.",
   "wr.s8.thisweek": "This week",
   "wr.s8.down":  "down {n} kg from last week",
   "wr.s8.up":    "up {n} kg from last week",
@@ -817,9 +832,9 @@ KS.addDict({
     fokus:      { prefix: "fokus", single: true,
                   keys: ["ja", "delvis", "nei", "annet"] },
     bra:        { prefix: "bra", single: false,
-                  keys: ["trening", "kosthold", "sovn", "overskudd", "turer", "matlaging", "rytme", "snacks", "vann"] },
+                  keys: ["trening", "kosthold", "planla", "rytme", "snacks", "vann", "sovn", "overskudd", "turer", "reise", "sosialt", "selvsnakk"] },
     utfordring: { prefix: "chal", single: false,
-                  keys: ["tid", "reise", "syk", "sosialt", "kveldssug", "sovn", "stress", "vondt", "motivasjon", "alkohol"] },
+                  keys: ["tid", "planlegging", "reise", "syk", "skade", "sosialt", "kveldssug", "sovn", "stress", "motivasjon", "alkohol"] },
     neste:      { prefix: "next", single: false,
                   keys: ["okter", "rytme", "sovn", "kveldssug", "handle", "turer", "vann", "alkohol"] }
   };
@@ -962,6 +977,40 @@ KS.addDict({
     });
   }
 
+  /* ---------- Ordteller: mykt tak ----------
+     Viser antall ord under hvert "legg til"-felt. Over grensen blir feltet
+     og telleren gule, men det stopper aldri skrivingen. */
+  var WORD_LIMIT = 100;
+
+  function countWords(text) {
+    var m = String(text || "").trim().match(/\S+/g);
+    return m ? m.length : 0;
+  }
+
+  function paintCounter(field) {
+    var el = document.querySelector('[data-count-for="' + field.id + '"]');
+    if (!el) { return; }
+    var n = countWords(field.value);
+    var over = n > WORD_LIMIT;
+    field.classList.toggle("is-over", over);
+    el.classList.toggle("is-over", over);
+    el.textContent = "";
+    var pill = document.createElement("span");
+    pill.className = "wc-pill";
+    var num = document.createElement("b");
+    num.textContent = t("wr.wc.count").replace("{n}", String(n)).replace("{max}", String(WORD_LIMIT));
+    pill.appendChild(num);
+    if (over) { pill.appendChild(document.createTextNode(" · " + t("wr.wc.over"))); }
+    el.appendChild(pill);
+  }
+
+  function paintCounters() {
+    $$("[data-count-for]").forEach(function (el) {
+      var f = document.getElementById(el.getAttribute("data-count-for"));
+      if (f) { paintCounter(f); }
+    });
+  }
+
   /* ---------- Fritekst ---------- */
   $$("[data-bind]").forEach(function (f) {
     f.addEventListener("input", function () {
@@ -970,6 +1019,7 @@ KS.addDict({
       if (key === "vekt") {
         $$('[data-bind="vekt"]').forEach(function (o) { if (o !== f) { o.value = f.value; } });
       }
+      paintCounter(f);
       clearAlert();
     });
   });
@@ -1287,6 +1337,7 @@ KS.addDict({
     paintSessions();
     paintScale();
     Object.keys(GROUPS).forEach(paintChips);
+    paintCounters();
     go(0);
   }
 
@@ -1295,6 +1346,7 @@ KS.addDict({
     $("#prefill-text").textContent = t("wr.s3.prefill");
     Object.keys(GROUPS).forEach(buildChips);
     paintReveals();
+    paintCounters();
     paintScale();
     paintChallenge();
     paintChrome();
@@ -1315,6 +1367,7 @@ KS.addDict({
   paintReveals();
   paintSessions();
   paintScale();
+  paintCounters();
   go(0);
   KSReview.init({
     onRoute: function (id) {
