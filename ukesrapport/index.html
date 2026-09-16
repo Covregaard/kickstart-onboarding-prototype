@@ -11,9 +11,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="../assets/kickstart.css?v=9">
-<script src="../assets/ks.js?v=9"></script>
-<script src="../assets/review.js?v=9"></script>
+<link rel="stylesheet" href="../assets/kickstart.css?v=10">
+<script src="../assets/ks.js?v=10"></script>
+<script src="../assets/review.js?v=10"></script>
 <style>
   .ctx {
     display: flex; align-items: baseline; justify-content: space-between;
@@ -65,7 +65,53 @@
 
   .weight-row { display: flex; align-items: flex-end; gap: 10px; }
   .weight-row .field { flex: 1; }
-  .unit { font-size: 15px; color: var(--ink-3); padding-bottom: 13px; }
+  .unit { font-size: 15px; color: var(--ink-3); padding-bottom: 13px; min-width: 24px; }
+  input[type="text"]:disabled { opacity: .45; cursor: not-allowed; }
+
+  /* Avkrysning for å holde uken utenfor vektkurven */
+  .checkrow {
+    display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start;
+    width: 100%; text-align: left;
+    background: none; border: 0; padding: 6px 0 0;
+    cursor: pointer;
+  }
+  .checkrow-t { display: block; font-size: 14.5px; font-weight: 600; }
+  .checkrow-d { display: block; font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+  .checkrow.is-on .tick { background: var(--accent); border-color: var(--accent-ink); }
+  .checkrow.is-on .tick svg { opacity: 1; transform: none; color: var(--accent-ink); }
+
+  /* Slik måler du livvidden */
+  .howto {
+    margin: 0; padding: 13px 16px 13px 34px;
+    background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px;
+    font-size: 14px; color: var(--ink-2);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+
+  /* Kategorier som foldes ut */
+  .cats { display: flex; flex-direction: column; gap: 10px; }
+  .cat {
+    background: var(--surface);
+    border: 1.5px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .cat-head {
+    width: 100%;
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px;
+    background: none; border: 0; text-align: left;
+    cursor: pointer;
+  }
+  .cat-name { flex: 1; font-weight: 600; font-size: 15.5px; }
+  .cat-count {
+    font-size: 11.5px; font-weight: 700;
+    padding: 2px 9px; border-radius: 999px;
+    background: var(--accent); color: var(--accent-ink);
+  }
+  .cat-head svg { flex: none; color: var(--ink-3); transition: transform .18s ease; }
+  .cat-head[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .cat-body { padding: 0 16px 16px; }
 
   .stat {
     display: flex; flex-direction: column; gap: 2px;
@@ -79,6 +125,13 @@
     font-variant-numeric: tabular-nums;
   }
   .stat .d { font-size: 13.5px; color: var(--ink-2); }
+  .stat .avg {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 14px; font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat .note { font-size: 12px; color: var(--ink-3); margin-top: 6px; }
 
   .chart-card {
     background: var(--surface); border: 1.5px solid var(--line);
@@ -182,8 +235,8 @@
 
         <div>
           <p class="eyebrow" data-i18n="wr.s0.eyebrow">Ukesrapport</p>
-          <h1 data-i18n="wr.s0.h">Hvordan har uka vært?</h1>
-          <p class="lede" data-i18n="wr.s0.lede">Kristiane leser rapporten før neste oppfølging. Har du dårlig tid, kan du bare registrere vekta.</p>
+          <h1 data-i18n="wr.s0.h">Hvordan har uken vært?</h1>
+          <p class="lede" data-i18n="wr.s0.lede">Kristiane leser rapporten før neste oppfølging.</p>
         </div>
 
         <div class="options">
@@ -191,7 +244,7 @@
             <span>
               <span class="ptime" data-i18n="wr.path.quick.time">10 sekunder</span>
               <span class="pname" data-i18n="wr.path.quick.name">Registrer vekt</span>
-              <span class="pdesc" data-i18n="wr.path.quick.desc">Logg vekta nå og ta resten senere. Bedre enn å hoppe over uka helt.</span>
+              <span class="pdesc" data-i18n="wr.path.quick.desc">Logg vekten nå og ta resten senere.</span>
             </span>
             <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </button>
@@ -200,7 +253,7 @@
             <span>
               <span class="ptime" data-i18n="wr.path.full.time">2 minutter</span>
               <span class="pname" data-i18n="wr.path.full.name">Full ukesrapport</span>
-              <span class="pdesc" data-i18n="wr.path.full.desc">Vekt, egenvurdering og ukas høydepunkter. Det meste er avkrysning.</span>
+              <span class="pdesc" data-i18n="wr.path.full.desc">Vekt og livvidde, egenvurdering og ukens høydepunkter.</span>
             </span>
             <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </button>
@@ -209,12 +262,12 @@
         <p class="fine" data-i18n="wr.s0.fine">Du kan endre eller fylle ut resten fram til søndag kveld.</p>
       </section>
 
-      <!-- 1 · Tall -->
+      <!-- 1 · Ukens tall -->
       <section class="step" data-step="1">
         <div>
           <p class="eyebrow" data-i18n="wr.s1.eyebrow">Tall</p>
-          <h2 data-i18n="wr.s1.h">Ukas tall</h2>
-          <p class="lede" data-i18n="wr.s1.lede">Vei deg helst på samme tid på døgnet, før frokost.</p>
+          <h2 data-i18n="wr.s1.h">Ukens tall</h2>
+          <p class="lede" data-i18n="wr.s1.lede">Vei og mål deg helst på samme tid hver uke.</p>
         </div>
 
         <div class="field">
@@ -224,16 +277,40 @@
         </div>
 
         <div class="field">
-          <label for="vekt"><span data-i18n="wr.s1.weight">Vekt</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></label>
+          <label for="vekt" data-i18n="wr.s1.weight">Vekt</label>
           <div class="weight-row">
             <div class="field"><input type="text" id="vekt" inputmode="decimal" data-bind="vekt" data-i18n-ph="wr.s1.weightph"></div>
             <span class="unit">kg</span>
           </div>
-          <p class="hint" data-i18n="wr.s1.weighthint">Hoppet du over veiinga denne uka? La feltet stå tomt.</p>
+          <button type="button" class="checkrow" id="skip-weight" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="checkrow-t" data-i18n="wr.s1.skip.t">Registrer ikke vekt denne uken</span>
+              <span class="checkrow-d" data-i18n="wr.s1.skip.d">Uken holdes utenfor vektkurven.</span>
+            </span>
+          </button>
         </div>
 
         <div class="field">
-          <label id="okter-label" data-i18n="wr.s1.sessions">Treningsøkter denne uka</label>
+          <label for="livvidde"><span data-i18n="wr.s1.waist">Livvidde</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></label>
+          <div class="weight-row">
+            <div class="field"><input type="text" id="livvidde" inputmode="decimal" data-bind="livvidde" data-i18n-ph="wr.s1.waistph"></div>
+            <span class="unit">cm</span>
+          </div>
+          <button type="button" class="reveal" data-reveal="howto-full" data-closed="wr.reveal.howto" data-open="wr.reveal.howtoless" aria-expanded="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Slik måler du livvidden</span>
+          </button>
+          <ol class="howto" id="howto-full" hidden>
+            <li data-i18n="wr.howto.1"></li>
+            <li data-i18n="wr.howto.2"></li>
+            <li data-i18n="wr.howto.3"></li>
+            <li data-i18n="wr.howto.4"></li>
+          </ol>
+        </div>
+
+        <div class="field">
+          <label id="okter-label" data-i18n="wr.s1.sessions">Treningsøkter denne uken</label>
           <div class="stepper-row">
             <div class="stepper" role="group" aria-labelledby="okter-label">
               <button type="button" id="okter-minus" data-i18n-aria="wr.s1.less" aria-label="Færre">−</button>
@@ -249,8 +326,8 @@
       <section class="step" data-step="2">
         <div>
           <p class="eyebrow" data-i18n="wr.s2.eyebrow">Egenvurdering</p>
-          <h2 data-i18n="wr.s2.h">Hvordan har uka vært?</h2>
-          <p class="lede" data-i18n="wr.s2.lede">Din egen opplevelse av uka. Den hjelper oss å følge deg opp og se hva du trenger underveis.</p>
+          <h2 data-i18n="wr.s2.h">Hvordan har uken vært?</h2>
+          <p class="lede" data-i18n="wr.s2.lede">Din egen opplevelse av uken.</p>
         </div>
 
         <div class="scale">
@@ -263,48 +340,48 @@
         </div>
       </section>
 
-      <!-- 3 · Denne ukens fokus -->
+      <!-- 3 · Ukens fokus -->
       <section class="step" data-step="3">
         <div>
           <p class="eyebrow" data-i18n="wr.s3.eyebrow">Fokus</p>
           <h2 data-i18n="wr.s3.h">Gikk det som planlagt?</h2>
-          <p class="lede" data-i18n="wr.s3.lede">Dette fokuset satte du deg for denne uka.</p>
+          <p class="lede" data-i18n="wr.s3.lede">Dette fokuset satte du deg for denne uken.</p>
         </div>
 
         <div class="prefill">
-          <span class="k" data-i18n="wr.s3.from">Ditt fokus denne uka</span>
+          <span class="k" data-i18n="wr.s3.from">Ditt fokus denne uken</span>
           <span class="v" id="prefill-text"></span>
         </div>
 
         <div class="chips" id="chips-fokus" role="group" data-i18n-aria="wr.s3.aria"></div>
 
-        <button type="button" class="reveal" data-reveal="fokus-wrap" aria-expanded="false">
+        <button type="button" class="reveal" data-reveal="fokus-wrap" data-closed="wr.reveal.add" data-open="wr.reveal.less" aria-expanded="false">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          <span data-i18n="wr.reveal.focus">Endre fokusteksten</span>
+          <span>Noe du vil legge til?</span>
         </button>
         <div class="field" id="fokus-wrap" hidden>
-          <label for="fokus" data-i18n="wr.s3.label">Denne ukens fokus</label>
-          <textarea id="fokus" data-bind="fokus"></textarea>
+          <textarea id="fokus" data-bind="fokusTekst" data-i18n-ph="wr.s3.ph" data-i18n-aria="wr.reveal.add"></textarea>
+          <p class="limit-count" data-count-for="fokus" aria-live="polite"></p>
         </div>
       </section>
 
-      <!-- 4 · Hva gikk bra -->
+      <!-- 4 · Gikk bra -->
       <section class="step" data-step="4">
         <div>
           <p class="eyebrow" data-i18n="wr.s4.eyebrow">Seiere</p>
           <h2 data-i18n="wr.s4.h">Hva gikk bra?</h2>
-          <p class="lede" data-i18n="wr.s4.lede">Trykk på det som stemmer. Velg gjerne flere.</p>
+          <p class="lede" data-i18n="wr.s4.lede">Åpne en kategori og trykk på det som stemmer.</p>
         </div>
 
-        <div class="chips" id="chips-bra" role="group" data-i18n-aria="wr.s4.aria"></div>
+        <div class="cats" id="cats-bra"></div>
 
-        <button type="button" class="reveal" data-reveal="bra-wrap" aria-expanded="false">
+        <button type="button" class="reveal" data-reveal="bra-wrap" data-closed="wr.reveal.add" data-open="wr.reveal.less" aria-expanded="false">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          <span data-i18n="wr.reveal.more">Noe du vil legge til?</span>
+          <span>Noe du vil legge til?</span>
         </button>
         <div class="field" id="bra-wrap" hidden>
-          <textarea id="bra" data-bind="braTekst" data-i18n-ph="wr.s4.ph"></textarea>
-          <p class="wordcount" data-count-for="bra" aria-live="polite"></p>
+          <textarea id="bra" data-bind="braTekst" data-i18n-ph="wr.s4.ph" data-i18n-aria="wr.reveal.add"></textarea>
+          <p class="limit-count" data-count-for="bra" aria-live="polite"></p>
         </div>
       </section>
 
@@ -312,103 +389,124 @@
       <section class="step" data-step="5">
         <div>
           <p class="eyebrow" data-i18n="wr.s5.eyebrow">Motbakker</p>
-          <h2 id="s5-h" data-i18n="wr.s5.h">Hva sto i veien?</h2>
-          <p class="lede" id="s5-lede" data-i18n="wr.s5.lede">Trykk på det som stemmer. Gikk uka bra, hopper du bare videre.</p>
+          <h2 data-i18n="wr.s5.h">Utfordringer for å nå ukens mål</h2>
+          <p class="lede" id="s5-lede" data-i18n="wr.s5.lede">Trykk på det som stemmer.</p>
         </div>
 
         <div class="chips" id="chips-utfordring" role="group" data-i18n-aria="wr.s5.aria"></div>
 
-        <button type="button" class="reveal" data-reveal="utfordring-wrap" aria-expanded="false">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          <span data-i18n="wr.reveal.more">Noe du vil legge til?</span>
-        </button>
-        <div class="field" id="utfordring-wrap" hidden>
+        <div class="field">
+          <label for="utfordring"><span data-i18n="wr.s5.solved">Hvordan løste du utfordringene?</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></label>
           <textarea id="utfordring" data-bind="utfordringTekst" data-i18n-ph="wr.s5.ph"></textarea>
-          <p class="wordcount" data-count-for="utfordring" aria-live="polite"></p>
+          <p class="limit-count" data-count-for="utfordring" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- 6 · Ta opp med oss -->
+      <section class="step" data-step="6">
+        <div>
+          <p class="eyebrow" data-i18n="wr.s6.eyebrow">Oppfølging</p>
+          <h2 data-i18n="wr.s6.h">Er det noe du ønsker å ta opp med oss denne uken?</h2>
+          <p class="lede" data-i18n="wr.s6.lede">Vi ønsker å ta tak i de rette tingene til rett tid.</p>
         </div>
 
         <div class="options">
-          <button class="opt" type="button" id="help-flag" data-shape="round" aria-pressed="false">
+          <button class="opt" type="button" data-raise="ja" data-shape="round" aria-pressed="false">
             <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
-              <span class="opt-t" data-i18n="wr.s5.help.t">Ta dette opp med meg</span>
-              <span class="opt-d" data-i18n="wr.s5.help.d">Rapporten flagges, og vi tar kontakt med deg.</span>
+              <span class="opt-t" data-i18n="wr.s6.yes.t">Ja, det er noe</span>
+              <span class="opt-d" data-i18n="wr.s6.yes.d">Skriv kort hva det gjelder.</span>
+            </span>
+          </button>
+          <button class="opt" type="button" data-raise="nei" data-shape="round" aria-pressed="false">
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span>
+              <span class="opt-t" data-i18n="wr.s6.no.t">Nei, ikke denne uken</span>
+              <span class="opt-d" data-i18n="wr.s6.no.d">Helt greit.</span>
             </span>
           </button>
         </div>
-      </section>
 
-      <!-- 6 · Neste ukes fokus -->
-      <section class="step" data-step="6">
-        <div>
-          <p class="eyebrow" data-i18n="wr.s6.eyebrow">Neste uke</p>
-          <h2 data-i18n="wr.s6.h">Hva skal du prioritere?</h2>
-          <p class="lede" data-i18n="wr.s6.lede">Én eller to ting er nok. Dette møter deg igjen i neste ukesrapport.</p>
-        </div>
-
-        <div class="chips" id="chips-neste" role="group" data-i18n-aria="wr.s6.aria"></div>
-
-        <button type="button" class="reveal" data-reveal="neste-wrap" aria-expanded="false">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-          <span data-i18n="wr.reveal.own">Skriv ditt eget</span>
-        </button>
-        <div class="field" id="neste-wrap" hidden>
-          <textarea id="neste" data-bind="nesteTekst" data-i18n-ph="wr.s6.ph"></textarea>
-          <p class="wordcount" data-count-for="neste" aria-live="polite"></p>
+        <div class="field" id="taopp-wrap" hidden>
+          <label for="taopp" data-i18n="wr.s6.label">Hva ønsker du å ta opp?</label>
+          <textarea id="taopp" data-bind="taOppTekst" data-i18n-ph="wr.s6.ph"></textarea>
+          <p class="limit-count" data-count-for="taopp" aria-live="polite"></p>
         </div>
       </section>
 
-      <!-- 7 · Oppsummering -->
+      <!-- 7 · Neste uke -->
       <section class="step" data-step="7">
         <div>
-          <p class="eyebrow" data-i18n="wr.s7.eyebrow">Nesten sendt</p>
-          <h2 data-i18n="wr.s7.h">Sjekk at alt stemmer</h2>
-          <p class="lede" data-i18n="wr.s7.lede">Dette er det Kristiane får se.</p>
+          <p class="eyebrow" data-i18n="wr.s7.eyebrow">Neste uke</p>
+          <h2 data-i18n="wr.s7.h">Ditt fokus neste uke</h2>
+          <p class="lede" data-i18n="wr.s7.lede">Én eller to ting er nok.</p>
+        </div>
+
+        <div class="chips" id="chips-neste" role="group" data-i18n-aria="wr.s7.aria"></div>
+
+        <button type="button" class="reveal" data-reveal="neste-wrap" data-closed="wr.reveal.own" data-open="wr.reveal.less" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Skriv ditt eget</span>
+        </button>
+        <div class="field" id="neste-wrap" hidden>
+          <textarea id="neste" data-bind="nesteTekst" data-i18n-ph="wr.s7.ph" data-i18n-aria="wr.reveal.own"></textarea>
+          <p class="limit-count" data-count-for="neste" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <!-- 8 · Oppsummering -->
+      <section class="step" data-step="8">
+        <div>
+          <p class="eyebrow" data-i18n="wr.s8.eyebrow">Nesten sendt</p>
+          <h2 data-i18n="wr.s8.h">Sjekk at alt stemmer</h2>
+          <p class="lede" data-i18n="wr.s8.lede">Dette er det Kristiane får se.</p>
         </div>
         <div class="sum" id="summary"></div>
       </section>
 
-      <!-- 8 · Kvittering -->
-      <section class="step" data-step="8">
+      <!-- 9 · Kvittering -->
+      <section class="step" data-step="9">
         <div>
           <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <p class="eyebrow step-top" data-i18n="wr.s8.eyebrow">Sendt inn</p>
-          <h1 id="s8-h" data-i18n="wr.s8.h">Takk. Uke 6 er i boks.</h1>
-          <p class="lede" id="s8-lede" data-i18n="wr.s8.lede">Rapporten ligger hos Kristiane.</p>
+          <p class="eyebrow step-top" data-i18n="wr.s9.eyebrow">Sendt inn</p>
+          <h1 id="s9-h" data-i18n="wr.s9.h">Takk. Uke 6 er i boks.</h1>
+          <p class="lede" id="s9-lede" data-i18n="wr.s9.lede">Rapporten ligger hos Kristiane.</p>
         </div>
 
         <div class="stat" id="weight-stat" hidden>
-          <span class="k" data-i18n="wr.s8.weightk">Vekt denne uka</span>
+          <span class="k" data-i18n="wr.s9.weightk">Vekt denne uken</span>
           <span class="v" id="weight-value"></span>
           <span class="d" id="weight-delta"></span>
+          <span class="avg" id="weight-avg"></span>
+          <span class="note" data-i18n="wr.s9.weightnote">Tidligere vekter er eksempeldata i prototypen.</span>
         </div>
 
         <div class="chart-card" id="trend-card">
-          <span class="k" data-i18n="wr.s8.trendk">Egenvurdering · uke 1–6</span>
+          <span class="k" data-i18n="wr.s9.trendk">Egenvurdering · uke 1–6</span>
           <div class="chart-scroll" id="chart"></div>
           <p class="chart-now" id="chart-now"></p>
-          <p class="chart-note" data-i18n="wr.s8.trendnote">Ukene før er eksempeldata i prototypen.</p>
+          <p class="chart-note" data-i18n="wr.s9.trendnote">Ukene før er eksempeldata i prototypen.</p>
         </div>
 
-        <div class="done-next" id="flagged" hidden>
-          <span class="k" data-i18n="wr.s8.flagk">Flagget</span>
-          <span class="v" data-i18n="wr.s8.flagv">Vi tar kontakt med deg</span>
-          <span class="d" data-i18n="wr.s8.flagd">Du ba om at utfordringene tas opp. Rapporten er merket, og du hører fra oss.</span>
+        <div class="done-next" id="chat-card">
+          <span class="k" data-i18n="wr.s9.chatk">Oppfølging</span>
+          <span class="v" data-i18n="wr.s9.chatv">I chatten med Kristiane</span>
+          <span class="d" data-i18n="wr.s9.chatd">Rapporten legges i chatten deres.</span>
         </div>
 
-        <div class="done-next">
-          <span class="k" data-i18n="wr.s8.nextk">Neste rapport</span>
-          <span class="v" data-i18n="wr.s8.nextv">Uke 7 · innen søndag kveld</span>
-          <span class="d" data-i18n="wr.s8.nextd">Ta den når uka er ferdig, mens du husker hvordan den var.</span>
+        <div class="done-next" id="next-card">
+          <span class="k" data-i18n="wr.s9.nextk">Neste rapport</span>
+          <span class="v" data-i18n="wr.s9.nextv">Uke 7 · innen søndag kveld</span>
+          <span class="d" data-i18n="wr.s9.nextd">Ta den når uken er ferdig.</span>
         </div>
       </section>
 
-      <!-- 9 · Registrer vekt -->
-      <section class="step" data-step="9">
+      <!-- 10 · Registrer vekt -->
+      <section class="step" data-step="10">
         <div>
-          <p class="eyebrow" data-i18n="wr.s9.eyebrow">Rask logging</p>
-          <h2 data-i18n="wr.s9.h">Registrer vekt</h2>
-          <p class="lede" data-i18n="wr.s9.lede">Vi noterer vekta for denne uka. Resten av rapporten kan du ta senere.</p>
+          <p class="eyebrow" data-i18n="wr.s10.eyebrow">Rask logging</p>
+          <h2 data-i18n="wr.s10.h">Registrer vekt</h2>
+          <p class="lede" data-i18n="wr.s10.lede">Vi noterer vekten for denne uken.</p>
         </div>
 
         <div class="field">
@@ -425,7 +523,25 @@
           </div>
         </div>
 
-        <p class="fine" data-i18n="wr.s9.fine">Vil du likevel ta hele rapporten? Gå tilbake og velg full ukesrapport.</p>
+        <div class="field">
+          <label for="livvidde-q"><span data-i18n="wr.s1.waist">Livvidde</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></label>
+          <div class="weight-row">
+            <div class="field"><input type="text" id="livvidde-q" inputmode="decimal" data-bind="livvidde" data-i18n-ph="wr.s1.waistph"></div>
+            <span class="unit">cm</span>
+          </div>
+          <button type="button" class="reveal" data-reveal="howto-quick" data-closed="wr.reveal.howto" data-open="wr.reveal.howtoless" aria-expanded="false">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Slik måler du livvidden</span>
+          </button>
+          <ol class="howto" id="howto-quick" hidden>
+            <li data-i18n="wr.howto.1"></li>
+            <li data-i18n="wr.howto.2"></li>
+            <li data-i18n="wr.howto.3"></li>
+            <li data-i18n="wr.howto.4"></li>
+          </ol>
+        </div>
+
+        <p class="fine" data-i18n="wr.s10.fine">Vil du likevel ta hele rapporten? Gå tilbake og velg full ukesrapport.</p>
       </section>
 
     </main>
@@ -449,20 +565,21 @@
 KS.addDict({
   "review.proto": "Ukesrapport",
   "review.0": "Start",
-  "review.1": "Ukas tall",
+  "review.1": "Ukens tall",
   "review.2": "Egenvurdering",
-  "review.3": "Ukas fokus",
+  "review.3": "Ukens fokus",
   "review.4": "Gikk bra",
   "review.5": "Utfordringer",
-  "review.6": "Neste uke",
-  "review.7": "Oppsummering",
-  "review.8": "Kvittering",
-  "review.9": "Registrer vekt",
-  "common.optional": "Valgfritt",
-  "common.change":   "Endre",
+  "review.6": "Ta opp med oss",
+  "review.7": "Neste uke",
+  "review.8": "Oppsummering",
+  "review.9": "Kvittering",
+  "review.10": "Registrer vekt",
+
+  "common.optional":   "Valgfritt",
+  "common.change":     "Endre",
   "common.unanswered": "Ikke besvart",
-  "common.none":     "Ingenting valgt",
-  "scale.empty":     "Velg et tall fra 1 til 5",
+  "scale.empty":       "Velg et tall fra 1 til 5",
 
   "btn.continue": "Fortsett",
   "btn.summary":  "Se oppsummeringen",
@@ -478,45 +595,57 @@ KS.addDict({
   "wr.ctx.week": "Uke 6",
   "wr.ctx.of":   "av 16 i programmet",
 
-  "wr.alert.scale":  "Velg et tall fra 1 til 5 for hvordan uka har vært.",
-  "wr.alert.weight": "Skriv inn vekta for å lagre. Vil du hoppe over, gå tilbake og velg full ukesrapport.",
-  "wr.alert.number": "Skriv vekta som tall, for eksempel 84,6.",
+  "wr.alert.scale":   "Velg et tall fra 1 til 5 for hvordan uken har vært.",
+  "wr.alert.weight":  "Skriv inn vekten, eller huk av for å ikke registrere vekt denne uken.",
+  "wr.alert.weightq": "Skriv inn vekten for å lagre.",
+  "wr.alert.number":  "Skriv vekten som tall, for eksempel 84,6.",
+  "wr.alert.waist":   "Skriv livvidden som tall i centimeter, for eksempel 94.",
+  "wr.alert.raise":   "Velg ja eller nei.",
 
-  "wr.reveal.more":  "Noe du vil legge til?",
-  "wr.wc.count":     "{n} / {max} ord",
-  "wr.wc.over":      "Prøv å korte ned litt",
-  "wr.reveal.less":  "Skjul feltet",
-  "wr.reveal.own":   "Skriv ditt eget",
-  "wr.reveal.focus": "Endre fokusteksten",
+  "wr.reveal.add":       "Noe du vil legge til?",
+  "wr.reveal.less":      "Skjul feltet",
+  "wr.reveal.own":       "Skriv ditt eget",
+  "wr.reveal.howto":     "Slik måler du livvidden",
+  "wr.reveal.howtoless": "Skjul instruksjonen",
+
+  "wr.lc.count": "{n} / {max} tegn",
+  "wr.lc.over":  "Prøv å korte ned litt",
 
   "wr.s0.eyebrow": "Ukesrapport",
-  "wr.s0.h":    "Hvordan har uka vært?",
-  "wr.s0.lede": "Kristiane leser rapporten før neste oppfølging. Har du dårlig tid, kan du bare registrere vekta.",
+  "wr.s0.h":    "Hvordan har uken vært?",
+  "wr.s0.lede": "Kristiane leser rapporten før neste oppfølging. Har du dårlig tid, kan du bare registrere vekten.",
   "wr.s0.fine": "Du kan endre eller fylle ut resten fram til søndag kveld.",
-  "wr.path.full.time": "2 minutter",
-  "wr.path.full.name": "Full ukesrapport",
-  "wr.path.full.desc": "Vekt, egenvurdering og ukas høydepunkter. Det meste er avkrysning.",
   "wr.path.quick.time": "10 sekunder",
   "wr.path.quick.name": "Registrer vekt",
-  "wr.path.quick.desc": "Logg vekta nå og ta resten senere. Bedre enn å hoppe over uka helt.",
+  "wr.path.quick.desc": "Logg vekten nå og ta resten senere. Bedre enn å hoppe over uken helt.",
+  "wr.path.full.time":  "2 minutter",
+  "wr.path.full.name":  "Full ukesrapport",
+  "wr.path.full.desc":  "Vekt og livvidde, egenvurdering og ukens høydepunkter. Det meste er avkrysning.",
 
   "wr.s1.eyebrow": "Tall",
-  "wr.s1.h":    "Ukas tall",
-  "wr.s1.lede": "Vei deg helst på samme tid på døgnet, før frokost.",
+  "wr.s1.h":    "Ukens tall",
+  "wr.s1.lede": "Vei og mål deg helst på samme tid hver uke, om morgenen før frokost.",
   "wr.s1.date": "Dato",
   "wr.s1.datehint": "Gjelder rapporten en tidligere uke? Velg datoen den gjelder for.",
-  "wr.s1.weight": "Vekt",
+  "wr.s1.weight":   "Vekt",
   "wr.s1.weightph": "84,6",
-  "wr.s1.weighthint": "Hoppet du over veiinga denne uka? La feltet stå tomt.",
-  "wr.s1.sessions": "Treningsøkter denne uka",
+  "wr.s1.skip.t":   "Registrer ikke vekt denne uken",
+  "wr.s1.skip.d":   "Uken holdes utenfor vektkurven, så den ikke blir misvisende.",
+  "wr.s1.waist":    "Livvidde",
+  "wr.s1.waistph":  "94",
+  "wr.s1.sessions": "Treningsøkter denne uken",
   "wr.s1.sessionsunit": "økter",
   "wr.s1.less": "Færre økter",
   "wr.s1.more": "Flere økter",
+  "wr.howto.1": "Stå oppreist med føttene litt fra hverandre, og mål rett på huden.",
+  "wr.howto.2": "Finn midten mellom nederste ribben og toppen av hoftekammen.",
+  "wr.howto.3": "Legg målebåndet vannrett rundt magen, inntil huden uten å klemme.",
+  "wr.howto.4": "Pust rolig ut, og les av målet før du trekker pusten igjen.",
 
   "wr.s2.eyebrow": "Egenvurdering",
-  "wr.s2.h":    "Hvordan har uka vært?",
-  "wr.s2.lede": "Din egen opplevelse av uka. Den hjelper oss å følge deg opp og se hva du trenger underveis.",
-  "wr.s2.aria": "Skala 1 til 5 for hvordan uka har vært",
+  "wr.s2.h":    "Hvordan har uken vært?",
+  "wr.s2.lede": "Din egen opplevelse av uken. Den hjelper oss å følge deg opp og se hva du trenger underveis.",
+  "wr.s2.aria": "Skala 1 til 5 for hvordan uken har vært",
   "wr.scale.low":  "1 · Tung uke",
   "wr.scale.high": "5 · Toppuke",
   "uke.1.t": "Tung uke",      "uke.1.d": "Lite ble som planlagt, og motivasjonen er lav.",
@@ -527,127 +656,144 @@ KS.addDict({
 
   "wr.s3.eyebrow": "Fokus",
   "wr.s3.h":    "Gikk det som planlagt?",
-  "wr.s3.lede": "Dette fokuset satte du deg for denne uka.",
-  "wr.s3.from": "Ditt fokus denne uka",
-  "wr.s3.label": "Denne ukens fokus",
+  "wr.s3.lede": "Dette fokuset satte du deg for denne uken.",
+  "wr.s3.from": "Ditt fokus denne uken",
   "wr.s3.aria": "Hvordan gikk det med fokuset",
   "wr.s3.prefill": "Få inn tre økter, og spise frokost hver dag.",
-  "fokus.ja.t":    "Fikk det til",
+  "wr.s3.ph":   "F.eks. «Fikk inn to økter, men frokosten glapp de fleste dagene.»",
+  "fokus.ja.t":     "Fikk det til",
   "fokus.delvis.t": "Delvis",
-  "fokus.nei.t":   "Ble ikke noe av",
-  "fokus.annet.t": "Ble noe annet",
+  "fokus.nei.t":    "Ble ikke noe av",
+  "fokus.annet.t":  "Ble noe annet",
 
   "wr.s4.eyebrow": "Seiere",
   "wr.s4.h":    "Hva gikk bra?",
-  "wr.s4.lede": "Trykk på det som stemmer. Velg gjerne flere.",
-  "wr.s4.aria": "Hva gikk bra",
+  "wr.s4.lede": "Åpne en kategori og trykk på det som stemmer. Velg gjerne flere.",
   "wr.s4.ph":   "F.eks. «Klarte å si nei til kaka på jobben tre ganger.»",
-  "bra.trening.t":   "Trente som planlagt",
-  "bra.kosthold.t":  "Fulgte måltidsplanen",
-  "bra.sovn.t":      "Sov godt",
-  "bra.overskudd.t": "Mer overskudd",
-  "bra.turer.t":     "Gikk mye",
-  "bra.planla.t":    "Planla/preppet måltider",
-  "bra.reise.t":     "Rutiner på reise",
-  "bra.sosialt.t":   "Kontroll i sosiale lag",
-  "bra.selvsnakk.t": "Positivt selvsnakk",
-  "bra.rytme.t":     "Fast måltidsrytme",
-  "bra.snacks.t":    "Sa nei til snacks",
-  "bra.vann.t":      "Drakk nok vann",
+  "cat.trening":  "Trening",
+  "cat.kosthold": "Kosthold",
+  "cat.vaner":    "Vaner og mestring",
+  "cat.selected": "{n} valgt",
+  "bra.trening.t":      "Trente som planlagt",
+  "bra.turer.t":        "Gikk mye",
+  "bra.kosthold.t":     "Fulgte måltidsplanen",
+  "bra.planla.t":       "Planla/preppet måltider",
+  "bra.rytme.t":        "Fast måltidsrytme",
+  "bra.mellommaltid.t": "Sunnere mellommåltider",
+  "bra.vann.t":         "Drakk nok vann",
+  "bra.reise.t":        "Rutiner på reise",
+  "bra.sosialt.t":      "Kontroll i sosiale lag",
+  "bra.selvsnakk.t":    "Positivt selvsnakk",
 
   "wr.s5.eyebrow": "Motbakker",
-  "wr.s5.h":    "Hva sto i veien?",
-  "wr.s5.lede": "Trykk på det som stemmer. Gikk uka bra, hopper du bare videre.",
-  "wr.s5.h.low":    "Hva gjorde uka tung?",
-  "wr.s5.lede.low": "Du satte 1 eller 2 på uka. Trykk på det som traff, så vet vi hvor vi skal begynne.",
-  "wr.s5.aria": "Utfordringer denne uka",
-  "wr.s5.ph":   "F.eks. «Reiste bort tre dager og fikk verken trent eller handlet.»",
-  "wr.s5.help.t": "Ta dette opp med meg",
-  "wr.s5.help.d": "Rapporten flagges, og vi tar kontakt med deg.",
-  "chal.tid.t":        "Tidsklemma",
-  "chal.reise.t":      "Bortreist",
-  "chal.syk.t":        "Sykdom",
-  "chal.sosialt.t":    "Sosiale middager",
-  "chal.kveldssug.t":  "Kveldssug",
-  "chal.sovn.t":       "Sov dårlig",
-  "chal.stress.t":     "Stress på jobb",
-  "chal.skade.t":      "Skade",
+  "wr.s5.h":    "Utfordringer for å nå ukens mål",
+  "wr.s5.lede": "Trykk på det som stemmer. Gikk uken bra, hopper du bare videre.",
+  "wr.s5.lede.low": "Du satte 1 eller 2 på uken. Trykk på det som traff, så vet vi hvor vi skal begynne.",
+  "wr.s5.aria":   "Utfordringer denne uken",
+  "wr.s5.solved": "Hvordan løste du utfordringene?",
+  "wr.s5.ph":     "F.eks. «Handlet inn på søndag, så jeg hadde mat klar de travle dagene.»",
+  "chal.tid.t":         "Tidsklemma",
   "chal.planlegging.t": "Dårlig planlegging",
-  "chal.motivasjon.t": "Lav motivasjon",
-  "chal.alkohol.t":    "Alkohol",
+  "chal.reise.t":       "Bortreist",
+  "chal.syk.t":         "Sykdom",
+  "chal.skade.t":       "Skade",
+  "chal.sosialt.t":     "Sosiale middager",
+  "chal.kveldssug.t":   "Kveldssug",
+  "chal.sovn.t":        "Sov dårlig",
+  "chal.stress.t":      "Stress på jobb",
+  "chal.motivasjon.t":  "Lav motivasjon",
+  "chal.alkohol.t":     "Alkohol",
 
-  "wr.s6.eyebrow": "Neste uke",
-  "wr.s6.h":    "Hva skal du prioritere?",
-  "wr.s6.lede": "Én eller to ting er nok. Dette møter deg igjen i neste ukesrapport.",
-  "wr.s6.aria": "Fokus for neste uke",
-  "wr.s6.ph":   "F.eks. «Legge inn én styrkeøkt til, og handle inn til uka på søndag.»",
+  "wr.s6.eyebrow": "Oppfølging",
+  "wr.s6.h":    "Er det noe du ønsker å ta opp med oss denne uken?",
+  "wr.s6.lede": "Vi ønsker å ta tak i de rette tingene til rett tid.",
+  "wr.s6.yes.t": "Ja, det er noe",
+  "wr.s6.yes.d": "Skriv kort hva det gjelder.",
+  "wr.s6.no.t":  "Nei, ikke denne uken",
+  "wr.s6.no.d":  "Helt greit.",
+  "wr.s6.label": "Hva ønsker du å ta opp?",
+  "wr.s6.ph":    "F.eks. «Hvordan jeg kan planlegge måltider de dagene jeg jobber sent.»",
+
+  "wr.s7.eyebrow": "Neste uke",
+  "wr.s7.h":    "Ditt fokus neste uke",
+  "wr.s7.lede": "Én eller to ting er nok. Dette møter deg igjen i neste ukesrapport.",
+  "wr.s7.aria": "Fokus for neste uke",
+  "wr.s7.ph":   "F.eks. «Legge inn én styrkeøkt til, og handle inn til uken på søndag.»",
   "next.okter.t":     "Flere økter",
   "next.rytme.t":     "Fast måltidsrytme",
   "next.sovn.t":      "Mer søvn",
   "next.kveldssug.t": "Færre kvelder med snacks",
-  "next.handle.t":    "Handle inn til uka",
+  "next.handle.t":    "Handle inn til uken",
   "next.turer.t":     "Gå mer i hverdagen",
   "next.vann.t":      "Drikke mer vann",
   "next.alkohol.t":   "Mindre alkohol",
 
-  "wr.s7.eyebrow": "Nesten sendt",
-  "wr.s7.h":    "Sjekk at alt stemmer",
-  "wr.s7.lede": "Dette er det Kristiane får se.",
+  "wr.s8.eyebrow": "Nesten sendt",
+  "wr.s8.h":    "Sjekk at alt stemmer",
+  "wr.s8.lede": "Dette er det Kristiane får se.",
   "wr.sum.date":      "Dato",
   "wr.sum.weight":    "Vekt",
+  "wr.sum.waist":     "Livvidde",
   "wr.sum.sessions":  "Treningsøkter",
   "wr.sum.scale":     "Egenvurdering",
-  "wr.sum.focus":     "Ukas fokus",
+  "wr.sum.focus":     "Ukens fokus",
   "wr.sum.good":      "Gikk bra",
-  "wr.sum.challenge": "Sto i veien",
+  "wr.sum.challenge": "Utfordringer",
+  "wr.sum.raise":     "Ta opp med oss",
   "wr.sum.next":      "Neste uke",
-  "wr.sum.flag":      "Flagget",
-  "wr.sum.flagyes":   "Ja, ta det opp med meg",
-  "wr.sum.noweight":  "Ikke veid denne uka",
+  "wr.sum.noweight":  "Ikke registrert denne uken",
+  "wr.sum.nowaist":   "Ikke målt",
+  "wr.sum.yes":       "Ja",
+  "wr.sum.no":        "Nei",
   "wr.sum.of5":       "av 5",
 
-  "wr.s8.eyebrow": "Sendt inn",
-  "wr.s8.h":       "Takk. Uke 6 er i boks.",
-  "wr.s8.lede":    "Rapporten ligger hos Kristiane.",
-  "wr.s8.h.quick":    "Vekta er lagret.",
-  "wr.s8.lede.quick": "Resten av rapporten kan du ta når det passer — fram til søndag kveld.",
-  "wr.s8.weightk": "Vekt denne uka",
-  "wr.s8.trendk":  "Egenvurdering · uke 1–6",
-  "wr.s8.trendnote": "Ukene før er eksempeldata i prototypen.",
-  "wr.s8.flagk": "Flagget",
-  "wr.s8.flagv": "Vi tar kontakt med deg",
-  "wr.s8.flagd": "Du ba om at utfordringene tas opp. Rapporten er merket, og du hører fra oss.",
-  "wr.s8.nextk": "Neste rapport",
-  "wr.s8.nextv": "Uke 7 · innen søndag kveld",
-  "wr.s8.nextd": "Ta den når uka er ferdig, mens du husker hvordan den var.",
-  "wr.s8.thisweek": "Denne uka",
-  "wr.s8.down":  "ned {n} kg fra forrige uke",
-  "wr.s8.up":    "opp {n} kg fra forrige uke",
-  "wr.s8.same":  "uendret fra forrige uke",
-  "wr.s8.week":  "U{n}",
-  "wr.s8.aria":  "Egenvurdering per uke, skala 1 til 5: {list}",
+  "wr.s9.eyebrow": "Sendt inn",
+  "wr.s9.h":       "Takk. Uke 6 er i boks.",
+  "wr.s9.lede":    "Rapporten ligger hos Kristiane.",
+  "wr.s9.h.quick":    "Vekten er lagret.",
+  "wr.s9.lede.quick": "Resten av rapporten kan du ta når det passer — fram til søndag kveld.",
+  "wr.s9.weightk":  "Vekt denne uken",
+  "wr.s9.down":     "ned {n} kg fra forrige uke",
+  "wr.s9.up":       "opp {n} kg fra forrige uke",
+  "wr.s9.same":     "uendret fra forrige uke",
+  "wr.s9.avg.down": "Snitt siden første veiing: ned {n} kg per uke",
+  "wr.s9.avg.up":   "Snitt siden første veiing: opp {n} kg per uke",
+  "wr.s9.avg.same": "Snitt siden første veiing: uendret",
+  "wr.s9.weightnote": "Tidligere vekter er eksempeldata i prototypen.",
+  "wr.s9.trendk":   "Egenvurdering · uke 1–6",
+  "wr.s9.trendnote": "Ukene før er eksempeldata i prototypen.",
+  "wr.s9.thisweek": "Denne uken",
+  "wr.s9.week":     "U{n}",
+  "wr.s9.aria":     "Egenvurdering per uke, skala 1 til 5: {list}",
+  "wr.s9.chatk":    "Oppfølging",
+  "wr.s9.chatv":    "I chatten med Kristiane",
+  "wr.s9.chatd":    "Rapporten legges i chatten deres, så dere kan fortsette samtalen der.",
+  "wr.s9.nextk":    "Neste rapport",
+  "wr.s9.nextv":    "Uke 7 · innen søndag kveld",
+  "wr.s9.nextd":    "Ta den når uken er ferdig, mens du husker hvordan den var.",
 
-  "wr.s9.eyebrow": "Rask logging",
-  "wr.s9.h":    "Registrer vekt",
-  "wr.s9.lede": "Vi noterer vekta for denne uka. Resten av rapporten kan du ta senere.",
-  "wr.s9.fine": "Vil du likevel ta hele rapporten? Gå tilbake og velg full ukesrapport."
+  "wr.s10.eyebrow": "Rask logging",
+  "wr.s10.h":    "Registrer vekt",
+  "wr.s10.lede": "Vi noterer vekten for denne uken. Resten av rapporten kan du ta senere.",
+  "wr.s10.fine": "Vil du likevel ta hele rapporten? Gå tilbake og velg full ukesrapport."
 }, {
   "review.proto": "Weekly check-in",
   "review.0": "Start",
-  "review.1": "Numbers",
+  "review.1": "This week's numbers",
   "review.2": "Self-assessment",
-  "review.3": "This week\u2019s focus",
+  "review.3": "This week's focus",
   "review.4": "Went well",
   "review.5": "Challenges",
-  "review.6": "Next week",
-  "review.7": "Summary",
-  "review.8": "Receipt",
-  "review.9": "Log weight",
-  "common.optional": "Optional",
-  "common.change":   "Change",
+  "review.6": "Raise with us",
+  "review.7": "Next week",
+  "review.8": "Summary",
+  "review.9": "Receipt",
+  "review.10": "Log weight",
+
+  "common.optional":   "Optional",
+  "common.change":     "Change",
   "common.unanswered": "Not answered",
-  "common.none":     "Nothing selected",
-  "scale.empty":     "Pick a number from 1 to 5",
+  "scale.empty":       "Pick a number from 1 to 5",
 
   "btn.continue": "Continue",
   "btn.summary":  "See summary",
@@ -663,40 +809,52 @@ KS.addDict({
   "wr.ctx.week": "Week 6",
   "wr.ctx.of":   "of 16 in the program",
 
-  "wr.alert.scale":  "Pick a number from 1 to 5 for how the week has been.",
-  "wr.alert.weight": "Enter your weight to save. To skip it, go back and choose the full report.",
-  "wr.alert.number": "Write the weight as a number, for example 84.6.",
+  "wr.alert.scale":   "Pick a number from 1 to 5 for how the week has been.",
+  "wr.alert.weight":  "Enter your weight, or tick the box to skip the weigh-in this week.",
+  "wr.alert.weightq": "Enter your weight to save.",
+  "wr.alert.number":  "Write the weight as a number, for example 84.6.",
+  "wr.alert.waist":   "Write the waist as a number in centimetres, for example 94.",
+  "wr.alert.raise":   "Choose yes or no.",
 
-  "wr.reveal.more":  "Anything to add?",
-  "wr.wc.count":     "{n} / {max} words",
-  "wr.wc.over":      "Try trimming it a little",
-  "wr.reveal.less":  "Hide the field",
-  "wr.reveal.own":   "Write your own",
-  "wr.reveal.focus": "Edit the focus text",
+  "wr.reveal.add":       "Anything to add?",
+  "wr.reveal.less":      "Hide the field",
+  "wr.reveal.own":       "Write your own",
+  "wr.reveal.howto":     "How to measure your waist",
+  "wr.reveal.howtoless": "Hide the instructions",
+
+  "wr.lc.count": "{n} / {max} characters",
+  "wr.lc.over":  "Try trimming it a little",
 
   "wr.s0.eyebrow": "Weekly check-in",
   "wr.s0.h":    "How has your week been?",
   "wr.s0.lede": "Kristiane reads your report before the next follow-up. Short on time? Just log your weight.",
   "wr.s0.fine": "You can edit or finish the rest until Sunday evening.",
-  "wr.path.full.time": "2 minutes",
-  "wr.path.full.name": "Full check-in",
-  "wr.path.full.desc": "Weight, self-assessment and the week's highlights. Most of it is tapping.",
   "wr.path.quick.time": "10 seconds",
   "wr.path.quick.name": "Log weight",
   "wr.path.quick.desc": "Log your weight now and do the rest later. Better than skipping the week entirely.",
+  "wr.path.full.time":  "2 minutes",
+  "wr.path.full.name":  "Full check-in",
+  "wr.path.full.desc":  "Weight and waist, self-assessment and the week's highlights. Most of it is tapping.",
 
   "wr.s1.eyebrow": "Numbers",
   "wr.s1.h":    "This week's numbers",
-  "wr.s1.lede": "Weigh yourself at the same time of day if you can, before breakfast.",
+  "wr.s1.lede": "Weigh and measure yourself at the same time each week if you can, in the morning before breakfast.",
   "wr.s1.date": "Date",
   "wr.s1.datehint": "Is the report for an earlier week? Pick the date it applies to.",
-  "wr.s1.weight": "Weight",
+  "wr.s1.weight":   "Weight",
   "wr.s1.weightph": "84.6",
-  "wr.s1.weighthint": "Skipped the weigh-in this week? Leave the field empty.",
+  "wr.s1.skip.t":   "Don't log weight this week",
+  "wr.s1.skip.d":   "The week is left out of your weight curve, so it doesn't skew it.",
+  "wr.s1.waist":    "Waist",
+  "wr.s1.waistph":  "94",
   "wr.s1.sessions": "Training sessions this week",
   "wr.s1.sessionsunit": "sessions",
   "wr.s1.less": "Fewer sessions",
   "wr.s1.more": "More sessions",
+  "wr.howto.1": "Stand up straight with your feet slightly apart, and measure on bare skin.",
+  "wr.howto.2": "Find the midpoint between your lowest rib and the top of your hip bone.",
+  "wr.howto.3": "Wrap the tape level around your waist, snug against the skin without squeezing.",
+  "wr.howto.4": "Breathe out gently, and read the measurement before you breathe in again.",
 
   "wr.s2.eyebrow": "Self-assessment",
   "wr.s2.h":    "How has your week been?",
@@ -704,19 +862,19 @@ KS.addDict({
   "wr.s2.aria": "Scale 1 to 5 for how the week has been",
   "wr.scale.low":  "1 · Tough week",
   "wr.scale.high": "5 · Great week",
-  "uke.1.t": "Tough week",  "uke.1.d": "Little went as planned, and motivation is low.",
-  "uke.2.t": "A bit hard",  "uke.2.d": "Some sessions slipped, and eating went off track.",
-  "uke.3.t": "Middling",    "uke.3.d": "About as expected. Some of it worked, some didn't.",
-  "uke.4.t": "Good week",   "uke.4.d": "Most of it went to plan, and I can feel progress.",
-  "uke.5.t": "Great week",  "uke.5.d": "It all clicked. Training, food and energy in place.",
+  "uke.1.t": "Tough week", "uke.1.d": "Little went as planned, and motivation is low.",
+  "uke.2.t": "A bit hard", "uke.2.d": "Some sessions slipped, and eating went off track.",
+  "uke.3.t": "Middling",   "uke.3.d": "About as expected. Some of it worked, some didn't.",
+  "uke.4.t": "Good week",  "uke.4.d": "Most of it went to plan, and I can feel progress.",
+  "uke.5.t": "Great week", "uke.5.d": "It all clicked. Training, food and energy in place.",
 
   "wr.s3.eyebrow": "Focus",
   "wr.s3.h":    "Did it go to plan?",
   "wr.s3.lede": "This is the focus you set yourself for this week.",
   "wr.s3.from": "Your focus this week",
-  "wr.s3.label": "This week's focus",
   "wr.s3.aria": "How the focus went",
   "wr.s3.prefill": "Get three sessions in, and eat breakfast every day.",
+  "wr.s3.ph":   "e.g. “Got two sessions in, but skipped breakfast most days.”",
   "fokus.ja.t":     "Nailed it",
   "fokus.delvis.t": "Partly",
   "fokus.nei.t":    "Didn't happen",
@@ -724,48 +882,57 @@ KS.addDict({
 
   "wr.s4.eyebrow": "Wins",
   "wr.s4.h":    "What went well?",
-  "wr.s4.lede": "Tap what fits. Pick as many as you like.",
-  "wr.s4.aria": "What went well",
+  "wr.s4.lede": "Open a category and tap what fits. Pick as many as you like.",
   "wr.s4.ph":   "e.g. “Managed to say no to the cake at work three times.”",
-  "bra.trening.t":   "Trained as planned",
-  "bra.kosthold.t":  "Followed the meal plan",
-  "bra.sovn.t":      "Slept well",
-  "bra.overskudd.t": "More energy",
-  "bra.turer.t":     "Walked a lot",
-  "bra.planla.t":    "Planned or prepped meals",
-  "bra.reise.t":     "Routines while travelling",
-  "bra.sosialt.t":   "In control at social events",
-  "bra.selvsnakk.t": "Positive self-talk",
-  "bra.rytme.t":     "Steady meal rhythm",
-  "bra.snacks.t":    "Said no to snacks",
-  "bra.vann.t":      "Drank enough water",
+  "cat.trening":  "Training",
+  "cat.kosthold": "Nutrition",
+  "cat.vaner":    "Habits and coping",
+  "cat.selected": "{n} selected",
+  "bra.trening.t":      "Trained as planned",
+  "bra.turer.t":        "Walked a lot",
+  "bra.kosthold.t":     "Followed the meal plan",
+  "bra.planla.t":       "Planned or prepped meals",
+  "bra.rytme.t":        "Steady meal rhythm",
+  "bra.mellommaltid.t": "Healthier snacks",
+  "bra.vann.t":         "Drank enough water",
+  "bra.reise.t":        "Routines while travelling",
+  "bra.sosialt.t":      "In control at social events",
+  "bra.selvsnakk.t":    "Positive self-talk",
 
   "wr.s5.eyebrow": "Obstacles",
-  "wr.s5.h":    "What got in the way?",
+  "wr.s5.h":    "Challenges in reaching this week's goals",
   "wr.s5.lede": "Tap what fits. If the week went well, just move on.",
-  "wr.s5.h.low":    "What made the week tough?",
   "wr.s5.lede.low": "You rated the week 1 or 2. Tap what hit home, so we know where to start.",
-  "wr.s5.aria": "Challenges this week",
-  "wr.s5.ph":   "e.g. “Away for three days and got neither training nor shopping done.”",
-  "wr.s5.help.t": "Bring this up with me",
-  "wr.s5.help.d": "Your report gets flagged, and we'll get in touch with you.",
-  "chal.tid.t":        "No time",
-  "chal.reise.t":      "Travelling",
-  "chal.syk.t":        "Illness",
-  "chal.sosialt.t":    "Social dinners",
-  "chal.kveldssug.t":  "Evening cravings",
-  "chal.sovn.t":       "Slept badly",
-  "chal.stress.t":     "Stress at work",
-  "chal.skade.t":      "Injury",
+  "wr.s5.aria":   "Challenges this week",
+  "wr.s5.solved": "How did you handle the challenges?",
+  "wr.s5.ph":     "e.g. “Shopped on Sunday, so I had food ready on the busy days.”",
+  "chal.tid.t":         "No time",
   "chal.planlegging.t": "Poor planning",
-  "chal.motivasjon.t": "Low motivation",
-  "chal.alkohol.t":    "Alcohol",
+  "chal.reise.t":       "Travelling",
+  "chal.syk.t":         "Illness",
+  "chal.skade.t":       "Injury",
+  "chal.sosialt.t":     "Social dinners",
+  "chal.kveldssug.t":   "Evening cravings",
+  "chal.sovn.t":        "Slept badly",
+  "chal.stress.t":      "Stress at work",
+  "chal.motivasjon.t":  "Low motivation",
+  "chal.alkohol.t":     "Alcohol",
 
-  "wr.s6.eyebrow": "Next week",
-  "wr.s6.h":    "What will you prioritise?",
-  "wr.s6.lede": "One or two things is plenty. This comes back to you in next week's report.",
-  "wr.s6.aria": "Focus for next week",
-  "wr.s6.ph":   "e.g. “Add one more strength session, and shop for the week on Sunday.”",
+  "wr.s6.eyebrow": "Follow-up",
+  "wr.s6.h":    "Is there anything you'd like to raise with us this week?",
+  "wr.s6.lede": "We want to tackle the right things at the right time.",
+  "wr.s6.yes.t": "Yes, there's something",
+  "wr.s6.yes.d": "Write briefly what it's about.",
+  "wr.s6.no.t":  "No, not this week",
+  "wr.s6.no.d":  "That's fine.",
+  "wr.s6.label": "What would you like to raise?",
+  "wr.s6.ph":    "e.g. “How I can plan meals on the days I work late.”",
+
+  "wr.s7.eyebrow": "Next week",
+  "wr.s7.h":    "Your focus next week",
+  "wr.s7.lede": "One or two things is plenty. This comes back to you in next week's report.",
+  "wr.s7.aria": "Focus for next week",
+  "wr.s7.ph":   "e.g. “Add one more strength session, and shop for the week on Sunday.”",
   "next.okter.t":     "More sessions",
   "next.rytme.t":     "Steady meal rhythm",
   "next.sovn.t":      "More sleep",
@@ -775,81 +942,102 @@ KS.addDict({
   "next.vann.t":      "Drink more water",
   "next.alkohol.t":   "Less alcohol",
 
-  "wr.s7.eyebrow": "Almost sent",
-  "wr.s7.h":    "Check that everything's right",
-  "wr.s7.lede": "This is what Kristiane will see.",
+  "wr.s8.eyebrow": "Almost sent",
+  "wr.s8.h":    "Check that everything's right",
+  "wr.s8.lede": "This is what Kristiane will see.",
   "wr.sum.date":      "Date",
   "wr.sum.weight":    "Weight",
+  "wr.sum.waist":     "Waist",
   "wr.sum.sessions":  "Training sessions",
   "wr.sum.scale":     "Self-assessment",
   "wr.sum.focus":     "This week's focus",
   "wr.sum.good":      "Went well",
-  "wr.sum.challenge": "Got in the way",
+  "wr.sum.challenge": "Challenges",
+  "wr.sum.raise":     "Raise with us",
   "wr.sum.next":      "Next week",
-  "wr.sum.flag":      "Flagged",
-  "wr.sum.flagyes":   "Yes, bring it up with me",
-  "wr.sum.noweight":  "Not weighed this week",
+  "wr.sum.noweight":  "Not logged this week",
+  "wr.sum.nowaist":   "Not measured",
+  "wr.sum.yes":       "Yes",
+  "wr.sum.no":        "No",
   "wr.sum.of5":       "of 5",
 
-  "wr.s8.eyebrow": "Submitted",
-  "wr.s8.h":       "Thanks. Week 6 is done.",
-  "wr.s8.lede":    "Your report is with Kristiane.",
-  "wr.s8.h.quick":    "Weight saved.",
-  "wr.s8.lede.quick": "You can do the rest of the report whenever it suits — until Sunday evening.",
-  "wr.s8.weightk": "Weight this week",
-  "wr.s8.trendk":  "Self-assessment · weeks 1–6",
-  "wr.s8.trendnote": "Earlier weeks are example data in this prototype.",
-  "wr.s8.flagk": "Flagged",
-  "wr.s8.flagv": "We'll be in touch",
-  "wr.s8.flagd": "You asked for the challenges to be picked up. Your report is marked, and you'll hear from us.",
-  "wr.s8.nextk": "Next report",
-  "wr.s8.nextv": "Week 7 · by Sunday evening",
-  "wr.s8.nextd": "Do it when the week is done, while you still remember how it went.",
-  "wr.s8.thisweek": "This week",
-  "wr.s8.down":  "down {n} kg from last week",
-  "wr.s8.up":    "up {n} kg from last week",
-  "wr.s8.same":  "unchanged from last week",
-  "wr.s8.week":  "W{n}",
-  "wr.s8.aria":  "Self-assessment per week, scale 1 to 5: {list}",
+  "wr.s9.eyebrow": "Submitted",
+  "wr.s9.h":       "Thanks. Week 6 is done.",
+  "wr.s9.lede":    "Your report is with Kristiane.",
+  "wr.s9.h.quick":    "Weight saved.",
+  "wr.s9.lede.quick": "You can do the rest of the report whenever it suits — until Sunday evening.",
+  "wr.s9.weightk":  "Weight this week",
+  "wr.s9.down":     "down {n} kg from last week",
+  "wr.s9.up":       "up {n} kg from last week",
+  "wr.s9.same":     "unchanged from last week",
+  "wr.s9.avg.down": "Average since first weigh-in: down {n} kg per week",
+  "wr.s9.avg.up":   "Average since first weigh-in: up {n} kg per week",
+  "wr.s9.avg.same": "Average since first weigh-in: unchanged",
+  "wr.s9.weightnote": "Earlier weights are example data in this prototype.",
+  "wr.s9.trendk":   "Self-assessment · weeks 1–6",
+  "wr.s9.trendnote": "Earlier weeks are example data in this prototype.",
+  "wr.s9.thisweek": "This week",
+  "wr.s9.week":     "W{n}",
+  "wr.s9.aria":     "Self-assessment per week, scale 1 to 5: {list}",
+  "wr.s9.chatk":    "Follow-up",
+  "wr.s9.chatv":    "In your chat with Kristiane",
+  "wr.s9.chatd":    "Your report is posted in your chat, so you can carry on the conversation there.",
+  "wr.s9.nextk":    "Next report",
+  "wr.s9.nextv":    "Week 7 · by Sunday evening",
+  "wr.s9.nextd":    "Do it when the week is done, while you still remember how it went.",
 
-  "wr.s9.eyebrow": "Quick log",
-  "wr.s9.h":    "Log weight",
-  "wr.s9.lede": "We'll note your weight for this week. You can do the rest of the report later.",
-  "wr.s9.fine": "Want to do the full report after all? Go back and choose the full check-in."
+  "wr.s10.eyebrow": "Quick log",
+  "wr.s10.h":    "Log weight",
+  "wr.s10.lede": "We'll note your weight for this week. You can do the rest of the report later.",
+  "wr.s10.fine": "Want to do the full report after all? Go back and choose the full check-in."
 });
 
 (function () {
   "use strict";
 
-  var FORM_STEPS = 7;
-  var HISTORY = [3, 2, 4, 3, 4];   // eksempeldata: egenvurdering uke 1–5
-  var LAST_WEIGHT = 88.2;          // eksempeldata: forrige registrerte vekt
+  /* Stegene i den fulle rapporten (1–8). 9 er kvittering, 10 er Registrer vekt. */
+  var FORM_STEPS = 8;
+  var STEP = { START: 0, TALL: 1, SKALA: 2, FOKUS: 3, BRA: 4, UTFORDRINGER: 5,
+               TA_OPP: 6, NESTE: 7, OPPSUMMERING: 8, KVITTERING: 9, VEKT: 10 };
+
+  /* Eksempeldata, merket som det i grensesnittet */
+  var HISTORY = [3, 2, 4, 3, 4];     // egenvurdering uke 1–5
+  var LAST_WEIGHT = 87.3;            // forrige ukes vekt
+  var FIRST_WEIGHT = 90.6;           // første registrerte vekt …
+  var FIRST_WEIGH_DAYS_AGO = 35;     // … fem uker før i dag
+
   var MAX_SESSIONS = 14;
+  var CHAR_LIMIT = 250;              // mykt tak: gult over grensen, stopper aldri
   var t = function (k) { return KS.t(k); };
 
-  /* Merkelappene. Rekkefølgen er den brukeren møter dem i. */
+  /* Merkelapper uten kategori */
   var GROUPS = {
-    fokus:      { prefix: "fokus", single: true,
-                  keys: ["ja", "delvis", "nei", "annet"] },
-    bra:        { prefix: "bra", single: false,
-                  keys: ["trening", "kosthold", "planla", "rytme", "snacks", "vann", "sovn", "overskudd", "turer", "reise", "sosialt", "selvsnakk"] },
-    utfordring: { prefix: "chal", single: false,
-                  keys: ["tid", "planlegging", "reise", "syk", "skade", "sosialt", "kveldssug", "sovn", "stress", "motivasjon", "alkohol"] },
-    neste:      { prefix: "next", single: false,
-                  keys: ["okter", "rytme", "sovn", "kveldssug", "handle", "turer", "vann", "alkohol"] }
+    fokus:      { prefix: "fokus", single: true, keys: ["ja", "delvis", "nei", "annet"] },
+    utfordring: { prefix: "chal", keys: ["tid", "planlegging", "reise", "syk", "skade", "sosialt",
+                                         "kveldssug", "sovn", "stress", "motivasjon", "alkohol"] },
+    neste:      { prefix: "next", keys: ["okter", "rytme", "sovn", "kveldssug", "handle", "turer", "vann", "alkohol"] },
+    bra:        { prefix: "bra" }
   };
 
+  /* «Gikk bra» er delt i kategorier som foldes ut. Kickstart leverer endelige kategorier og valg. */
+  var CATS = [
+    { key: "trening",  items: ["trening", "turer"] },
+    { key: "kosthold", items: ["kosthold", "planla", "rytme", "mellommaltid", "vann"] },
+    { key: "vaner",    items: ["reise", "sosialt", "selvsnakk"] }
+  ];
+
   var blank = {
-    dato: "", vekt: "", okter: 0, uke: null,
-    fokusSvar: null, fokus: "",
+    dato: "", vekt: "", hoppOverVekt: false, livvidde: "", okter: 0, uke: null,
+    fokusSvar: null, fokusTekst: "",
     bra: [], braTekst: "",
     utfordring: [], utfordringTekst: "",
-    neste: [], nesteTekst: "",
-    flagg: false
+    taOpp: null, taOppTekst: "",
+    neste: [], nesteTekst: ""
   };
   var state = JSON.parse(JSON.stringify(blank));
-  var step = 0;
+  var step = STEP.START;
   var mode = "full";
+  var openCats = {};
 
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -865,29 +1053,28 @@ KS.addDict({
   var elAlertText = $("#alert-text");
 
   var checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg>';
+  var chevronSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 
   /* ---------- Dato ---------- */
-  function today() {
-    var d = new Date();
-    return d.getFullYear() + "-" +
-      String(d.getMonth() + 1).padStart(2, "0") + "-" +
-      String(d.getDate()).padStart(2, "0");
+  function isoDate(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
   }
+  function today() { return isoDate(new Date()); }
   function prettyDate(iso) {
     if (!iso) { return ""; }
     var p = iso.split("-");
     return p.length === 3 ? p[2] + "." + p[1] + "." + p[0] : iso;
   }
+  function decimal(n) {
+    var s = String(Math.round(n * 10) / 10);
+    return KS.lang === "en" ? s : s.replace(".", ",");
+  }
 
   state.dato = today();
-  $("#dato").value = state.dato;
-  $("#dato-q").value = state.dato;
+  function syncDates() { $("#dato").value = state.dato; $("#dato-q").value = state.dato; }
+  syncDates();
   $$("#dato, #dato-q").forEach(function (input) {
-    input.addEventListener("change", function () {
-      state.dato = input.value;
-      $("#dato").value = input.value;
-      $("#dato-q").value = input.value;
-    });
+    input.addEventListener("change", function () { state.dato = input.value; syncDates(); });
   });
 
   /* ---------- Treningsøkter ---------- */
@@ -896,60 +1083,126 @@ KS.addDict({
     $("#okter-minus").disabled = state.okter <= 0;
     $("#okter-plus").disabled = state.okter >= MAX_SESSIONS;
   }
-  $("#okter-minus").addEventListener("click", function () {
-    if (state.okter > 0) { state.okter--; paintSessions(); }
-  });
-  $("#okter-plus").addEventListener("click", function () {
-    if (state.okter < MAX_SESSIONS) { state.okter++; paintSessions(); }
+  $("#okter-minus").addEventListener("click", function () { if (state.okter > 0) { state.okter--; paintSessions(); } });
+  $("#okter-plus").addEventListener("click", function () { if (state.okter < MAX_SESSIONS) { state.okter++; paintSessions(); } });
+
+  /* ---------- Hold uken utenfor vektkurven ---------- */
+  function paintSkip() {
+    var btn = $("#skip-weight");
+    btn.classList.toggle("is-on", state.hoppOverVekt);
+    btn.setAttribute("aria-pressed", state.hoppOverVekt ? "true" : "false");
+    $("#vekt").disabled = state.hoppOverVekt;
+  }
+  $("#skip-weight").addEventListener("click", function () {
+    state.hoppOverVekt = !state.hoppOverVekt;
+    paintSkip();
+    clearAlert();
   });
 
   /* ---------- Merkelapper ---------- */
-  function buildChips(name) {
-    var group = GROUPS[name];
-    var box = $("#chips-" + name);
+  function isOn(group, key) {
+    return GROUPS[group].single ? state.fokusSvar === key : state[group].indexOf(key) !== -1;
+  }
+
+  function makeChip(group, key) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    b.setAttribute("data-group", group);
+    b.setAttribute("data-key", key);
+    b.innerHTML = checkSvg + '<span class="chip-t"></span>';
+    $(".chip-t", b).textContent = t(GROUPS[group].prefix + "." + key + ".t");
+    b.addEventListener("click", function () {
+      if (GROUPS[group].single) {
+        state.fokusSvar = state.fokusSvar === key ? null : key;
+      } else {
+        var at = state[group].indexOf(key);
+        if (at === -1) { state[group].push(key); } else { state[group].splice(at, 1); }
+      }
+      paintChips(group);
+      if (group === "bra") { paintCatCounts(); }
+      clearAlert();
+    });
+    return b;
+  }
+
+  function buildChips(group) {
+    var box = $("#chips-" + group);
     box.textContent = "";
-    group.keys.forEach(function (key) {
-      var b = document.createElement("button");
-      b.type = "button";
-      b.className = "chip";
-      b.setAttribute("data-key", key);
-      b.innerHTML = checkSvg + '<span class="chip-t"></span>';
-      $(".chip-t", b).textContent = t(group.prefix + "." + key + ".t");
+    GROUPS[group].keys.forEach(function (key) { box.appendChild(makeChip(group, key)); });
+    paintChips(group);
+  }
 
-      var on = group.single ? state.fokusSvar === key : state[name].indexOf(key) !== -1;
+  function paintChips(group) {
+    $$('.chip[data-group="' + group + '"]').forEach(function (b) {
+      var on = isOn(group, b.getAttribute("data-key"));
       b.classList.toggle("is-on", on);
       b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
 
-      b.addEventListener("click", function () {
-        if (group.single) {
-          state.fokusSvar = state.fokusSvar === key ? null : key;
-        } else {
-          var at = state[name].indexOf(key);
-          if (at === -1) { state[name].push(key); } else { state[name].splice(at, 1); }
-        }
-        paintChips(name);
-        clearAlert();
+  function buildCats() {
+    var box = $("#cats-bra");
+    box.textContent = "";
+    CATS.forEach(function (cat) {
+      var wrap = document.createElement("div");
+      wrap.className = "cat";
+
+      var bodyId = "cat-bra-" + cat.key;
+      var head = document.createElement("button");
+      head.type = "button";
+      head.className = "cat-head";
+      head.setAttribute("aria-controls", bodyId);
+      head.setAttribute("data-cat", cat.key);
+      head.innerHTML = '<span class="cat-name"></span><span class="cat-count" hidden></span>' + chevronSvg;
+      $(".cat-name", head).textContent = t("cat." + cat.key);
+
+      var body = document.createElement("div");
+      body.className = "cat-body";
+      body.id = bodyId;
+      var chips = document.createElement("div");
+      chips.className = "chips";
+      chips.setAttribute("role", "group");
+      chips.setAttribute("aria-label", t("cat." + cat.key));
+      cat.items.forEach(function (key) { chips.appendChild(makeChip("bra", key)); });
+      body.appendChild(chips);
+
+      head.addEventListener("click", function () {
+        openCats[cat.key] = !openCats[cat.key];
+        paintCats();
       });
-      box.appendChild(b);
+
+      wrap.appendChild(head);
+      wrap.appendChild(body);
+      box.appendChild(wrap);
+    });
+    paintChips("bra");
+    paintCats();
+    paintCatCounts();
+  }
+
+  function paintCats() {
+    CATS.forEach(function (cat) {
+      var open = !!openCats[cat.key];
+      var head = $('.cat-head[data-cat="' + cat.key + '"]');
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+      $("#cat-bra-" + cat.key).hidden = !open;
     });
   }
 
-  function paintChips(name) {
-    var group = GROUPS[name];
-    $$("#chips-" + name + " .chip").forEach(function (b) {
-      var key = b.getAttribute("data-key");
-      var on = group.single ? state.fokusSvar === key : state[name].indexOf(key) !== -1;
-      b.classList.toggle("is-on", on);
-      b.setAttribute("aria-pressed", on ? "true" : "false");
+  function paintCatCounts() {
+    CATS.forEach(function (cat) {
+      var n = cat.items.filter(function (k) { return state.bra.indexOf(k) !== -1; }).length;
+      var el = $('.cat-head[data-cat="' + cat.key + '"] .cat-count');
+      el.hidden = n === 0;
+      el.textContent = t("cat.selected").replace("{n}", String(n));
     });
   }
 
-  function chipText(name) {
-    var group = GROUPS[name];
-    if (group.single) {
-      return state.fokusSvar ? t(group.prefix + "." + state.fokusSvar + ".t") : "";
-    }
-    return state[name].map(function (k) { return t(group.prefix + "." + k + ".t"); }).join(" · ");
+  function chipText(group) {
+    var g = GROUPS[group];
+    if (g.single) { return state.fokusSvar ? t(g.prefix + "." + state.fokusSvar + ".t") : ""; }
+    return state[group].map(function (k) { return t(g.prefix + "." + k + ".t"); }).join(" · ");
   }
 
   /* ---------- Vis mer ---------- */
@@ -970,40 +1223,27 @@ KS.addDict({
   function paintReveals() {
     $$(".reveal").forEach(function (btn) {
       var open = btn.getAttribute("aria-expanded") === "true";
-      var label = btn.getAttribute("data-reveal") === "neste-wrap" ? "wr.reveal.own"
-                : btn.getAttribute("data-reveal") === "fokus-wrap" ? "wr.reveal.focus"
-                : "wr.reveal.more";
-      $("span", btn).textContent = open ? t("wr.reveal.less") : t(label);
+      $("span", btn).textContent = t(btn.getAttribute(open ? "data-open" : "data-closed"));
     });
   }
 
-  /* ---------- Ordteller: mykt tak ----------
-     Viser antall ord under hvert "legg til"-felt. Over grensen blir feltet
-     og telleren gule, men det stopper aldri skrivingen. */
-  var WORD_LIMIT = 100;
-
-  function countWords(text) {
-    var m = String(text || "").trim().match(/\S+/g);
-    return m ? m.length : 0;
-  }
-
+  /* ---------- Tegnteller: mykt tak ---------- */
   function paintCounter(field) {
     var el = document.querySelector('[data-count-for="' + field.id + '"]');
     if (!el) { return; }
-    var n = countWords(field.value);
-    var over = n > WORD_LIMIT;
+    var n = field.value.length;
+    var over = n > CHAR_LIMIT;
     field.classList.toggle("is-over", over);
     el.classList.toggle("is-over", over);
     el.textContent = "";
     var pill = document.createElement("span");
     pill.className = "wc-pill";
     var num = document.createElement("b");
-    num.textContent = t("wr.wc.count").replace("{n}", String(n)).replace("{max}", String(WORD_LIMIT));
+    num.textContent = t("wr.lc.count").replace("{n}", String(n)).replace("{max}", String(CHAR_LIMIT));
     pill.appendChild(num);
-    if (over) { pill.appendChild(document.createTextNode(" · " + t("wr.wc.over"))); }
+    if (over) { pill.appendChild(document.createTextNode(" · " + t("wr.lc.over"))); }
     el.appendChild(pill);
   }
-
   function paintCounters() {
     $$("[data-count-for]").forEach(function (el) {
       var f = document.getElementById(el.getAttribute("data-count-for"));
@@ -1011,28 +1251,39 @@ KS.addDict({
     });
   }
 
-  /* ---------- Fritekst ---------- */
+  /* ---------- Fritekst og tall ---------- */
   $$("[data-bind]").forEach(function (f) {
     f.addEventListener("input", function () {
       var key = f.getAttribute("data-bind");
       state[key] = f.value;
-      if (key === "vekt") {
-        $$('[data-bind="vekt"]').forEach(function (o) { if (o !== f) { o.value = f.value; } });
+      /* Vekt og livvidde finnes både i full rapport og Registrer vekt */
+      if (key === "vekt" || key === "livvidde") {
+        $$('[data-bind="' + key + '"]').forEach(function (o) { if (o !== f) { o.value = f.value; } });
       }
       paintCounter(f);
       clearAlert();
     });
   });
 
-  /* ---------- Flagg ---------- */
-  $("#help-flag").addEventListener("click", function () {
-    state.flagg = !state.flagg;
-    this.classList.toggle("is-on", state.flagg);
-    this.setAttribute("aria-pressed", state.flagg ? "true" : "false");
+  /* ---------- Ta opp med oss ---------- */
+  function paintRaise() {
+    $$("[data-raise]").forEach(function (b) {
+      var on = (b.getAttribute("data-raise") === "ja") === state.taOpp && state.taOpp !== null;
+      b.classList.toggle("is-on", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    $("#taopp-wrap").hidden = state.taOpp !== true;
+  }
+  $$("[data-raise]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      state.taOpp = b.getAttribute("data-raise") === "ja";
+      paintRaise();
+      clearAlert();
+    });
   });
 
   /* ---------- Validering ---------- */
-  function parseWeight(raw) {
+  function parseNum(raw) {
     var v = String(raw || "").trim().replace(",", ".");
     if (!v) { return null; }
     var n = Number(v);
@@ -1040,12 +1291,22 @@ KS.addDict({
   }
 
   function blocker(n) {
-    if (n === 1 || n === 9) {
-      var w = parseWeight(state.vekt);
-      if (isNaN(w)) { return t("wr.alert.number"); }
-      if (n === 9 && w === null) { return t("wr.alert.weight"); }
+    if (n === STEP.TALL) {
+      if (!state.hoppOverVekt) {
+        var w = parseNum(state.vekt);
+        if (w === null) { return t("wr.alert.weight"); }
+        if (isNaN(w)) { return t("wr.alert.number"); }
+      }
+      if (isNaN(parseNum(state.livvidde))) { return t("wr.alert.waist"); }
     }
-    if (n === 2 && state.uke === null) { return t("wr.alert.scale"); }
+    if (n === STEP.VEKT) {
+      var wq = parseNum(state.vekt);
+      if (wq === null) { return t("wr.alert.weightq"); }
+      if (isNaN(wq)) { return t("wr.alert.number"); }
+      if (isNaN(parseNum(state.livvidde))) { return t("wr.alert.waist"); }
+    }
+    if (n === STEP.SKALA && state.uke === null) { return t("wr.alert.scale"); }
+    if (n === STEP.TA_OPP && state.taOpp === null) { return t("wr.alert.raise"); }
     return null;
   }
 
@@ -1097,10 +1358,9 @@ KS.addDict({
     read.appendChild(n); read.appendChild(d2);
   }
 
-  /* ---------- Utfordringssteget følger egenvurderingen ---------- */
+  /* Tung uke gir en mykere innledning på utfordringene */
   function paintChallenge() {
     var low = state.uke !== null && state.uke <= 2;
-    $("#s5-h").textContent = t(low ? "wr.s5.h.low" : "wr.s5.h");
     $("#s5-lede").textContent = t(low ? "wr.s5.lede.low" : "wr.s5.lede");
   }
 
@@ -1144,21 +1404,23 @@ KS.addDict({
   function buildSummary() {
     var box = $("#summary");
     box.textContent = "";
-    var w = parseWeight(state.vekt);
+    var w = parseNum(state.vekt);
+    var l = parseNum(state.livvidde);
 
-    box.appendChild(row(t("wr.sum.date"), prettyDate(state.dato), 1));
+    box.appendChild(row(t("wr.sum.date"), prettyDate(state.dato), STEP.TALL));
     box.appendChild(row(t("wr.sum.weight"),
-      w ? w.toString().replace(".", ",") + " kg" : t("wr.sum.noweight"), 1));
-    box.appendChild(row(t("wr.sum.sessions"), String(state.okter), 1));
+      state.hoppOverVekt ? t("wr.sum.noweight") : (w ? decimal(w) + " kg" : ""), STEP.TALL));
+    box.appendChild(row(t("wr.sum.waist"), l ? decimal(l) + " cm" : t("wr.sum.nowaist"), STEP.TALL));
+    box.appendChild(row(t("wr.sum.sessions"), String(state.okter), STEP.TALL));
     box.appendChild(row(t("wr.sum.scale"),
-      state.uke ? state.uke + " " + t("wr.sum.of5") + " · " + t("uke." + state.uke + ".t") : "", 2));
-    box.appendChild(row(t("wr.sum.focus"),     chipText("fokus"), 3, state.fokus));
-    box.appendChild(row(t("wr.sum.good"),      chipText("bra"), 4, state.braTekst));
-    box.appendChild(row(t("wr.sum.challenge"), chipText("utfordring"), 5, state.utfordringTekst));
-    box.appendChild(row(t("wr.sum.next"),      chipText("neste"), 6, state.nesteTekst));
-    if (state.flagg) {
-      box.appendChild(row(t("wr.sum.flag"), t("wr.sum.flagyes"), 5));
-    }
+      state.uke ? state.uke + " " + t("wr.sum.of5") + " · " + t("uke." + state.uke + ".t") : "", STEP.SKALA));
+    box.appendChild(row(t("wr.sum.focus"), chipText("fokus"), STEP.FOKUS, state.fokusTekst));
+    box.appendChild(row(t("wr.sum.good"), chipText("bra"), STEP.BRA, state.braTekst));
+    box.appendChild(row(t("wr.sum.challenge"), chipText("utfordring"), STEP.UTFORDRINGER, state.utfordringTekst));
+    box.appendChild(row(t("wr.sum.raise"),
+      state.taOpp === null ? "" : t(state.taOpp ? "wr.sum.yes" : "wr.sum.no"),
+      STEP.TA_OPP, state.taOpp ? state.taOppTekst : ""));
+    box.appendChild(row(t("wr.sum.next"), chipText("neste"), STEP.NESTE, state.nesteTekst));
   }
 
   /* ---------- Trend ---------- */
@@ -1176,7 +1438,7 @@ KS.addDict({
     var svg = document.createElementNS(NS, "svg");
     svg.setAttribute("viewBox", "0 0 " + W + " " + H);
     svg.setAttribute("role", "img");
-    svg.setAttribute("aria-label", t("wr.s8.aria").replace("{list}", series.join(", ")));
+    svg.setAttribute("aria-label", t("wr.s9.aria").replace("{list}", series.join(", ")));
 
     function add(tag, attrs, parent) {
       var el = document.createElementNS(NS, tag);
@@ -1187,10 +1449,8 @@ KS.addDict({
 
     add("line", { x1: x0, y1: yFor(3), x2: x1, y2: yFor(3),
       stroke: "var(--line-strong)", "stroke-width": 1, "stroke-dasharray": "3 4" });
-
     add("text", { x: 22, y: yTop + 4, "text-anchor": "end", "font-size": 11, fill: "var(--ink-3)" }).textContent = "5";
     add("text", { x: 22, y: yBot + 4, "text-anchor": "end", "font-size": 11, fill: "var(--ink-3)" }).textContent = "1";
-
     add("polyline", {
       points: series.map(function (_, i) { var p = pt(i); return p.x + "," + p.y; }).join(" "),
       fill: "none", stroke: "var(--ink)", "stroke-width": 2,
@@ -1201,13 +1461,12 @@ KS.addDict({
       var p = pt(i);
       var last = i === series.length - 1;
       add("circle", { cx: p.x, cy: p.y, r: last ? 6 : 4,
-        fill: last ? "var(--accent)" : "var(--surface)",
-        stroke: "var(--ink)", "stroke-width": 2 });
+        fill: last ? "var(--accent)" : "var(--surface)", stroke: "var(--ink)", "stroke-width": 2 });
       var hit = add("circle", { cx: p.x, cy: p.y, r: 14, fill: "transparent" });
       add("title", {}, hit).textContent =
-        t("wr.s8.week").replace("{n}", String(i + 1)) + ": " + value + " " + t("wr.sum.of5");
-      add("text", { x: p.x, y: 104, "text-anchor": "middle", "font-size": 11,
-        fill: "var(--ink-3)" }).textContent = t("wr.s8.week").replace("{n}", String(i + 1));
+        t("wr.s9.week").replace("{n}", String(i + 1)) + ": " + value + " " + t("wr.sum.of5");
+      add("text", { x: p.x, y: 104, "text-anchor": "middle", "font-size": 11, fill: "var(--ink-3)" })
+        .textContent = t("wr.s9.week").replace("{n}", String(i + 1));
     });
 
     box.appendChild(svg);
@@ -1215,51 +1474,64 @@ KS.addDict({
     var now = $("#chart-now");
     now.textContent = "";
     var b = document.createElement("b");
-    b.textContent = t("wr.s8.thisweek") + ": " + state.uke + " " + t("wr.sum.of5");
+    b.textContent = t("wr.s9.thisweek") + ": " + state.uke + " " + t("wr.sum.of5");
     now.appendChild(b);
     now.appendChild(document.createTextNode(" · " + t("uke." + state.uke + ".t")));
   }
 
+  /* Snitt per uke fra første registrerte vekt til rapportens dato */
+  function averageLine(w) {
+    var first = new Date();
+    first.setDate(first.getDate() - FIRST_WEIGH_DAYS_AGO);
+    var report = state.dato ? new Date(state.dato + "T12:00:00") : new Date();
+    var weeks = (report - first) / (7 * 24 * 3600 * 1000);
+    if (!(weeks >= 1)) { return ""; }
+    var avg = Math.round(((w - FIRST_WEIGHT) / weeks) * 10) / 10;
+    if (avg === 0) { return t("wr.s9.avg.same"); }
+    return t(avg < 0 ? "wr.s9.avg.down" : "wr.s9.avg.up").replace("{n}", decimal(Math.abs(avg)));
+  }
+
   function buildReceipt() {
     var quick = mode === "quick";
-    $("#s8-h").textContent    = t(quick ? "wr.s8.h.quick" : "wr.s8.h");
-    $("#s8-lede").textContent = t(quick ? "wr.s8.lede.quick" : "wr.s8.lede");
+    $("#s9-h").textContent    = t(quick ? "wr.s9.h.quick" : "wr.s9.h");
+    $("#s9-lede").textContent = t(quick ? "wr.s9.lede.quick" : "wr.s9.lede");
 
-    var w = parseWeight(state.vekt);
-    var stat = $("#weight-stat");
-    stat.hidden = !w;
+    var w = state.hoppOverVekt && !quick ? null : parseNum(state.vekt);
+    $("#weight-stat").hidden = !w;
     if (w) {
-      $("#weight-value").textContent = w.toString().replace(".", ",") + " kg";
+      $("#weight-value").textContent = decimal(w) + " kg";
       var diff = Math.round((w - LAST_WEIGHT) * 10) / 10;
-      var abs = Math.abs(diff).toString().replace(".", ",");
       $("#weight-delta").textContent = diff === 0
-        ? t("wr.s8.same")
-        : t(diff < 0 ? "wr.s8.down" : "wr.s8.up").replace("{n}", abs);
+        ? t("wr.s9.same")
+        : t(diff < 0 ? "wr.s9.down" : "wr.s9.up").replace("{n}", decimal(Math.abs(diff)));
+      var avg = averageLine(w);
+      $("#weight-avg").textContent = avg;
+      $("#weight-avg").hidden = !avg;
     }
 
     var trend = $("#trend-card");
     trend.hidden = quick || state.uke === null;
     if (!trend.hidden) { buildTrend(); }
 
-    $("#flagged").hidden = quick || !state.flagg;
+    $("#chat-card").hidden = quick;
   }
 
   /* ---------- Knapper ---------- */
   function paintChrome() {
-    elNext.hidden = step === 0;
+    elNext.hidden = step === STEP.START;
 
-    if (step === 6)      { elNext.textContent = t("btn.summary"); }
-    else if (step === 7) { elNext.textContent = t("btn.send"); }
-    else if (step === 8) { elNext.textContent = t("btn.menu"); }
-    else if (step === 9) { elNext.textContent = t("btn.sendw"); }
-    else                 { elNext.textContent = t("btn.continue"); }
+    if (step === STEP.NESTE)             { elNext.textContent = t("btn.summary"); }
+    else if (step === STEP.OPPSUMMERING) { elNext.textContent = t("btn.send"); }
+    else if (step === STEP.KVITTERING)   { elNext.textContent = t("btn.menu"); }
+    else if (step === STEP.VEKT)         { elNext.textContent = t("btn.sendw"); }
+    else                                 { elNext.textContent = t("btn.continue"); }
 
-    var offerRest = step === 8 && mode === "quick";
-    elSecondary.hidden = step !== 8;
+    var offerRest = step === STEP.KVITTERING && mode === "quick";
+    elSecondary.hidden = step !== STEP.KVITTERING;
     elSecondary.textContent = offerRest ? t("btn.rest") : t("btn.restart");
 
-    elBack.setAttribute("aria-label", step === 0 ? t("nav.menu") : t("nav.back"));
-    $("#restart").hidden = step === 8;
+    elBack.setAttribute("aria-label", step === STEP.START ? t("nav.menu") : t("nav.back"));
+    $("#restart").hidden = step === STEP.KVITTERING;
 
     if (step >= 1 && step <= FORM_STEPS) {
       elProgLabel.textContent = t("progress.step")
@@ -1274,9 +1546,9 @@ KS.addDict({
       s.classList.toggle("is-active", Number(s.getAttribute("data-step")) === n);
     });
 
-    if (n === 5) { paintChallenge(); }
-    if (n === 7) { buildSummary(); }
-    if (n === 8) { buildReceipt(); }
+    if (n === STEP.UTFORDRINGER) { paintChallenge(); }
+    if (n === STEP.OPPSUMMERING) { buildSummary(); }
+    if (n === STEP.KVITTERING)   { buildReceipt(); }
 
     var inForm = mode === "full" && n >= 1 && n <= FORM_STEPS;
     elProgress.setAttribute("data-state", inForm ? "shown" : "hidden");
@@ -1293,8 +1565,8 @@ KS.addDict({
     KSReview.setScreen(n, t("review.proto"), t("review." + n));
   }
 
-  $("#path-full").addEventListener("click", function () { mode = "full"; go(1); });
-  $("#path-quick").addEventListener("click", function () { mode = "quick"; go(9); });
+  $("#path-full").addEventListener("click", function () { mode = "full"; go(STEP.TALL); });
+  $("#path-quick").addEventListener("click", function () { mode = "quick"; go(STEP.VEKT); });
 
   elNext.addEventListener("click", function () {
     var why = blocker(step);
@@ -1303,19 +1575,19 @@ KS.addDict({
       elAlert.setAttribute("data-state", "shown");
       return;
     }
-    if (step === 8) { location.href = "../"; return; }
-    if (step === 9) { go(8); return; }
+    if (step === STEP.KVITTERING) { location.href = "../"; return; }
+    if (step === STEP.VEKT) { go(STEP.KVITTERING); return; }
     go(step + 1);
   });
 
   elBack.addEventListener("click", function () {
-    if (step === 0) { location.href = "../"; return; }
-    if (step === 1 || step === 9 || step === 8) { go(0); return; }
+    if (step === STEP.START) { location.href = "../"; return; }
+    if (step === STEP.TALL || step === STEP.VEKT || step === STEP.KVITTERING) { go(STEP.START); return; }
     go(step - 1);
   });
 
   elSecondary.addEventListener("click", function () {
-    if (mode === "quick") { mode = "full"; go(1); return; }
+    if (mode === "quick") { mode = "full"; go(STEP.TALL); return; }
     reset();
   });
   $("#restart").addEventListener("click", reset);
@@ -1324,35 +1596,37 @@ KS.addDict({
     state = JSON.parse(JSON.stringify(blank));
     state.dato = today();
     mode = "full";
+    openCats = {};
     $$("[data-bind]").forEach(function (f) { f.value = ""; });
-    $("#dato").value = state.dato;
-    $("#dato-q").value = state.dato;
-    $("#help-flag").classList.remove("is-on");
-    $("#help-flag").setAttribute("aria-pressed", "false");
+    syncDates();
     $$(".reveal").forEach(function (b) {
       $("#" + b.getAttribute("data-reveal")).hidden = true;
       b.setAttribute("aria-expanded", "false");
     });
+    ["fokus", "utfordring", "neste"].forEach(buildChips);
+    buildCats();
     paintReveals();
     paintSessions();
+    paintSkip();
+    paintRaise();
     paintScale();
-    Object.keys(GROUPS).forEach(paintChips);
     paintCounters();
-    go(0);
+    go(STEP.START);
   }
 
   /* ---------- Språkbytte ---------- */
   KS.onLang(function () {
     $("#prefill-text").textContent = t("wr.s3.prefill");
-    Object.keys(GROUPS).forEach(buildChips);
+    ["fokus", "utfordring", "neste"].forEach(buildChips);
+    buildCats();
     paintReveals();
     paintCounters();
     paintScale();
     paintChallenge();
     paintChrome();
+    if (step === STEP.OPPSUMMERING) { buildSummary(); }
+    if (step === STEP.KVITTERING)   { buildReceipt(); }
     KSReview.setScreen(step, t("review.proto"), t("review." + step));
-    if (step === 7) { buildSummary(); }
-    if (step === 8) { buildReceipt(); }
     var why = blocker(step);
     if (why && elAlert.getAttribute("data-state") === "shown") { elAlertText.textContent = why; }
   });
@@ -1361,20 +1635,23 @@ KS.addDict({
   for (var i = 0; i < FORM_STEPS; i++) {
     elTrack.appendChild(document.createElement("span")).className = "seg";
   }
-  Object.keys(GROUPS).forEach(buildChips);
+  ["fokus", "utfordring", "neste"].forEach(buildChips);
+  buildCats();
   KS.init();
   $("#prefill-text").textContent = t("wr.s3.prefill");
   paintReveals();
   paintSessions();
+  paintSkip();
+  paintRaise();
   paintScale();
   paintCounters();
-  go(0);
+  go(STEP.START);
   KSReview.init({
     onRoute: function (id) {
       var n = Number(id);
-      if (n === 9) { mode = "quick"; }
-      else if (n >= 1 && n <= 7) { mode = "full"; }
-      if (n >= 0 && n <= 9) { go(n); }
+      if (n === STEP.VEKT) { mode = "quick"; }
+      else if (n >= 1 && n <= FORM_STEPS) { mode = "full"; }
+      if (n >= 0 && n <= STEP.VEKT) { go(n); }
     }
   });
 })();

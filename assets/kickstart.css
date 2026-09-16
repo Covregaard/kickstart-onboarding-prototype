@@ -278,19 +278,19 @@ textarea { min-height: 84px; resize: vertical; }
 textarea::placeholder, input::placeholder { color: var(--ink-3); }
 textarea:focus, input:focus { border-color: var(--line-strong); }
 
-/* Ordteller – mykt tak. Blir gul over grensen, men stopper aldri skrivingen. */
-.wordcount {
+/* Teller for fritekst – mykt tak. Blir gul over grensen, men stopper aldri skrivingen. */
+.limit-count {
   display: flex; justify-content: flex-end;
   margin: -2px 0 0;
   font-size: 12.5px; color: var(--ink-3);
   font-variant-numeric: tabular-nums;
 }
-.wordcount b { font-weight: 500; }
-.wordcount.is-over .wc-pill {
+.limit-count b { font-weight: 500; }
+.limit-count.is-over .wc-pill {
   background: var(--warn-bg); color: var(--warn-ink);
   padding: 4px 11px; border-radius: 999px;
 }
-.wordcount.is-over b { font-weight: 700; }
+.limit-count.is-over b { font-weight: 700; }
 textarea.is-over,
 textarea.is-over:focus {
   border-color: var(--warn-line);
