@@ -91,7 +91,6 @@
   --measure-body: 560px;
 
   /* Prototyperammen rundt appen – ikke en del av merkevaren */
-  --reviewbar-h: 62px;
   --shadow-phone: 0 32px 70px -24px rgba(24,36,54,.45), 0 4px 12px rgba(24,36,54,.14);
 }
 
@@ -220,8 +219,6 @@ body.is-open .gate { display: none; }
   overflow: hidden;
   min-height: 100dvh;
 }
-body.has-review .stage { min-height: calc(100dvh - var(--reviewbar-h)); }
-body.has-review .phone { min-height: calc(100dvh - var(--reviewbar-h)); }
 .statusbar { display: none; }
 
 .appbar {
@@ -668,57 +665,6 @@ textarea.is-over, textarea.is-over:focus {
 .proto[data-state="planned"] .chev { visibility: hidden; }
 
 /* ==========================================================================
-   Tilbakemeldingslinje – verktøy på mørk bunn, ikke en del av prototypen
-   ========================================================================== */
-
-.reviewbar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
-  padding: 10px var(--space-4) calc(10px + env(safe-area-inset-bottom, 0px));
-  background: var(--surface-inverse);
-  color: var(--text-inverse);
-  border-top: 1px solid var(--border-inverse);
-}
-body.has-review .stage { padding-bottom: var(--reviewbar-h); }
-body:not(.is-open) .reviewbar { display: none; }
-
-.review-what { display: flex; flex-direction: column; min-width: 0; }
-.review-k {
-  font-family: var(--font-heading);
-  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--text-inverse-tertiary);
-}
-.review-label {
-  font-family: var(--font-heading); font-size: 15px; font-weight: 400;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-
-/* Contained secondary på mørk bunn – merkevarens sterkeste par */
-.review-btn {
-  flex: none;
-  padding: 8px 16px;
-  border: 1px solid var(--brand-accent); border-radius: var(--radius-pill);
-  background: var(--brand-accent); color: var(--brand-primary);
-  font-family: var(--font-heading); font-size: 16px; font-weight: 400; line-height: 1.5;
-  box-shadow: var(--shadow-button);
-  cursor: pointer;
-}
-.review-btn:hover { background: var(--brand-accent-alt); border-color: var(--brand-accent-alt); }
-.review-btn:active { transform: translateY(1px); }
-.reviewbar :focus-visible { outline: none; box-shadow: var(--shadow-focus); }
-
-.review-toast {
-  position: fixed; z-index: 41;
-  left: var(--space-4); right: var(--space-4); bottom: calc(var(--reviewbar-h) + 12px);
-  margin: 0;
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
-  background: var(--surface-inverse); color: var(--text-inverse);
-  font-size: 14px;
-  box-shadow: var(--shadow-card);
-}
-
-/* ==========================================================================
    Desktop: prototypen i en telefonramme
    ========================================================================== */
 
@@ -743,13 +689,6 @@ body:not(.is-open) .reviewbar { display: none; }
     border: 10px solid var(--brand-primary);
     box-shadow: var(--shadow-phone);
   }
-  body.has-review .phone {
-    min-height: 0;
-    height: min(844px, calc(100dvh - 150px - var(--reviewbar-h)));
-  }
-
-  .review-toast { left: auto; right: var(--space-5); max-width: 380px; }
-
   .statusbar {
     flex: none;
     display: flex; align-items: center; justify-content: space-between;

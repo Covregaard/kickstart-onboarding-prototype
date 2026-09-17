@@ -14,6 +14,7 @@ onboarding/index.html   Onboarding etter påmelding (9 skjermer)
 ukesrapport/index.html  Ukentlig innsjekk (10 skjermer, to veier inn)
 assets/kickstart.css    Delt design-system (farger, typografi, komponenter)
 assets/ks.js            Delt: tilgangskode, språkvalg, oversetting
+assets/route.js         Delt: lenke til hver skjerm
 ```
 
 ## Designsystem
@@ -68,52 +69,17 @@ og er merket som det i grensesnittet. Det er ingen backend bak noen av tallene.
 
 ## Cache
 
-Filreferansene i HTML-en er versjonert (`assets/kickstart.css?v=11`). GitHub
+Filreferansene i HTML-en er versjonert (`assets/kickstart.css?v=12`). GitHub
 Pages lar nettleseren cache dem i noen minutter, så **bump tallet når du
 endrer CSS eller JS** — ellers ser testere den gamle versjonen en stund.
 
-## Tilbakemelding fra ansatte
+## Lenke til hver skjerm
 
-Nederst på hver side ligger en mørk linje som viser hvilken skjerm du står på,
-med en **Kommenter**-knapp. Linja er bevisst mørk og lik i begge temaer, så den
-ikke forveksles med prototypen over.
-
-Hver skjerm har sin egen lenke, så en kommentar kan peke rett på skjermen den
-gjelder:
+Hver skjerm har sin egen adresse, og adressefeltet oppdaterer seg mens du
+klikker deg gjennom. Kopier lenken og del den, så åpner mottakeren samme skjerm:
 
 ```
 .../ukesrapport/?kode=kickstart26#steg-4
 ```
 
-Adressefeltet oppdaterer seg mens du klikker deg gjennom — kopier lenken der og
-del den, så åpner mottakeren nøyaktig samme skjerm.
-
-### Google Skjema
-
-Knappen åpner skjemaet **Ukesrapport – tilbakemelding** med **Skjerm** og
-**Lenke** ferdig utfylt, så den ansatte bare skriver navn og kommentar.
-Feltene er koblet på i `assets/review.js`:
-
-| Felt | entry-ID |
-|---|---|
-| Skjerm | `entry.501586322` |
-| Lenke | `entry.878069715` |
-| Navn | `entry.187012233` (fylles av den ansatte) |
-| Kommentar | `entry.1849973500` (fylles av den ansatte) |
-
-Skal du bytte til et annet skjema, finner du de nye ID-ene slik:
-
-1. Lag et Google Skjema med fire spørsmål, i denne rekkefølgen:
-   **Skjerm** (kort svar), **Lenke** (kort svar), **Navn** (kort svar),
-   **Kommentar** (langt svar).
-2. Trykk ⋮ → **Få forhåndsutfylt lenke**. Skriv hva som helst i Skjerm og Lenke,
-   og trykk **Få lenke**.
-3. Den kopierte adressen ser slik ut:
-   `.../viewform?usp=pp_url&entry.1234567=Skjerm&entry.7654321=Lenke`
-4. Åpne `assets/review.js` og fyll inn `FORM` øverst:
-   `url` er alt fram til og med `viewform`, og de to `entry.`-ID-ene i
-   `screenField` og `linkField`.
-5. Bump `?v=` i de tre HTML-filene, commit og push.
-
-Er skjemaet ikke koblet på, kopierer knappen skjermnavn og lenke til
-utklippstavla i stedet — så den gjør fortsatt nytte fra dag én.
+Det håndteres av `assets/route.js`.

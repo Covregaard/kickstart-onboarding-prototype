@@ -13,9 +13,9 @@
 <link rel="preconnect" href="https://www.kickstart.no" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="../assets/kickstart.css?v=11">
-<script src="../assets/ks.js?v=11"></script>
-<script src="../assets/review.js?v=11"></script>
+<link rel="stylesheet" href="../assets/kickstart.css?v=12">
+<script src="../assets/ks.js?v=12"></script>
+<script src="../assets/route.js?v=12"></script>
 <style>
   /* Komponenter som bare onboardingen bruker – tilpasset for app av designsystemets tokens */
   .intro-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
@@ -365,16 +365,6 @@
 
 <script>
 KS.addDict({
-  "review.proto": "Onboarding",
-  "review.0": "Velkommen",
-  "review.1": "Samtykker",
-  "review.2": "Hovedmål",
-  "review.3": "Kondisjonstrening",
-  "review.4": "Styrketrening",
-  "review.5": "Fellesgrupper",
-  "review.6": "Veiledere",
-  "review.7": "Oppsummering",
-  "review.8": "Kvittering",
   "common.optional": "Valgfritt",
   "common.required": "Påkrevd",
   "common.change":   "Endre",
@@ -495,16 +485,6 @@ KS.addDict({
   "s8.wait.k": "Mens du venter", "s8.wait.v": "Kom i gang-guiden",
   "s8.wait.d": "Fem korte punkter om hva som skjer den første uka, og hva du bør ha klart til første økt."
 }, {
-  "review.proto": "Onboarding",
-  "review.0": "Welcome",
-  "review.1": "Consents",
-  "review.2": "Goals",
-  "review.3": "Cardio",
-  "review.4": "Strength",
-  "review.5": "Group chats",
-  "review.6": "Guides",
-  "review.7": "Summary",
-  "review.8": "Receipt",
   "common.optional": "Optional",
   "common.required": "Required",
   "common.change":   "Change",
@@ -903,7 +883,7 @@ KS.addDict({
     paintChrome();
     clearAlert();
     elScreen.scrollTop = 0;
-    KSReview.setScreen(n, t("review.proto"), t("review." + n));
+    KSRoute.setScreen(n);
   }
 
   elNext.addEventListener("click", function () {
@@ -945,7 +925,6 @@ KS.addDict({
     paintScale("kondis");
     paintScale("styrke");
     paintChrome();
-    KSReview.setScreen(step, t("review.proto"), t("review." + step));
     if (step === 7) { buildSummary(); }
     var why = blocker(step);
     if (why && elAlert.getAttribute("data-state") === "shown") { elAlertText.textContent = why; }
@@ -959,7 +938,7 @@ KS.addDict({
   buildGoals();
   KS.init();
   go(0);
-  KSReview.init({
+  KSRoute.init({
     onRoute: function (id) {
       var n = Number(id);
       if (n >= 0 && n <= 8) { go(n); }

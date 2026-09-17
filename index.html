@@ -13,9 +13,8 @@
 <link rel="preconnect" href="https://www.kickstart.no" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/kickstart.css?v=11">
-<script src="assets/ks.js?v=11"></script>
-<script src="assets/review.js?v=11"></script>
+<link rel="stylesheet" href="assets/kickstart.css?v=12">
+<script src="assets/ks.js?v=12"></script>
 </head>
 <body>
 
@@ -149,8 +148,7 @@ KS.addDict({
   "menu.kickoff.name":    "Oppstartssamtale",
   "menu.kickoff.desc":    "Booking og forberedelse før første møte med veilederne.",
   "menu.fine":            "Prototypene har ingen backend. De viser hvordan flyten oppleves, ikke hvordan den er bygget.",
-  "menu.foot":            "Deles kun internt",
-  "review.proto":         "Meny"
+  "menu.foot":            "Deles kun internt"
 }, {
   "menu.stagecap":        "Prototypes · work in progress",
   "menu.eyebrow":         "Pick a prototype",
@@ -167,14 +165,10 @@ KS.addDict({
   "menu.kickoff.name":    "Kick-off call",
   "menu.kickoff.desc":    "Booking and preparation before the first meeting with the guides.",
   "menu.fine":            "The prototypes have no backend. They show how the flow feels, not how it is built.",
-  "menu.foot":            "Shared internally only",
-  "review.proto":         "Menu"
+  "menu.foot":            "Shared internally only"
 });
 KS.init();
 
-KSReview.init({});
-KSReview.setScreen(null, KS.t("review.proto"), "");
-KS.onLang(function () { KSReview.setScreen(null, KS.t("review.proto"), ""); });
 </script>
 
 </body>

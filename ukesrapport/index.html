@@ -13,9 +13,9 @@
 <link rel="preconnect" href="https://www.kickstart.no" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="../assets/kickstart.css?v=11">
-<script src="../assets/ks.js?v=11"></script>
-<script src="../assets/review.js?v=11"></script>
+<link rel="stylesheet" href="../assets/kickstart.css?v=12">
+<script src="../assets/ks.js?v=12"></script>
+<script src="../assets/route.js?v=12"></script>
 <style>
   /* Komponenter som bare ukesrapporten bruker – tilpasset for app av designsystemets tokens */
 
@@ -566,18 +566,6 @@
 
 <script>
 KS.addDict({
-  "review.proto": "Ukesrapport",
-  "review.0": "Start",
-  "review.1": "Ukens tall",
-  "review.2": "Egenvurdering",
-  "review.3": "Ukens fokus",
-  "review.4": "Gikk bra",
-  "review.5": "Utfordringer",
-  "review.6": "Ta opp med oss",
-  "review.7": "Neste uke",
-  "review.8": "Oppsummering",
-  "review.9": "Kvittering",
-  "review.10": "Registrer vekt",
 
   "common.optional":   "Valgfritt",
   "common.change":     "Endre",
@@ -780,18 +768,6 @@ KS.addDict({
   "wr.s10.lede": "Vi noterer vekten for denne uken. Resten av rapporten kan du ta senere.",
   "wr.s10.fine": "Vil du likevel ta hele rapporten? Gå tilbake og velg full ukesrapport."
 }, {
-  "review.proto": "Weekly check-in",
-  "review.0": "Start",
-  "review.1": "This week's numbers",
-  "review.2": "Self-assessment",
-  "review.3": "This week's focus",
-  "review.4": "Went well",
-  "review.5": "Challenges",
-  "review.6": "Raise with us",
-  "review.7": "Next week",
-  "review.8": "Summary",
-  "review.9": "Receipt",
-  "review.10": "Log weight",
 
   "common.optional":   "Optional",
   "common.change":     "Change",
@@ -1566,7 +1542,7 @@ KS.addDict({
     paintChrome();
     clearAlert();
     elScreen.scrollTop = 0;
-    KSReview.setScreen(n, t("review.proto"), t("review." + n));
+    KSRoute.setScreen(n);
   }
 
   $("#path-full").addEventListener("click", function () { mode = "full"; go(STEP.TALL); });
@@ -1630,7 +1606,6 @@ KS.addDict({
     paintChrome();
     if (step === STEP.OPPSUMMERING) { buildSummary(); }
     if (step === STEP.KVITTERING)   { buildReceipt(); }
-    KSReview.setScreen(step, t("review.proto"), t("review." + step));
     var why = blocker(step);
     if (why && elAlert.getAttribute("data-state") === "shown") { elAlertText.textContent = why; }
   });
@@ -1650,7 +1625,7 @@ KS.addDict({
   paintScale();
   paintCounters();
   go(STEP.START);
-  KSReview.init({
+  KSRoute.init({
     onRoute: function (id) {
       var n = Number(id);
       if (n === STEP.VEKT) { mode = "quick"; }
