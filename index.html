@@ -10,17 +10,19 @@
 <meta name="theme-color" content="#fffee9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="assets/kickstart.css?v=10">
-<script src="assets/ks.js?v=10"></script>
-<script src="assets/review.js?v=10"></script>
+<link rel="preconnect" href="https://www.kickstart.no" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/kickstart.css?v=11">
+<script src="assets/ks.js?v=11"></script>
+<script src="assets/review.js?v=11"></script>
 </head>
 <body>
 
 <div class="gate" id="gate">
   <div class="gate-card">
     <div class="gate-top">
-      <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <img class="logo" src="https://www.kickstart.no/logo/kick-logo-w.svg" alt="Kickstart" width="107" height="15">
       <div class="langswitch" role="group" data-i18n-aria="lang.label" aria-label="Språk">
         <button type="button" data-lang="no" aria-pressed="true">NO</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -37,7 +39,7 @@
       <label for="code" data-i18n="gate.label">Tilgangskode</label>
       <input type="password" id="code" name="code" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="••••••••••">
       <p class="gate-err" id="gate-err" hidden role="status">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
         <span data-i18n="gate.error">Feil kode. Sjekk lenken eller meldingen du fikk fra Kickstart.</span>
       </p>
       <button class="btn btn-primary" type="submit" data-i18n="gate.submit">Åpne</button>
@@ -49,7 +51,7 @@
 
 <div class="stage">
   <div class="stage-head">
-    <span class="mark">Kickstart</span>
+    <img class="logo" src="https://www.kickstart.no/logo/kick-logo-w.svg" alt="Kickstart" width="107" height="15">
     <span class="cap" data-i18n="menu.stagecap">Prototyper · under arbeid</span>
   </div>
 
@@ -64,7 +66,7 @@
 
     <header class="appbar">
       <span></span>
-      <span class="appbar-title">Kickstart</span>
+      <span class="appbar-title"><img class="logo" src="https://www.kickstart.no/logo/kick-logo-w.svg" alt="Kickstart" width="107" height="15"></span>
       <div class="langswitch" role="group" data-i18n-aria="lang.label" aria-label="Språk">
         <button type="button" data-lang="no" aria-pressed="true">NO</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -74,7 +76,7 @@
     <main class="screen">
       <div class="menu-wrap">
         <div>
-          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--secondary-600)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <p class="eyebrow menu-eyebrow" data-i18n="menu.eyebrow">Velg en prototype</p>
           <h1 class="menu-title" data-i18n="menu.title">Prototyper</h1>
           <p class="lede" data-i18n="menu.lede">Klikkbare skisser av flyter vi jobber med. Velg en for å prøve den — ingenting du gjør blir lagret.</p>
@@ -88,7 +90,7 @@
               <span class="name" data-i18n="menu.onboarding.name">Onboarding</span>
               <span class="desc" data-i18n="menu.onboarding.desc">Stegene en ny deltaker går gjennom etter påmelding: samtykker, mål, erfaringsnivå og hvem veilederne er.</span>
             </span>
-            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </a>
 
           <a class="proto" href="ukesrapport/">
@@ -97,7 +99,7 @@
               <span class="name" data-i18n="menu.weekly.name">Ukesrapportering</span>
               <span class="desc" data-i18n="menu.weekly.desc">Registrer vekt på ti sekunder, eller ta hele innsjekken — mest avkrysning, lite skriving.</span>
             </span>
-            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </a>
         </div>
 
@@ -110,7 +112,7 @@
               <span class="name" data-i18n="menu.kickoff.name">Oppstartssamtale</span>
               <span class="desc" data-i18n="menu.kickoff.desc">Booking og forberedelse før første møte med veilederne.</span>
             </span>
-            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </div>
         </div>
 
@@ -125,9 +127,9 @@
 </div>
 
 <style>
-  .menu-wrap { display: flex; flex-direction: column; gap: 26px; }
-  .menu-eyebrow { margin-top: 16px; }
-  .menu-title { font-size: 34px; }
+  .menu-wrap { display: flex; flex-direction: column; gap: var(--space-8); }
+  .menu-eyebrow { margin-top: var(--space-4); }
+  .menu-title { font-size: 36px; line-height: 1.1; }
 </style>
 
 <script>

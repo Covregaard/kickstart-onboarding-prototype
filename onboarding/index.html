@@ -10,50 +10,64 @@
 <meta name="theme-color" content="#fffee9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="../assets/kickstart.css?v=10">
-<script src="../assets/ks.js?v=10"></script>
-<script src="../assets/review.js?v=10"></script>
+<link rel="preconnect" href="https://www.kickstart.no" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../assets/kickstart.css?v=11">
+<script src="../assets/ks.js?v=11"></script>
+<script src="../assets/review.js?v=11"></script>
 <style>
-  /* Komponenter som bare denne prototypen bruker */
-  .intro-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+  /* Komponenter som bare onboardingen bruker – tilpasset for app av designsystemets tokens */
+  .intro-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
   .intro-list li {
-    display: grid; grid-template-columns: 30px 1fr; gap: 12px;
-    align-items: baseline; padding: 12px 0;
-    border-top: 1px solid var(--line); font-size: 15px;
+    display: grid; grid-template-columns: 32px 1fr; gap: var(--space-3);
+    align-items: baseline; padding: var(--space-3) 0;
+    border-top: 1px solid var(--border-subtle);
   }
-  .intro-list li:last-child { border-bottom: 1px solid var(--line); }
+  .intro-list li:last-child { border-bottom: 1px solid var(--border-subtle); }
   .intro-list .num {
-    font-size: 12px; font-weight: 700; letter-spacing: .06em;
-    color: var(--ink-3); font-variant-numeric: tabular-nums;
+    font-family: var(--font-heading);
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+    color: var(--primary-700); font-variant-numeric: tabular-nums;
   }
-  .intro-list .sub { display: block; font-size: 13px; color: var(--ink-2); }
+  .intro-list li > span:last-child > span:not(.sub) {
+    font-family: var(--font-heading); font-size: 18px; line-height: 1.3; font-weight: 500;
+    color: var(--brand-primary);
+  }
+  .intro-list .sub { display: block; margin-top: 2px; font-size: 14px; color: var(--text-tertiary); }
 
   .coach {
-    display: grid; grid-template-columns: 56px 1fr; gap: 15px;
-    background: var(--surface);
-    border: 1.5px solid var(--line);
-    border-radius: 16px; padding: 16px;
+    display: grid; grid-template-columns: 56px 1fr; gap: var(--space-4);
+    background: var(--surface-card);
+    outline: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
   }
   .avatar {
-    width: 56px; height: 56px; border-radius: 999px;
+    width: 56px; height: 56px; border-radius: var(--radius-full);
     display: grid; place-items: center;
-    font-family: var(--font-head); font-size: 19px; font-weight: 500;
-    color: var(--on-soft);
+    font-family: var(--font-heading); font-size: 20px; font-weight: 500;
+    color: var(--brand-primary);
   }
-  .avatar[data-tone="a"] { background: var(--soft-a); }
-  .avatar[data-tone="b"] { background: var(--soft-b); }
+  .avatar[data-tone="a"] { background: var(--brand-primary-soft); }
+  .avatar[data-tone="b"] { background: var(--accent-skin-soft); }
   .coach .role {
-    font-size: 11px; font-weight: 600;
-    letter-spacing: .11em; text-transform: uppercase; color: var(--ink-3);
+    font-family: var(--font-heading);
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--primary-700);
   }
   .coach .name {
-    font-family: var(--font-head); font-size: 21px; font-weight: 500;
-    line-height: 1.15; margin: 2px 0 0; letter-spacing: -.01em;
+    margin: var(--space-1) 0 0;
+    font-family: var(--font-heading); font-size: 24px; line-height: 1.2; font-weight: 400;
+    color: var(--brand-primary);
   }
-  .coach .bio { font-size: 14px; color: var(--ink-2); margin: 8px 0 0; }
+  .coach .bio {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-heading); font-size: 16px; line-height: 1.5; font-weight: 300;
+    color: var(--text-tertiary);
+  }
 
-  .step-top { margin-top: 16px; }
+  .step-top { margin-top: var(--space-4); }
 </style>
 </head>
 <body>
@@ -61,7 +75,7 @@
 <div class="gate" id="gate">
   <div class="gate-card">
     <div class="gate-top">
-      <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <img class="logo" src="https://www.kickstart.no/logo/kick-logo-w.svg" alt="Kickstart" width="107" height="15">
       <div class="langswitch" role="group" data-i18n-aria="lang.label" aria-label="Språk">
         <button type="button" data-lang="no" aria-pressed="true">NO</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -78,7 +92,7 @@
       <label for="code" data-i18n="gate.label">Tilgangskode</label>
       <input type="password" id="code" name="code" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="••••••••••">
       <p class="gate-err" id="gate-err" hidden role="status">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
         <span data-i18n="gate.error">Feil kode.</span>
       </p>
       <button class="btn btn-primary" type="submit" data-i18n="gate.submit">Åpne</button>
@@ -90,7 +104,7 @@
 
 <div class="stage">
   <div class="stage-head">
-    <span class="mark">Kickstart</span>
+    <img class="logo" src="https://www.kickstart.no/logo/kick-logo-w.svg" alt="Kickstart" width="107" height="15">
     <span class="cap" data-i18n="ob.stagecap">Onboarding · klikkbar prototype</span>
   </div>
 
@@ -105,9 +119,9 @@
 
     <header class="appbar">
       <button class="iconbtn" id="back" type="button" aria-label="Tilbake">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>
       </button>
-      <span class="appbar-title">Kickstart</span>
+      <span class="appbar-title"><img class="logo" src="https://www.kickstart.no/logo/kick-logo-w.svg" alt="Kickstart" width="107" height="15"></span>
       <div class="langswitch" role="group" data-i18n-aria="lang.label" aria-label="Språk">
         <button type="button" data-lang="no" aria-pressed="true">NO</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -124,7 +138,7 @@
       <!-- 0 · Velkommen -->
       <section class="step is-active" data-step="0">
         <div>
-          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--secondary-600)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <p class="eyebrow step-top" data-i18n="s0.eyebrow">Velkommen inn</p>
           <h1 data-i18n="s0.h">Du har plassen din. Nå gjør vi klar planen din.</h1>
           <p class="lede" data-i18n="s0.lede">Før oppstartssamtalen vil vi bli litt bedre kjent med deg.</p>
@@ -150,7 +164,7 @@
 
         <div class="options">
           <button class="opt" type="button" data-consent="epost" aria-pressed="false">
-            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
               <span class="opt-t"><span data-i18n="s1.email.t">E-post</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></span>
               <span class="opt-d" data-i18n="s1.email.d">Ukesmenyer, oppskrifter og en påminnelse før hver oppstart.</span>
@@ -158,7 +172,7 @@
           </button>
 
           <button class="opt" type="button" data-consent="push" aria-pressed="false">
-            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
               <span class="opt-t"><span data-i18n="s1.push.t">Push-varsler</span><span class="opt-opt" data-i18n="common.optional">Valgfritt</span></span>
               <span class="opt-d" data-i18n="s1.push.d">Beskjed når treneren legger ut en ny økt.</span>
@@ -166,7 +180,7 @@
           </button>
 
           <button class="opt" type="button" data-consent="risiko" aria-pressed="false">
-            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
               <span class="opt-t"><span data-i18n="s1.risk.t">Trening på eget ansvar</span><span class="req" data-i18n="common.required">Påkrevd</span></span>
               <span class="opt-d" data-i18n="s1.risk.d">Jeg er kjent med at fysisk trening innebærer risiko for skade.</span>
@@ -255,14 +269,14 @@
 
         <div class="options">
           <button class="opt" type="button" data-community="ja" data-shape="round" aria-pressed="false">
-            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
               <span class="opt-t" data-i18n="s5.yes.t">Ja, meld meg inn</span>
               <span class="opt-d" data-i18n="s5.yes.d">Du kan melde deg ut når som helst.</span>
             </span>
           </button>
           <button class="opt" type="button" data-community="nei" data-shape="round" aria-pressed="false">
-            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
               <span class="opt-t" data-i18n="s5.no.t">Nei takk</span>
               <span class="opt-d" data-i18n="s5.no.d">Helt greit.</span>
@@ -313,7 +327,7 @@
       <!-- 8 · Ferdig -->
       <section class="step" data-step="8">
         <div>
-          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--secondary-600)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <p class="eyebrow step-top" data-i18n="s8.eyebrow">Sendt inn</p>
           <h1 data-i18n="s8.h">Takk. Nå er vi klare for deg.</h1>
           <p class="lede" data-i18n="s8.lede">Svarene dine ligger hos Kristiane og Ingrid.</p>
@@ -336,7 +350,7 @@
 
     <footer class="actionbar">
       <p class="alert" id="alert" data-state="hidden" role="status">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
         <span id="alert-text"></span>
       </p>
       <button class="btn btn-primary" id="next" type="button">Kom i gang</button>
@@ -370,7 +384,7 @@ KS.addDict({
   "btn.start":    "Kom i gang",
   "btn.continue": "Fortsett",
   "btn.summary":  "Se oppsummeringen",
-  "btn.submit":   "Send inn svarene",
+  "btn.submit":   "Send svarene",
   "btn.restart":  "Start prototypen på nytt",
   "btn.menu":     "Tilbake til menyen",
 
@@ -500,7 +514,7 @@ KS.addDict({
   "btn.start":    "Get started",
   "btn.continue": "Continue",
   "btn.summary":  "See summary",
-  "btn.submit":   "Submit answers",
+  "btn.submit":   "Send answers",
   "btn.restart":  "Restart prototype",
   "btn.menu":     "Back to menu",
 
@@ -645,7 +659,7 @@ KS.addDict({
   var elAlert     = $("#alert");
   var elAlertText = $("#alert-text");
 
-  var checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg>';
+  var checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg>';
 
   /* ---------- Mål (bygges fra ordlista så språkbytte er gratis) ---------- */
   function buildGoals() {

@@ -16,9 +16,22 @@ assets/kickstart.css    Delt design-system (farger, typografi, komponenter)
 assets/ks.js            Delt: tilgangskode, språkvalg, oversetting
 ```
 
-Farger og typografi er hentet fra kickstart.no sine egne CSS-variabler:
-navy `#182436`, lime `#f7fe75`, krem `#fffee9`, GT Planar (overskrifter,
-vekt 300) med Inter som brødtekst og fallback.
+## Designsystem
+
+Prototypene følger designsystemet **Kickstart Health** (skillen `kickstart-design`
+på claude.ai). `assets/kickstart.css` bruker designsystemets egne tokennavn –
+`--brand-primary`, `--surface-cream`, `--text-tertiary`, `--radius-pill` osv. –
+og komponentreglene for knapper, skjemafelt og badges. Bruk de samme navnene i
+nye prototyper.
+
+Designsystemet har ingen app-mønstre (stegindikator, valgkort, merkelapper,
+skala, teller, oppsummering). Disse er laget av de samme tokenene og merket
+«tilpasset for app» i stilarket. Det har heller ikke mørkt tema.
+
+**Fonter:** GT Planar er en lisensiert Grilli Type-font som Kickstart har lisens
+på. Den lastes fra kickstart.no (serveren tillater det med CORS), og fontfilene
+skal **ikke** legges i dette repoet – det er offentlig. Inter kommer fra
+Google Fonts. Logoen lastes også fra kickstart.no.
 
 ## Tilgang
 
@@ -55,7 +68,7 @@ og er merket som det i grensesnittet. Det er ingen backend bak noen av tallene.
 
 ## Cache
 
-Filreferansene i HTML-en er versjonert (`assets/kickstart.css?v=2`). GitHub
+Filreferansene i HTML-en er versjonert (`assets/kickstart.css?v=11`). GitHub
 Pages lar nettleseren cache dem i noen minutter, så **bump tallet når du
 endrer CSS eller JS** — ellers ser testere den gamle versjonen en stund.
 

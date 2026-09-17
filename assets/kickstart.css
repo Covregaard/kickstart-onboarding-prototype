@@ -1,221 +1,222 @@
 /* ==========================================================================
-   Kickstart – delt design-system for prototypene
-   Farger og typografi er hentet fra kickstart.no sine egne CSS-variabler.
+   Kickstart – delt stilark for prototypene
+   Bygger på designsystemet «Kickstart Health» (skillen kickstart-design).
+   Alle farger, fonter, avstander, radier og skygger er designsystemets egne
+   tokens, hentet fra kickstart.no.
+
+   Designsystemet har ingen app-mønstre (stegindikator, valgkort, merkelapper,
+   teller, oppsummeringsliste, mobiloverskrifter). De er laget her av de samme
+   tokenene og merket «Tilpasset for app» der de står.
    ========================================================================== */
 
+/* GT Planar er lisensiert av Kickstart (Grilli Type). Filene lastes fra
+   kickstart.no, som tillater det med CORS. Ikke legg fontfilene i dette repoet. */
+@font-face { font-family: "GT Planar"; src: url("https://www.kickstart.no/fonts/GT_Planar/GT-Planar-Light.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "GT Planar"; src: url("https://www.kickstart.no/fonts/GT_Planar/GT-Planar-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "GT Planar"; src: url("https://www.kickstart.no/fonts/GT_Planar/GT-Planar-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "GT Planar"; src: url("https://www.kickstart.no/fonts/GT_Planar/GT-Planar-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+
 :root {
-  color-scheme: light;
+  color-scheme: light;   /* Designsystemet har ikke mørkt tema – marineblått er en seksjonsvariant */
 
-  --stage:        #d9e6ed;   /* ks primary-300 */
-  --stage-ink:    #375a6e;
+  --font-heading: "GT Planar", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
 
-  --app-bg:       #fffee9;   /* ks brand-accent-soft */
-  --surface:      #ffffff;
-  --surface-2:    #faf9ec;
+  /* Merkevare */
+  --brand-primary: #182436;
+  --brand-primary-alt: #4282a4;
+  --brand-primary-soft: #c1e4ef;
+  --brand-accent: #f7fe75;
+  --brand-accent-alt: #fffda9;
+  --brand-accent-soft: #fffee9;
+  --accent-lime: #d6fb00;
 
-  --ink:          #182436;   /* ks brand-primary */
-  --ink-2:        #4d5f72;
-  --ink-3:        #7f8f9e;
+  /* Blåskala */
+  --primary-300: #d9e6ed; --primary-400: #c6d9e4; --primary-500: #8eb4c8;
+  --primary-600: #558fad; --primary-700: #29698a; --primary-800: #0f4f71;
+  --primary-900: #003658;
 
-  --line:         #e6e6d4;
-  --line-strong:  #cdd4da;
+  /* Gul–oliven-skala */
+  --secondary-300: #fffff4; --secondary-400: #fffec9; --secondary-500: #f9fe8f;
+  --secondary-600: #dae700; --secondary-700: #bec400; --secondary-800: #7a7f00;
+  --secondary-900: #4a4d00;
 
-  --accent:       #f7fe75;   /* ks brand-accent */
-  --accent-deep:  #dae700;   /* ks secondary-600 */
-  --accent-ink:   #182436;
+  /* Nøytrale */
+  --neutral-100: #e8e9eb; --neutral-200: #d1d3d7; --neutral-400: #a3a7ae;
 
-  --sel-bg:       #fffda9;   /* ks brand-accent-alt */
-  --sel-line:     #182436;
+  /* Tekst */
+  --text-primary: rgba(77, 77, 77, 0.87);
+  --text-secondary: rgba(10, 15, 24, 0.86);
+  --text-tertiary: rgba(10, 15, 24, 0.73);
+  --text-muted: rgba(10, 15, 24, 0.55);
+  --text-inverse: #ffffff;
+  --text-inverse-secondary: rgba(255, 255, 255, 0.86);
+  --text-inverse-tertiary: rgba(255, 255, 255, 0.73);
 
-  --soft-a:       #c1e4ef;   /* ks brand-primary-soft */
-  --soft-b:       #fee4d0;   /* ks accent-skin-soft */
-  --on-soft:      #182436;
+  /* Flater og kanter */
+  --surface-page: #ffffff;
+  --surface-card: #ffffff;
+  --surface-cream: var(--brand-accent-soft);
+  --surface-muted: var(--neutral-100);
+  --surface-inverse: var(--brand-primary);
+  --surface-inverse-raised: rgba(255, 255, 255, 0.08);
+  --border-default: var(--neutral-400);
+  --border-subtle: var(--neutral-200);
+  --border-inverse: rgba(255, 255, 255, 0.10);
 
-  --ok:           #009966;
-  --danger:       #b3000a;
-  --focus:        #182436;
+  /* Status */
+  --success: #009966; --success-bg: #e9ffe5; --success-soft: #a4f4cf;
+  --warning: #e17100; --warning-bg: #ffffeb; --warning-soft: #fee685;
+  --danger: #e7000b;  --danger-bg: #fff2f2;  --danger-soft: #ffc9c9;
+  --info: var(--brand-primary-alt); --info-bg: var(--primary-300); --info-soft: var(--brand-primary-soft);
 
-  --warn-bg:      #f7fe75;   /* ks brand-accent – "gult" */
-  --warn-ink:     #182436;
-  --warn-line:    #9ca100;
-  --warn-ring:    rgba(247,254,117,.75);
+  /* Illustrasjon og foto – aldri for tilstand */
+  --accent-skin-soft: #fee4d0;
 
-  --bezel:        #182436;
+  /* Avstand – 4px-rutenett */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-7: 28px; --space-8: 32px;
+  --space-10: 40px; --space-12: 48px;
 
-  --shadow-phone: 0 32px 70px -24px rgba(24,36,54,.45), 0 4px 12px rgba(24,36,54,.14);
-  --shadow-bar:   0 -10px 20px -14px rgba(24,36,54,.35);
+  /* Radius */
+  --radius-xs: 2px; --radius-sm: 4px; --radius-md: 8px; --radius-lg: 16px;
+  --radius-xl: 24px; --radius-pill: 80px; --radius-full: 9999px;
 
-  /* Tilbakemeldingslinja er verktøy, ikke innhold: samme uttrykk i begge temaer */
+  /* Skygge */
+  --shadow-button: 0 1px 10px 0 rgba(0,0,0,.12), 0 4px 5px 0 rgba(0,0,0,.14), 0 2px 4px -1px rgba(0,0,0,.2);
+  --shadow-button-primary: 0 6px 16px rgba(0,0,0,.18);
+  --shadow-card: 0 20px 20px rgba(4,18,31,.18);
+  --shadow-focus: 0 0 0 3px rgba(247,254,117,.6);
+
+  --measure-body: 560px;
+
+  /* Prototyperammen rundt appen – ikke en del av merkevaren */
   --reviewbar-h: 62px;
-  --review-bg:   #182436;
-  --review-ink:  #fffee9;
-  --review-line: rgba(247,254,117,.28);
-
-  --font-head: "GT Planar", "Inter", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, -apple-system, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --stage:       #0b131e;
-    --stage-ink:   #8ba3b8;
-    --app-bg:      #121d2c;
-    --surface:     #1a2739;
-    --surface-2:   #223146;
-    --ink:         #f2f6f8;
-    --ink-2:       #a9b9c9;
-    --ink-3:       #7d8fa2;
-    --line:        #2c3d53;
-    --line-strong: #3b5069;
-    --sel-bg:      #2e3a1c;
-    --sel-line:    #f7fe75;
-    --soft-a:      #2b4b5e;
-    --soft-b:      #4d3a2d;
-    --on-soft:     #f2f6f8;
-    --ok:          #4ad6a0;
-    --danger:      #ff8a8a;
-    --focus:       #f7fe75;
-    --warn-line:   #dae700;
-    --warn-ring:   rgba(247,254,117,.32);
-    --bezel:       #2c3d53;
-    --shadow-phone: 0 32px 70px -24px rgba(0,0,0,.7), 0 4px 12px rgba(0,0,0,.4);
-    --shadow-bar:   0 -10px 20px -14px rgba(0,0,0,.6);
-  }
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --stage:       #0b131e;
-  --stage-ink:   #8ba3b8;
-  --app-bg:      #121d2c;
-  --surface:     #1a2739;
-  --surface-2:   #223146;
-  --ink:         #f2f6f8;
-  --ink-2:       #a9b9c9;
-  --ink-3:       #7d8fa2;
-  --line:        #2c3d53;
-  --line-strong: #3b5069;
-  --sel-bg:      #2e3a1c;
-  --sel-line:    #f7fe75;
-  --soft-a:      #2b4b5e;
-  --soft-b:      #4d3a2d;
-  --on-soft:     #f2f6f8;
-  --ok:          #4ad6a0;
-  --danger:      #ff8a8a;
-  --focus:       #f7fe75;
-  --warn-line:   #dae700;
-  --warn-ring:   rgba(247,254,117,.32);
-  --bezel:       #2c3d53;
-  --shadow-phone: 0 32px 70px -24px rgba(0,0,0,.7), 0 4px 12px rgba(0,0,0,.4);
-  --shadow-bar:   0 -10px 20px -14px rgba(0,0,0,.6);
+  --shadow-phone: 0 32px 70px -24px rgba(24,36,54,.45), 0 4px 12px rgba(24,36,54,.14);
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: var(--stage);
-  color: var(--ink);
+  background: var(--primary-300);
+  color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 16px;
-  line-height: 1.55;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
 :where(button, input, textarea, select) { font: inherit; color: inherit; }
 :where(a) { color: inherit; }
-:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
 img { max-width: 100%; }
 [hidden] { display: none !important; }
 
+/* Lys bunn: fokusring i marineblått – den gule ringen når ikke 3:1 på krem og hvitt */
+:focus-visible { outline: 2px solid var(--brand-primary); outline-offset: 2px; }
+
 h1, h2, h3 {
-  font-family: var(--font-head);
-  font-weight: 300;
-  line-height: 1.04;
-  letter-spacing: -0.022em;
+  font-family: var(--font-heading);
+  color: var(--brand-primary);
+  font-weight: 500;
+  letter-spacing: -0.5px;
   text-wrap: balance;
   margin: 0;
 }
 
+/* Tilpasset for app: h3 (48px/500) skalert ned til mobil, samme vekt og sporing */
+.display, .gate-card h1, .step h1 { font-size: 36px; line-height: 1.1; }
+.step h2 { font-size: 28px; line-height: 1.15; }
+
+/* Overline, sterk variant (13px i primary-700 – passerer 4,5:1) */
 .eyebrow {
-  font-size: 11px; font-weight: 600;
-  letter-spacing: .16em; text-transform: uppercase;
-  color: var(--ink-3);
-  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  font-size: 13px; font-weight: 700; line-height: 1.5;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--primary-700);
+  margin: 0 0 14px;
 }
-.lede { margin: 12px 0 0; color: var(--ink-2); font-size: 15.5px; max-width: 34ch; }
-.fine { margin: 0; font-size: 13px; color: var(--ink-3); }
+
+/* subtitle-3 */
+.lede {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-heading);
+  font-size: 18px; line-height: 1.6; font-weight: 300;
+  color: var(--text-tertiary);
+  max-width: var(--measure-body);
+}
+
+/* body-2 */
+.fine { margin: 0; font-size: 14px; line-height: 1.5; color: var(--text-tertiary); }
+
 .zigzag { display: block; width: 62px; height: 12px; }
+.logo { display: block; height: 15px; width: auto; }
 
 /* ==========================================================================
    Tilgangskode
-   Låsen vises som standard. Uten JS forblir den på, og innholdet lekker ikke.
    ========================================================================== */
 
 body:not(.is-open) .stage { display: none; }
 
 .gate {
   position: fixed; inset: 0; z-index: 50;
-  background: var(--app-bg);
+  background: var(--surface-cream);
   display: flex; align-items: center; justify-content: center;
-  padding: 28px 22px;
+  padding: var(--space-8) var(--space-5);
   overflow-y: auto;
 }
 body.is-open .gate { display: none; }
 
-.gate-card { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: 22px; }
-.gate-card h1 { font-size: 36px; }
+.gate-card { width: 100%; max-width: 380px; display: flex; flex-direction: column; gap: var(--space-6); }
 .gate-card .lede { max-width: none; }
-.gate-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.gate-top { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
 
-.gate-form { display: flex; flex-direction: column; gap: 10px; }
-.gate-form label { font-size: 13.5px; font-weight: 600; }
-.gate-form .btn { margin-top: 4px; }
+.gate-form { display: flex; flex-direction: column; gap: var(--space-2); }
+.gate-form label { font-size: 14px; font-weight: 700; color: var(--brand-primary); }
+.gate-form .btn { margin-top: var(--space-3); }
 .gate-err {
-  margin: 0; font-size: 13px; font-weight: 500; color: var(--danger);
-  display: flex; gap: 7px; align-items: flex-start;
+  margin: 0; font-size: 14px; font-weight: 500; color: var(--danger);
+  display: flex; gap: var(--space-2); align-items: flex-start;
 }
-.gate-err[hidden] { display: none; }
 
 /* ==========================================================================
-   Språkvelger
+   Språkvelger – tilpasset for app
    ========================================================================== */
 
 .langswitch {
   display: inline-flex;
-  border: 1.5px solid var(--line-strong);
-  border-radius: 999px;
+  outline: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
   overflow: hidden;
   flex: none;
-  background: var(--surface);
+  background: var(--surface-card);
 }
 .langswitch button {
   border: 0; background: none;
-  padding: 4px 9px;
-  font-size: 11px; font-weight: 700; letter-spacing: .07em;
-  color: var(--ink-3);
+  padding: 3px 10px;
+  font-family: var(--font-heading);
+  font-size: 12px; font-weight: 700; letter-spacing: 1px; line-height: 1.5;
+  color: var(--text-tertiary);
   cursor: pointer;
-  line-height: 1.6;
 }
-.langswitch button:hover { color: var(--ink); }
-.langswitch button[aria-pressed="true"] { background: var(--ink); color: var(--app-bg); }
+.langswitch button:hover { color: var(--brand-primary); }
+.langswitch button[aria-pressed="true"] { background: var(--brand-primary); color: var(--text-inverse); }
 
 /* ==========================================================================
-   Scene og telefonramme
+   Scene og telefon
    ========================================================================== */
 
 .stage {
   min-height: 100dvh;
   display: flex; flex-direction: column; align-items: center;
-  gap: 18px; padding: 0;
+  gap: var(--space-5); padding: 0;
 }
 .stage-head, .stage-foot { display: none; }
 
 .phone {
   width: 100%;
   display: flex; flex-direction: column;
-  background: var(--app-bg);
+  background: var(--surface-cream);
   overflow: hidden;
   min-height: 100dvh;
 }
@@ -226,520 +227,536 @@ body.has-review .phone { min-height: calc(100dvh - var(--reviewbar-h)); }
 .appbar {
   flex: none;
   display: grid;
-  grid-template-columns: 44px 1fr 64px;
-  align-items: center; gap: 8px;
-  padding: 14px 14px 10px;
-  background: var(--app-bg);
+  grid-template-columns: 44px 1fr 72px;
+  align-items: center; gap: var(--space-2);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  background: var(--surface-cream);
 }
-.appbar-title {
-  text-align: center;
-  font-size: 11px; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--ink-2);
-}
+.appbar-title { justify-self: center; display: flex; }
 .appbar .langswitch { justify-self: end; }
 
 .iconbtn {
-  width: 40px; height: 40px;
+  width: 44px; height: 44px;
   display: grid; place-items: center;
-  background: none; border: 0; border-radius: 999px;
-  cursor: pointer; color: var(--ink);
+  background: none; border: 0; border-radius: var(--radius-full);
+  cursor: pointer; color: var(--brand-primary);
 }
-.iconbtn:hover { background: rgba(128,128,128,.13); }
+.iconbtn:hover { background: rgba(209, 211, 215, .45); }
 .iconbtn[data-state="hidden"] { visibility: hidden; pointer-events: none; }
 
 .screen {
   flex: 1 1 auto;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 6px 20px 26px;
+  padding: var(--space-2) var(--space-5) var(--space-8);
   -webkit-overflow-scrolling: touch;
 }
 
 /* ==========================================================================
-   Skjemafelt
+   Stegindikator og steg – tilpasset for app
    ========================================================================== */
 
-.field { display: flex; flex-direction: column; gap: 8px; }
-.field > label { font-size: 13.5px; font-weight: 600; }
-.field .hint { font-size: 13px; color: var(--ink-3); margin: -4px 0 0; }
-
-textarea, input[type="text"], input[type="password"] {
-  width: 100%;
-  background: var(--surface);
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-size: 15px;
-  color: var(--ink);
+.progress {
+  flex: none;
+  padding: 0 var(--space-5) var(--space-4);
+  display: flex; flex-direction: column; gap: var(--space-2);
 }
-input[type="password"] { padding: 14px 16px; font-size: 17px; letter-spacing: .06em; }
-textarea { min-height: 84px; resize: vertical; }
-textarea::placeholder, input::placeholder { color: var(--ink-3); }
-textarea:focus, input:focus { border-color: var(--line-strong); }
+.progress[data-state="hidden"] { visibility: hidden; }
+.track { display: flex; gap: var(--space-1); }
+.seg {
+  height: 4px; flex: 1;
+  border-radius: var(--radius-xs);
+  background: var(--neutral-200);
+  transition: background .3s ease;
+}
+.seg.is-done { background: var(--brand-primary); }
+.seg.is-now  { background: var(--secondary-600); }
+.progress-label {
+  font-family: var(--font-heading);
+  font-size: 12px; font-weight: 700; letter-spacing: 1.5px; line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--primary-700);
+}
 
-/* Teller for fritekst – mykt tak. Blir gul over grensen, men stopper aldri skrivingen. */
+.step { display: none; flex-direction: column; gap: var(--space-6); }
+.step.is-active { display: flex; animation: ks-rise .3s ease-out both; }
+@keyframes ks-rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .step.is-active { animation: none; }
+  .seg { transition: none; }
+}
+
+/* ==========================================================================
+   Skjemafelt – FormField
+   Kontrollen har ingen kant, men en 1px outline, radius-sm og hvit flate.
+   ========================================================================== */
+
+.field { display: flex; flex-direction: column; gap: var(--space-2); }
+.field > label { font-size: 14px; font-weight: 700; line-height: 1.5; color: var(--brand-primary); }
+.field .hint { margin: 0; font-size: 14px; line-height: 1.5; color: var(--text-tertiary); }
+
+textarea, input[type="text"], input[type="password"], input[type="date"] {
+  display: block;
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-sm);
+  outline: 1px solid var(--border-default);
+  background: var(--surface-card);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 16px;   /* 16px, ikke 14px: mindre tekst får iOS til å zoome inn ved fokus */
+  line-height: 1.5;
+}
+input[type="text"], input[type="password"], input[type="date"] { padding: 12px 12px; min-height: 48px; }
+textarea { min-height: 112px; padding: 12px 16px; resize: vertical; }
+textarea::placeholder, input::placeholder { color: var(--text-tertiary); }
+textarea:focus-visible, input:focus-visible,
+textarea:focus, input:focus { outline: 2px solid var(--brand-primary); outline-offset: 0; }
+input:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Mykt tak på fritekst – tilpasset for app. Gult over grensen, stopper aldri skrivingen. */
 .limit-count {
   display: flex; justify-content: flex-end;
-  margin: -2px 0 0;
-  font-size: 12.5px; color: var(--ink-3);
+  margin: 0;
+  font-size: 14px; line-height: 1.5; color: var(--text-tertiary);
   font-variant-numeric: tabular-nums;
 }
 .limit-count b { font-weight: 500; }
 .limit-count.is-over .wc-pill {
-  background: var(--warn-bg); color: var(--warn-ink);
-  padding: 4px 11px; border-radius: 999px;
+  background: var(--brand-accent); color: var(--brand-primary);
+  padding: 2px 12px; border-radius: var(--radius-full);
 }
 .limit-count.is-over b { font-weight: 700; }
-textarea.is-over,
-textarea.is-over:focus {
-  border-color: var(--warn-line);
-  box-shadow: 0 0 0 3px var(--warn-ring);
+textarea.is-over, textarea.is-over:focus {
+  outline: 2px solid var(--secondary-800);
+  box-shadow: 0 0 0 5px rgba(247, 254, 117, .7);
 }
 
 /* ==========================================================================
-   Knapper
+   Knapper – Button (pille, GT Planar)
    ========================================================================== */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  width: 100%;
+  padding: 8px 20px;                 /* lg */
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font-family: var(--font-heading);
+  font-size: 20px; line-height: 1.5;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color .2s, color .2s, border-color .2s, opacity .2s;
+}
+.btn:active { transform: translateY(1px); }
+
+/* Contained primary */
+.btn-primary {
+  background: var(--brand-primary); border-color: var(--brand-primary);
+  color: var(--text-inverse); font-weight: 300;
+  box-shadow: var(--shadow-button-primary);
+}
+.btn-primary:hover { background: var(--primary-800); border-color: var(--primary-800); }
+.btn-primary[data-blocked="yes"] { opacity: .45; box-shadow: none; }
+
+/* Outlined primary */
+.btn-ghost {
+  background: transparent; border-color: var(--brand-primary);
+  color: var(--brand-primary); font-weight: 400;
+}
+.btn-ghost:hover { background: rgba(209, 211, 215, .45); }
+
+/* Text */
+.btn-text {
+  background: none; border: 0; padding: var(--space-2) 0;
+  font-family: var(--font-heading);
+  font-size: 16px; font-weight: 400; color: var(--brand-primary);
+  cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px;
+}
 
 .actionbar {
   flex: none;
-  padding: 12px 20px calc(14px + env(safe-area-inset-bottom, 0px));
-  background: var(--app-bg);
-  box-shadow: var(--shadow-bar);
-  display: flex; flex-direction: column; gap: 9px;
+  padding: var(--space-3) var(--space-5) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-cream);
+  border-top: 1px solid var(--border-subtle);
+  display: flex; flex-direction: column; gap: var(--space-2);
 }
 .alert {
-  font-size: 13px; color: var(--danger); font-weight: 500;
-  display: flex; gap: 7px; align-items: flex-start;
+  margin: 0;
+  font-size: 14px; font-weight: 500; color: var(--danger);
+  display: flex; gap: var(--space-2); align-items: flex-start;
 }
 .alert[data-state="hidden"] { display: none; }
 
-.btn {
-  width: 100%;
-  padding: 15px 20px;
-  border-radius: 999px;
-  border: 1.5px solid transparent;
-  font-size: 16px; font-weight: 600;
+/* ==========================================================================
+   Valgkort – tilpasset for app (lyst kort, radius-md)
+   ========================================================================== */
+
+.options { display: flex; flex-direction: column; gap: var(--space-3); }
+
+.opt {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: var(--space-3); align-items: start;
+  width: 100%; text-align: left;
+  padding: var(--space-4);
+  background: var(--surface-card);
+  border: 0;
+  outline: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: transform .1s ease, opacity .16s ease, background .16s ease;
+  transition: background-color .2s, outline-color .2s;
 }
-.btn:active { transform: scale(.985); }
-.btn-primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent-ink); }
-.btn-primary[data-blocked="yes"] { opacity: .42; }
-.btn-ghost { background: none; color: var(--ink); border-color: var(--line-strong); }
-.btn-text {
-  background: none; border: 0; padding: 8px;
-  font-size: 14px; font-weight: 600; color: var(--ink-2);
-  text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+.opt:hover { background: var(--secondary-300); }
+.opt.is-on { background: var(--brand-accent-alt); outline: 2px solid var(--brand-primary); }
+
+.opt-t {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 18px; line-height: 1.3; font-weight: 500;
+  color: var(--brand-primary);
 }
-.btn-text:hover { color: var(--ink); }
+.opt-d { display: block; margin-top: var(--space-1); font-size: 14px; line-height: 1.5; color: var(--text-tertiary); }
+
+/* Avkrysning som en native checkbox med accent-color brand-primary */
+.tick {
+  width: 22px; height: 22px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--text-tertiary);
+  background: var(--surface-card);
+  display: grid; place-items: center;
+  margin-top: 1px;
+}
+.opt[data-shape="round"] .tick { border-radius: var(--radius-full); }
+.tick svg { width: 13px; height: 13px; opacity: 0; transform: scale(.6); transition: opacity .15s, transform .15s; }
+.opt.is-on .tick { background: var(--brand-primary); border-color: var(--brand-primary); }
+.opt.is-on .tick svg { opacity: 1; transform: none; color: var(--text-inverse); }
+
+/* Små etiketter i titler */
+.opt-opt {
+  display: inline-block; margin-left: var(--space-2); vertical-align: 2px;
+  font-family: var(--font-body);
+  font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none;
+  color: var(--text-tertiary);
+}
+
+/* ==========================================================================
+   Badge – pille med prikk. Teksten er alltid brand-primary, fargen bor i prikken.
+   ========================================================================== */
+
+.badge, .tag, .req {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 12px; font-weight: 700; letter-spacing: .2px; line-height: 1.5;
+  color: var(--brand-primary);
+  background: var(--brand-accent);
+}
+.badge::before, .tag::before, .req::before {
+  content: ""; width: 6px; height: 6px; border-radius: var(--radius-full);
+  background: var(--brand-primary); flex: none;
+}
+.req { margin-left: var(--space-2); vertical-align: 2px; padding: 2px 10px; }
+:is(.badge, .tag)[data-tone="ready"] { background: var(--success-bg); }
+:is(.badge, .tag)[data-tone="ready"]::before { background: var(--success); }
+:is(.badge, .tag):is([data-tone="planned"], [data-tone="quiet"]) { background: var(--surface-muted); }
+:is(.badge, .tag):is([data-tone="planned"], [data-tone="quiet"])::before { background: var(--neutral-400); }
+
+/* ==========================================================================
+   Merkelapper – tilpasset for app
+   ========================================================================== */
+
+.chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 14px;
+  border: 0;
+  outline: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  background: var(--surface-card);
+  font-family: var(--font-heading);
+  font-size: 15px; font-weight: 400; line-height: 1.3;
+  color: var(--brand-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .15s;
+}
+.chip:hover { background: var(--secondary-300); }
+.chip.is-on { background: var(--brand-accent); outline: 1px solid var(--brand-primary); font-weight: 500; }
+.chip svg { width: 12px; height: 12px; flex: none; opacity: 0; margin-left: -18px; transition: opacity .15s, margin .15s; }
+.chip.is-on svg { opacity: 1; margin-left: 0; }
+
+/* ==========================================================================
+   Skala 1–5 – tilpasset for app
+   ========================================================================== */
+
+.scale { display: flex; flex-direction: column; gap: var(--space-3); }
+.scale-row { display: flex; gap: var(--space-2); }
+.dot {
+  flex: 1; aspect-ratio: 1 / 1; min-width: 0;
+  border: 0;
+  outline: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+  font-family: var(--font-heading);
+  font-size: 22px; font-weight: 400;
+  color: var(--brand-primary);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color .15s;
+}
+.dot:hover { background: var(--secondary-300); }
+.dot.is-on { background: var(--brand-accent); outline: 2px solid var(--brand-primary); font-weight: 500; }
+.scale-ends { display: flex; justify-content: space-between; gap: var(--space-3); font-size: 12px; color: var(--text-tertiary); }
+.scale-read {
+  background: var(--surface-card);
+  outline: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  min-height: 76px;
+}
+.scale-read .n { display: block; font-family: var(--font-heading); font-size: 17px; font-weight: 500; color: var(--brand-primary); }
+.scale-read .d { display: block; margin-top: 2px; font-size: 14px; color: var(--text-tertiary); }
+.scale-read.is-empty .n { font-weight: 400; color: var(--text-tertiary); }
+
+/* ==========================================================================
+   Teller – tilpasset for app
+   ========================================================================== */
+
+.stepper-row { display: flex; align-items: center; gap: var(--space-4); }
+.stepper {
+  display: inline-flex; align-items: center;
+  outline: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  overflow: hidden;
+}
+.stepper button {
+  width: 48px; height: 48px;
+  border: 0; background: none;
+  font-family: var(--font-heading); font-size: 24px; line-height: 1;
+  color: var(--brand-primary);
+  cursor: pointer;
+}
+.stepper button:hover:not(:disabled) { background: rgba(209, 211, 215, .45); }
+.stepper button:disabled { opacity: .45; cursor: default; }
+.stepper .val {
+  min-width: 48px; text-align: center;
+  font-family: var(--font-heading); font-size: 24px; font-weight: 500;
+  color: var(--brand-primary);
+  font-variant-numeric: tabular-nums;
+}
+.stepper-row .unit-label { font-size: 16px; color: var(--text-tertiary); }
+
+/* ==========================================================================
+   Vis mer – lenke som folder ut et felt
+   ========================================================================== */
+
+.reveal {
+  align-self: flex-start;
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  background: none; border: 0; padding: var(--space-1) 0;
+  font-family: var(--font-heading);
+  font-size: 16px; font-weight: 400; color: var(--brand-primary);
+  text-decoration: underline; text-underline-offset: 3px;
+  cursor: pointer;
+}
+.reveal:hover { color: var(--brand-primary-alt); }
+.reveal svg { transition: transform .2s; }
+.reveal[aria-expanded="true"] svg { transform: rotate(45deg); }
+
+/* ==========================================================================
+   Infopanel – brand-primary-soft bak informasjon
+   ========================================================================== */
+
+.panel {
+  background: var(--brand-primary-soft);
+  color: var(--brand-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+}
+.panel p { margin: 0; font-size: 16px; line-height: 1.5; }
+
+/* ==========================================================================
+   Oppsummering – tilpasset for app
+   ========================================================================== */
+
+.sum { display: flex; flex-direction: column; }
+.sum-row {
+  display: grid; grid-template-columns: 1fr auto; gap: var(--space-1) var(--space-4);
+  align-items: baseline; padding: var(--space-4) 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.sum-row:last-child { border-bottom: 1px solid var(--border-subtle); }
+.sum-k {
+  grid-column: 1;
+  font-family: var(--font-heading);
+  font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--primary-700);
+}
+.sum-v { grid-column: 1; font-size: 16px; color: var(--text-secondary); }
+.sum-v .muted { color: var(--text-tertiary); }
+.sum-v .quote { display: block; margin-top: var(--space-1); font-size: 14px; font-style: italic; color: var(--text-tertiary); }
+.edit {
+  grid-column: 2; grid-row: 1 / span 2; align-self: center;
+  background: none; border: 0; padding: var(--space-1) 0;
+  font-family: var(--font-heading);
+  font-size: 15px; font-weight: 400; color: var(--brand-primary);
+  text-decoration: underline; text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Lyst kort – radius-md, hvit flate
+   ========================================================================== */
+
+.done-next {
+  background: var(--surface-card);
+  outline: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  display: flex; flex-direction: column; gap: var(--space-1);
+}
+.done-next .k {
+  font-family: var(--font-heading);
+  font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--primary-700);
+}
+.done-next .v { font-family: var(--font-heading); font-size: 22px; line-height: 1.2; font-weight: 400; color: var(--brand-primary); }
+.done-next .d { font-family: var(--font-heading); font-size: 16px; line-height: 1.5; font-weight: 300; color: var(--text-tertiary); }
 
 /* ==========================================================================
    Meny – prototypeoversikt
    ========================================================================== */
 
-.menu-group { display: flex; flex-direction: column; gap: 10px; }
-.menu-group + .menu-group { margin-top: 8px; }
+.menu-group { display: flex; flex-direction: column; gap: var(--space-3); }
 .menu-label {
-  font-size: 11px; font-weight: 600;
-  letter-spacing: .14em; text-transform: uppercase;
-  color: var(--ink-3);
   margin: 0;
+  font-family: var(--font-heading);
+  font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--primary-700);
 }
 
 .proto {
-  display: grid;
-  grid-template-columns: 1fr 20px;
-  gap: 14px;
-  align-items: center;
-  text-align: left;
+  display: grid; grid-template-columns: 1fr 20px; gap: var(--space-4); align-items: center;
+  padding: var(--space-5);
+  background: var(--surface-card);
+  outline: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
   text-decoration: none;
-  padding: 17px 18px;
-  background: var(--surface);
-  border: 1.5px solid var(--line);
-  border-radius: 16px;
-  transition: border-color .16s ease, transform .1s ease;
+  transition: box-shadow .3s;
 }
-.proto:hover { border-color: var(--ink-3); }
-.proto:active { transform: scale(.99); }
+.proto:hover { box-shadow: 3px 3px 10px 5px rgba(0,0,0,.12); }
+.proto .tag { margin-bottom: var(--space-3); }
 .proto .name {
   display: block;
-  font-family: var(--font-head); font-size: 23px; font-weight: 500;
-  letter-spacing: -.012em; line-height: 1.15;
+  font-family: var(--font-heading); font-size: 24px; line-height: 1.2; font-weight: 400;
+  color: var(--brand-primary);
 }
-.proto .desc { display: block; font-size: 14px; color: var(--ink-2); margin: 6px 0 0; }
-.proto .chev { color: var(--ink-3); }
-
-.tag {
-  display: inline-block;
-  font-size: 10.5px; font-weight: 700;
-  letter-spacing: .09em; text-transform: uppercase;
-  padding: 2px 8px; border-radius: 999px;
-  margin-bottom: 9px;
+.proto .desc {
+  display: block; margin-top: var(--space-2);
+  font-family: var(--font-heading); font-size: 16px; line-height: 1.5; font-weight: 300;
+  color: var(--text-tertiary);
 }
-.tag[data-tone="ready"]   { background: var(--accent); color: var(--accent-ink); }
-.tag[data-tone="planned"] { background: var(--surface-2); color: var(--ink-3); border: 1px solid var(--line); }
-
-.proto[data-state="planned"] {
-  background: none;
-  border-style: dashed;
-  cursor: default;
-}
-.proto[data-state="planned"]:hover { border-color: var(--line); }
-.proto[data-state="planned"]:active { transform: none; }
-.proto[data-state="planned"] .name { color: var(--ink-3); }
+.proto .chev { color: var(--brand-primary); }
+.proto[data-state="planned"] { background: transparent; outline-style: dashed; cursor: default; }
+.proto[data-state="planned"]:hover { box-shadow: none; }
+.proto[data-state="planned"] .name { color: var(--text-tertiary); }
 .proto[data-state="planned"] .chev { visibility: hidden; }
 
 /* ==========================================================================
-   Stegindikator og steg
-   ========================================================================== */
-
-.progress {
-  flex: none;
-  padding: 0 16px 14px;
-  display: flex; flex-direction: column; gap: 7px;
-}
-.progress[data-state="hidden"] { visibility: hidden; }
-.track { display: flex; gap: 4px; }
-.seg {
-  height: 4px; flex: 1; border-radius: 99px;
-  background: var(--line-strong);
-  transition: background .3s ease;
-}
-.seg.is-done { background: var(--ink); }
-.seg.is-now  { background: var(--accent-deep); }
-.progress-label {
-  font-size: 11px; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.step { display: none; flex-direction: column; gap: 20px; }
-.step.is-active { display: flex; animation: ks-rise .34s cubic-bezier(.22,.7,.3,1) both; }
-@keyframes ks-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) {
-  .step.is-active { animation: none; }
-  .seg { transition: none; }
-}
-.step h1 { font-size: 34px; }
-.step h2 { font-size: 29px; }
-
-/* ==========================================================================
-   Valgrader
-   ========================================================================== */
-
-.options { display: flex; flex-direction: column; gap: 10px; }
-
-.opt {
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  gap: 14px; align-items: start;
-  width: 100%; text-align: left;
-  padding: 15px 16px;
-  background: var(--surface);
-  border: 1.5px solid var(--line);
-  border-radius: 14px;
-  cursor: pointer;
-  transition: border-color .16s ease, background .16s ease, transform .1s ease;
-}
-.opt:hover { border-color: var(--line-strong); }
-.opt:active { transform: scale(.99); }
-.opt.is-on { background: var(--sel-bg); border-color: var(--sel-line); }
-
-.opt-t { font-weight: 600; font-size: 15.5px; display: block; }
-.opt-d { display: block; font-size: 13.5px; color: var(--ink-2); margin-top: 3px; }
-.opt.is-on .opt-d { color: var(--ink); opacity: .82; }
-
-.tick {
-  width: 24px; height: 24px;
-  border-radius: 7px;
-  border: 1.5px solid var(--line-strong);
-  background: var(--surface);
-  display: grid; place-items: center;
-  margin-top: 1px;
-}
-.opt[data-shape="round"] .tick { border-radius: 999px; }
-.tick svg { width: 14px; height: 14px; opacity: 0; transform: scale(.6); transition: opacity .14s ease, transform .14s ease; }
-.opt.is-on .tick { background: var(--accent); border-color: var(--accent-ink); }
-.opt.is-on .tick svg { opacity: 1; transform: none; color: var(--accent-ink); }
-
-.req {
-  display: inline-block;
-  font-size: 10.5px; font-weight: 700;
-  letter-spacing: .09em; text-transform: uppercase;
-  padding: 2px 7px; border-radius: 99px;
-  background: var(--ink); color: var(--app-bg);
-  margin-left: 8px; vertical-align: 2px;
-}
-.opt-opt {
-  display: inline-block;
-  font-size: 10.5px; font-weight: 600;
-  letter-spacing: .09em; text-transform: uppercase;
-  color: var(--ink-3); margin-left: 8px; vertical-align: 2px;
-}
-
-/* ==========================================================================
-   Skala 1–5
-   ========================================================================== */
-
-.scale { display: flex; flex-direction: column; gap: 10px; }
-.scale-row { display: flex; gap: 7px; }
-.dot {
-  flex: 1; aspect-ratio: 1 / 1; min-width: 0;
-  border: 1.5px solid var(--line-strong);
-  background: var(--surface);
-  border-radius: 13px;
-  font-size: 17px; font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
-  transition: background .15s ease, border-color .15s ease, transform .1s ease;
-}
-.dot:hover { border-color: var(--ink-3); }
-.dot:active { transform: scale(.95); }
-.dot.is-on {
-  background: var(--accent);
-  border-color: var(--accent-ink);
-  color: var(--accent-ink);
-  font-weight: 700;
-}
-.scale-ends { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; color: var(--ink-3); }
-.scale-read {
-  background: var(--surface-2);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 13px 15px;
-  min-height: 74px;
-}
-.scale-read .n { font-weight: 700; font-size: 14.5px; display: block; }
-.scale-read .d { font-size: 13.5px; color: var(--ink-2); margin-top: 3px; display: block; }
-.scale-read.is-empty .n { color: var(--ink-3); font-weight: 500; }
-
-/* ==========================================================================
-   Merkelapper – flervalg med ett trykk, i stedet for fritekst
-   ========================================================================== */
-
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-
-.chip {
-  display: inline-flex; align-items: center; gap: 7px;
-  border: 1.5px solid var(--line);
-  background: var(--surface);
-  border-radius: 999px;
-  padding: 9px 14px;
-  font-size: 14px;
-  line-height: 1.25;
-  text-align: left;
-  cursor: pointer;
-  transition: border-color .14s ease, background .14s ease, transform .1s ease;
-}
-.chip:hover { border-color: var(--line-strong); }
-.chip:active { transform: scale(.97); }
-.chip.is-on {
-  background: var(--sel-bg);
-  border-color: var(--sel-line);
-  font-weight: 600;
-}
-.chip svg {
-  width: 13px; height: 13px; flex: none;
-  opacity: 0; margin-left: -20px;
-  transition: opacity .14s ease, margin .14s ease;
-}
-.chip.is-on svg { opacity: 1; margin-left: 0; }
-
-/* ==========================================================================
-   Teller – for tall man ellers ville skrevet i en setning
-   ========================================================================== */
-
-.stepper {
-  display: inline-flex; align-items: center;
-  border: 1.5px solid var(--line);
-  background: var(--surface);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.stepper button {
-  width: 46px; height: 46px;
-  border: 0; background: none;
-  font-size: 22px; line-height: 1;
-  color: var(--ink);
-  cursor: pointer;
-}
-.stepper button:hover:not(:disabled) { background: rgba(128,128,128,.12); }
-.stepper button:disabled { color: var(--ink-3); opacity: .45; cursor: default; }
-.stepper .val {
-  min-width: 52px; text-align: center;
-  font-family: var(--font-head); font-size: 24px; font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-.stepper-row { display: flex; align-items: center; gap: 14px; }
-.stepper-row .unit-label { font-size: 14px; color: var(--ink-2); }
-
-/* ==========================================================================
-   Vis mer – fritekst som ligger sammenslått til den trengs
-   ========================================================================== */
-
-.reveal {
-  align-self: flex-start;
-  background: none; border: 0; padding: 6px 0;
-  font-size: 14px; font-weight: 600; color: var(--ink-2);
-  display: inline-flex; align-items: center; gap: 8px;
-  cursor: pointer;
-  text-decoration: underline; text-underline-offset: 3px;
-}
-.reveal:hover { color: var(--ink); }
-.reveal svg { transition: transform .18s ease; }
-.reveal[aria-expanded="true"] svg { transform: rotate(45deg); }
-
-/* ==========================================================================
-   Infopanel
-   ========================================================================== */
-
-.panel {
-  background: var(--soft-a);
-  color: var(--on-soft);
-  border-radius: 16px;
-  padding: 16px 18px;
-}
-.panel p { margin: 0; font-size: 14.5px; }
-
-/* ==========================================================================
-   Oppsummering – liste med svar og "endre"-lenker
-   ========================================================================== */
-
-.sum { display: flex; flex-direction: column; }
-.sum-row {
-  display: grid; grid-template-columns: 1fr auto; gap: 12px 14px;
-  align-items: baseline; padding: 14px 0; border-top: 1px solid var(--line);
-}
-.sum-row:last-child { border-bottom: 1px solid var(--line); }
-.sum-k {
-  grid-column: 1; font-size: 11.5px; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3);
-}
-.sum-v { grid-column: 1; font-size: 15px; margin-top: 4px; }
-.sum-v .muted { color: var(--ink-3); }
-.sum-v .quote { display: block; font-size: 13.5px; color: var(--ink-2); font-style: italic; margin-top: 4px; }
-.edit {
-  grid-column: 2; grid-row: 1 / span 2; align-self: center;
-  background: none; border: 0; padding: 4px;
-  font-size: 13px; font-weight: 600; color: var(--ink-2);
-  text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
-}
-.edit:hover { color: var(--ink); }
-
-/* ==========================================================================
-   Kvitteringskort
-   ========================================================================== */
-
-.done-next {
-  background: var(--surface); border: 1.5px solid var(--line);
-  border-radius: 16px; padding: 16px 18px;
-  display: flex; flex-direction: column; gap: 4px;
-}
-.done-next .k { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
-.done-next .v { font-family: var(--font-head); font-size: 20px; font-weight: 500; letter-spacing: -.01em; }
-.done-next .d { font-size: 14px; color: var(--ink-2); }
-
-/* ==========================================================================
-   Tilbakemeldingslinje
-   Verktøy, ikke innhold. Derfor samme mørke uttrykk i begge temaer, så den
-   aldri forveksles med prototypen den ligger under.
+   Tilbakemeldingslinje – verktøy på mørk bunn, ikke en del av prototypen
    ========================================================================== */
 
 .reviewbar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 14px;
-  padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
-  background: var(--review-bg);
-  color: var(--review-ink);
-  border-top: 1px solid var(--review-line);
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: 10px var(--space-4) calc(10px + env(safe-area-inset-bottom, 0px));
+  background: var(--surface-inverse);
+  color: var(--text-inverse);
+  border-top: 1px solid var(--border-inverse);
 }
 body.has-review .stage { padding-bottom: var(--reviewbar-h); }
 body:not(.is-open) .reviewbar { display: none; }
 
 .review-what { display: flex; flex-direction: column; min-width: 0; }
 .review-k {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: .14em; text-transform: uppercase;
-  opacity: .62;
+  font-family: var(--font-heading);
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-inverse-tertiary);
 }
 .review-label {
-  font-size: 14px; font-weight: 500;
+  font-family: var(--font-heading); font-size: 15px; font-weight: 400;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 
+/* Contained secondary på mørk bunn – merkevarens sterkeste par */
 .review-btn {
   flex: none;
-  padding: 10px 18px;
-  border: 0; border-radius: 999px;
-  background: var(--accent); color: var(--accent-ink);
-  font-size: 14px; font-weight: 600;
+  padding: 8px 16px;
+  border: 1px solid var(--brand-accent); border-radius: var(--radius-pill);
+  background: var(--brand-accent); color: var(--brand-primary);
+  font-family: var(--font-heading); font-size: 16px; font-weight: 400; line-height: 1.5;
+  box-shadow: var(--shadow-button);
   cursor: pointer;
-  transition: transform .1s ease;
 }
-.review-btn:active { transform: scale(.97); }
-.reviewbar :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.review-btn:hover { background: var(--brand-accent-alt); border-color: var(--brand-accent-alt); }
+.review-btn:active { transform: translateY(1px); }
+.reviewbar :focus-visible { outline: none; box-shadow: var(--shadow-focus); }
 
 .review-toast {
   position: fixed; z-index: 41;
-  left: 16px; right: 16px; bottom: calc(var(--reviewbar-h) + 12px);
+  left: var(--space-4); right: var(--space-4); bottom: calc(var(--reviewbar-h) + 12px);
   margin: 0;
-  padding: 12px 15px;
-  border-radius: 12px;
-  background: var(--review-bg);
-  color: var(--review-ink);
-  border: 1px solid var(--review-line);
-  font-size: 13.5px;
-  box-shadow: 0 12px 28px -12px rgba(0,0,0,.5);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-inverse); color: var(--text-inverse);
+  font-size: 14px;
+  box-shadow: var(--shadow-card);
 }
 
 /* ==========================================================================
-   Desktop: vis prototypen i en telefon
+   Desktop: prototypen i en telefonramme
    ========================================================================== */
 
 @media (min-width: 800px) {
-  .stage { padding: 34px 20px 40px; justify-content: center; }
+  .stage { padding: var(--space-8) var(--space-5) var(--space-10); justify-content: center; }
 
   .stage-head {
-    display: flex; align-items: baseline; gap: 12px;
+    display: flex; align-items: center; gap: var(--space-3);
     flex-wrap: wrap; justify-content: center;
-    color: var(--stage-ink);
   }
-  .stage-head .mark {
-    font-family: var(--font-head);
-    font-size: 15px; font-weight: 600;
-    letter-spacing: .18em; text-transform: uppercase;
-    color: var(--ink);
-  }
-  .stage-head .cap { font-size: 13px; }
+  .stage-head .logo { height: 18px; }
+  .stage-head .cap { font-family: var(--font-heading); font-size: 14px; color: var(--primary-700); }
 
-  .stage-foot { display: flex; gap: 16px; align-items: center; color: var(--stage-ink); }
-  .stage-foot .btn-text { color: var(--stage-ink); }
-  .stage-foot .btn-text:hover { color: var(--ink); }
+  .stage-foot { display: flex; gap: var(--space-4); align-items: center; }
+  .stage-foot .fine { color: var(--primary-700); }
 
   .phone {
     width: 390px;
     min-height: 0;
     height: min(844px, calc(100dvh - 150px));
+    border-radius: 44px;
+    border: 10px solid var(--brand-primary);
+    box-shadow: var(--shadow-phone);
   }
   body.has-review .phone {
     min-height: 0;
     height: min(844px, calc(100dvh - 150px - var(--reviewbar-h)));
-    border-radius: 44px;
-    border: 10px solid var(--bezel);
-    box-shadow: var(--shadow-phone);
   }
 
-  .review-toast { left: auto; right: 20px; max-width: 380px; }
+  .review-toast { left: auto; right: var(--space-5); max-width: 380px; }
 
   .statusbar {
     flex: none;
     display: flex; align-items: center; justify-content: space-between;
     padding: 12px 26px 2px;
-    font-size: 13px; font-weight: 600;
+    font-family: var(--font-heading); font-size: 14px; font-weight: 500;
     font-variant-numeric: tabular-nums;
-    color: var(--ink);
+    color: var(--brand-primary);
   }
   .statusbar .sigs { display: flex; align-items: center; gap: 5px; }
 }

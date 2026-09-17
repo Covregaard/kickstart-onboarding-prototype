@@ -10,155 +10,158 @@
 <meta name="theme-color" content="#fffee9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-<link rel="stylesheet" href="../assets/kickstart.css?v=10">
-<script src="../assets/ks.js?v=10"></script>
-<script src="../assets/review.js?v=10"></script>
+<link rel="preconnect" href="https://www.kickstart.no" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="../assets/kickstart.css?v=11">
+<script src="../assets/ks.js?v=11"></script>
+<script src="../assets/review.js?v=11"></script>
 <style>
+  /* Komponenter som bare ukesrapporten bruker – tilpasset for app av designsystemets tokens */
+
+  /* Programkontekst som mørkt kort: gult på marineblått er merkevarens sterkeste par */
   .ctx {
-    display: flex; align-items: baseline; justify-content: space-between;
-    gap: 12px; padding: 12px 15px;
-    background: var(--soft-a); color: var(--on-soft);
-    border-radius: 14px;
+    display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    background: var(--surface-inverse);
+    border-radius: var(--radius-lg);
   }
-  .ctx .week { font-family: var(--font-head); font-size: 19px; font-weight: 500; letter-spacing: -.01em; }
-  .ctx .of { font-size: 12.5px; opacity: .8; }
+  .ctx .week { font-family: var(--font-heading); font-size: 24px; line-height: 1.2; font-weight: 400; color: var(--brand-accent); }
+  .ctx .of { font-size: 14px; color: var(--text-inverse-tertiary); }
 
   .path {
-    display: grid; grid-template-columns: 1fr 20px; gap: 14px; align-items: center;
+    display: grid; grid-template-columns: 1fr 20px; gap: var(--space-4); align-items: center;
     width: 100%; text-align: left;
-    padding: 17px 18px;
-    background: var(--surface);
-    border: 1.5px solid var(--line);
-    border-radius: 16px;
+    padding: var(--space-5);
+    background: var(--surface-card);
+    border: 0;
+    outline: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
     cursor: pointer;
-    transition: border-color .16s ease, transform .1s ease;
+    transition: background-color .2s;
   }
-  .path:hover { border-color: var(--ink-3); }
-  .path:active { transform: scale(.99); }
+  .path:hover { background: var(--secondary-300); }
+  .path .ptime { margin-bottom: var(--space-3); }
   .path .pname {
     display: block;
-    font-family: var(--font-head); font-size: 22px; font-weight: 500;
-    letter-spacing: -.012em; line-height: 1.15;
+    font-family: var(--font-heading); font-size: 24px; line-height: 1.2; font-weight: 400;
+    color: var(--brand-primary);
   }
-  .path .pdesc { display: block; font-size: 13.5px; color: var(--ink-2); margin-top: 5px; }
-  .path .ptime {
-    display: inline-block; margin-bottom: 8px;
-    font-size: 10.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
-    padding: 2px 8px; border-radius: 999px;
-    background: var(--accent); color: var(--accent-ink);
+  .path .pdesc {
+    display: block; margin-top: var(--space-2);
+    font-family: var(--font-heading); font-size: 16px; line-height: 1.5; font-weight: 300;
+    color: var(--text-tertiary);
   }
-  .path[data-tone="quiet"] .ptime { background: var(--surface-2); color: var(--ink-3); border: 1px solid var(--line); }
-  .path .chev { color: var(--ink-3); }
+  .path .chev { color: var(--brand-primary); }
 
   .prefill {
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 12px 14px;
+    background: var(--surface-card);
+    outline: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
   }
   .prefill .k {
-    display: block; font-size: 11px; font-weight: 600;
-    letter-spacing: .11em; text-transform: uppercase; color: var(--ink-3);
+    display: block;
+    font-family: var(--font-heading); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--primary-700);
   }
-  .prefill .v { display: block; font-size: 14.5px; font-style: italic; color: var(--ink-2); margin-top: 5px; }
+  .prefill .v {
+    display: block; margin-top: var(--space-1);
+    font-family: var(--font-heading); font-size: 18px; line-height: 1.4; font-weight: 300;
+    color: var(--brand-primary);
+  }
 
-  .weight-row { display: flex; align-items: flex-end; gap: 10px; }
+  .weight-row { display: flex; align-items: center; gap: var(--space-3); }
   .weight-row .field { flex: 1; }
-  .unit { font-size: 15px; color: var(--ink-3); padding-bottom: 13px; min-width: 24px; }
-  input[type="text"]:disabled { opacity: .45; cursor: not-allowed; }
+  .unit { font-size: 16px; color: var(--text-tertiary); min-width: 24px; }
 
   /* Avkrysning for å holde uken utenfor vektkurven */
   .checkrow {
-    display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start;
+    display: grid; grid-template-columns: 22px 1fr; gap: var(--space-3); align-items: start;
     width: 100%; text-align: left;
-    background: none; border: 0; padding: 6px 0 0;
+    background: none; border: 0; padding: var(--space-2) 0 0;
     cursor: pointer;
   }
-  .checkrow-t { display: block; font-size: 14.5px; font-weight: 600; }
-  .checkrow-d { display: block; font-size: 13px; color: var(--ink-2); margin-top: 2px; }
-  .checkrow.is-on .tick { background: var(--accent); border-color: var(--accent-ink); }
-  .checkrow.is-on .tick svg { opacity: 1; transform: none; color: var(--accent-ink); }
+  .checkrow-t { display: block; font-size: 14px; font-weight: 500; color: var(--text-secondary); }
+  .checkrow-d { display: block; margin-top: 2px; font-size: 14px; color: var(--text-tertiary); }
+  .checkrow.is-on .tick { background: var(--brand-primary); border-color: var(--brand-primary); }
+  .checkrow.is-on .tick svg { opacity: 1; transform: none; color: var(--text-inverse); }
 
-  /* Slik måler du livvidden */
   .howto {
-    margin: 0; padding: 13px 16px 13px 34px;
-    background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px;
-    font-size: 14px; color: var(--ink-2);
-    display: flex; flex-direction: column; gap: 6px;
+    margin: 0; padding: var(--space-3) var(--space-4) var(--space-3) 36px;
+    background: var(--surface-card);
+    outline: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    font-size: 14px; line-height: 1.5; color: var(--text-secondary);
+    display: flex; flex-direction: column; gap: var(--space-2);
   }
 
   /* Kategorier som foldes ut */
-  .cats { display: flex; flex-direction: column; gap: 10px; }
+  .cats { display: flex; flex-direction: column; gap: var(--space-3); }
   .cat {
-    background: var(--surface);
-    border: 1.5px solid var(--line);
-    border-radius: 14px;
+    background: var(--surface-card);
+    outline: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
     overflow: hidden;
   }
   .cat-head {
     width: 100%;
-    display: flex; align-items: center; gap: 10px;
-    padding: 14px 16px;
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: var(--space-4);
     background: none; border: 0; text-align: left;
     cursor: pointer;
   }
-  .cat-name { flex: 1; font-weight: 600; font-size: 15.5px; }
-  .cat-count {
-    font-size: 11.5px; font-weight: 700;
-    padding: 2px 9px; border-radius: 999px;
-    background: var(--accent); color: var(--accent-ink);
-  }
-  .cat-head svg { flex: none; color: var(--ink-3); transition: transform .18s ease; }
+  .cat-name { flex: 1; font-family: var(--font-heading); font-size: 18px; font-weight: 500; color: var(--brand-primary); }
+  .cat-head svg { flex: none; color: var(--brand-primary); transition: transform .2s; }
   .cat-head[aria-expanded="true"] svg { transform: rotate(180deg); }
-  .cat-body { padding: 0 16px 16px; }
+  .cat-body { padding: 0 var(--space-4) var(--space-4); }
 
+  /* Vekten som mørkt kort – tallet i merkevaregult, som prisen på programkortene */
   .stat {
     display: flex; flex-direction: column; gap: 2px;
-    background: var(--surface); border: 1.5px solid var(--line);
-    border-radius: 16px; padding: 15px 17px;
+    background: var(--surface-inverse);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6) var(--space-6) var(--space-5);
+    box-shadow: var(--shadow-card);
   }
-  .stat .k { font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+  .stat .k {
+    font-family: var(--font-heading); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text-inverse-tertiary);
+  }
   .stat .v {
-    font-family: var(--font-head); font-size: 30px; font-weight: 500;
-    letter-spacing: -.02em; line-height: 1.1;
+    margin-top: var(--space-1);
+    font-family: var(--font-heading); font-size: 40px; line-height: 1.1; font-weight: 400; letter-spacing: -0.5px;
+    color: var(--brand-accent);
     font-variant-numeric: tabular-nums;
   }
-  .stat .d { font-size: 13.5px; color: var(--ink-2); }
+  .stat .d { font-size: 16px; color: var(--text-inverse-secondary); }
   .stat .avg {
-    margin-top: 10px; padding-top: 10px;
-    border-top: 1px solid var(--line);
-    font-size: 14px; font-weight: 600;
+    margin-top: var(--space-3); padding-top: var(--space-3);
+    border-top: 1px solid var(--border-inverse);
+    font-family: var(--font-heading); font-size: 16px; font-weight: 400;
+    color: var(--text-inverse);
     font-variant-numeric: tabular-nums;
+    text-wrap: pretty;
   }
-  .stat .note { font-size: 12px; color: var(--ink-3); margin-top: 6px; }
+  .stat .note { margin-top: var(--space-2); font-size: 12px; color: var(--text-inverse-tertiary); }
 
   .chart-card {
-    background: var(--surface); border: 1.5px solid var(--line);
-    border-radius: 16px; padding: 16px 16px 12px;
+    background: var(--surface-card);
+    outline: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-5) var(--space-4) var(--space-4);
   }
   .chart-card .k {
-    font-size: 11px; font-weight: 600;
-    letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3);
+    font-family: var(--font-heading); font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--primary-700);
   }
-  .chart-scroll { overflow-x: auto; margin-top: 10px; }
-  .chart-scroll svg { display: block; width: 100%; min-width: 260px; height: auto; }
-  .chart-now { font-size: 14px; margin: 8px 0 0; }
-  .chart-now b { font-weight: 600; }
-  .chart-note { font-size: 12px; color: var(--ink-3); margin: 8px 0 0; }
+  .chart-scroll { overflow-x: auto; margin-top: var(--space-3); }
+  .chart-scroll svg { display: block; width: 100%; min-width: 260px; height: auto; font-family: var(--font-heading); }
+  .chart-now { margin: var(--space-2) 0 0; font-size: 16px; color: var(--text-secondary); }
+  .chart-now b { font-family: var(--font-heading); font-weight: 500; color: var(--brand-primary); }
+  .chart-note { margin: var(--space-2) 0 0; font-size: 12px; color: var(--text-tertiary); }
 
-  .date-input {
-    width: 100%;
-    background: var(--surface);
-    border: 1.5px solid var(--line);
-    border-radius: 12px;
-    padding: 12px 14px;
-    font-size: 15px;
-    color: var(--ink);
-  }
-  .date-input:focus { border-color: var(--line-strong); }
-
-  .step-top { margin-top: 16px; }
+  .step-top { margin-top: var(--space-4); }
 </style>
 </head>
 <body>
@@ -166,7 +169,7 @@
 <div class="gate" id="gate">
   <div class="gate-card">
     <div class="gate-top">
-      <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <img class="logo" src="https://www.kickstart.no/logo/kick-logo-w.svg" alt="Kickstart" width="107" height="15">
       <div class="langswitch" role="group" data-i18n-aria="lang.label" aria-label="Språk">
         <button type="button" data-lang="no" aria-pressed="true">NO</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -183,7 +186,7 @@
       <label for="code" data-i18n="gate.label">Tilgangskode</label>
       <input type="password" id="code" name="code" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="••••••••••">
       <p class="gate-err" id="gate-err" hidden role="status">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
         <span data-i18n="gate.error">Feil kode.</span>
       </p>
       <button class="btn btn-primary" type="submit" data-i18n="gate.submit">Åpne</button>
@@ -195,7 +198,7 @@
 
 <div class="stage">
   <div class="stage-head">
-    <span class="mark">Kickstart</span>
+    <img class="logo" src="https://www.kickstart.no/logo/kick-logo-w.svg" alt="Kickstart" width="107" height="15">
     <span class="cap" data-i18n="wr.stagecap">Ukesrapport · klikkbar prototype</span>
   </div>
 
@@ -210,9 +213,9 @@
 
     <header class="appbar">
       <button class="iconbtn" id="back" type="button" aria-label="Tilbake">
-        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>
       </button>
-      <span class="appbar-title">Kickstart</span>
+      <span class="appbar-title"><img class="logo" src="https://www.kickstart.no/logo/kick-logo-w.svg" alt="Kickstart" width="107" height="15"></span>
       <div class="langswitch" role="group" data-i18n-aria="lang.label" aria-label="Språk">
         <button type="button" data-lang="no" aria-pressed="true">NO</button>
         <button type="button" data-lang="en" aria-pressed="false">EN</button>
@@ -242,20 +245,20 @@
         <div class="options">
           <button class="path" type="button" id="path-quick">
             <span>
-              <span class="ptime" data-i18n="wr.path.quick.time">10 sekunder</span>
+              <span class="ptime badge" data-i18n="wr.path.quick.time">10 sekunder</span>
               <span class="pname" data-i18n="wr.path.quick.name">Registrer vekt</span>
               <span class="pdesc" data-i18n="wr.path.quick.desc">Logg vekten nå og ta resten senere.</span>
             </span>
-            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </button>
 
-          <button class="path" type="button" id="path-full" data-tone="quiet">
+          <button class="path" type="button" id="path-full">
             <span>
-              <span class="ptime" data-i18n="wr.path.full.time">2 minutter</span>
+              <span class="ptime badge" data-tone="quiet" data-i18n="wr.path.full.time">2 minutter</span>
               <span class="pname" data-i18n="wr.path.full.name">Full ukesrapport</span>
               <span class="pdesc" data-i18n="wr.path.full.desc">Vekt og livvidde, egenvurdering og ukens høydepunkter.</span>
             </span>
-            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
           </button>
         </div>
 
@@ -283,7 +286,7 @@
             <span class="unit">kg</span>
           </div>
           <button type="button" class="checkrow" id="skip-weight" aria-pressed="false">
-            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
               <span class="checkrow-t" data-i18n="wr.s1.skip.t">Registrer ikke vekt denne uken</span>
               <span class="checkrow-d" data-i18n="wr.s1.skip.d">Uken holdes utenfor vektkurven.</span>
@@ -298,7 +301,7 @@
             <span class="unit">cm</span>
           </div>
           <button type="button" class="reveal" data-reveal="howto-full" data-closed="wr.reveal.howto" data-open="wr.reveal.howtoless" aria-expanded="false">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
             <span>Slik måler du livvidden</span>
           </button>
           <ol class="howto" id="howto-full" hidden>
@@ -356,7 +359,7 @@
         <div class="chips" id="chips-fokus" role="group" data-i18n-aria="wr.s3.aria"></div>
 
         <button type="button" class="reveal" data-reveal="fokus-wrap" data-closed="wr.reveal.add" data-open="wr.reveal.less" aria-expanded="false">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           <span>Noe du vil legge til?</span>
         </button>
         <div class="field" id="fokus-wrap" hidden>
@@ -376,7 +379,7 @@
         <div class="cats" id="cats-bra"></div>
 
         <button type="button" class="reveal" data-reveal="bra-wrap" data-closed="wr.reveal.add" data-open="wr.reveal.less" aria-expanded="false">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           <span>Noe du vil legge til?</span>
         </button>
         <div class="field" id="bra-wrap" hidden>
@@ -412,14 +415,14 @@
 
         <div class="options">
           <button class="opt" type="button" data-raise="ja" data-shape="round" aria-pressed="false">
-            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
               <span class="opt-t" data-i18n="wr.s6.yes.t">Ja, det er noe</span>
               <span class="opt-d" data-i18n="wr.s6.yes.d">Skriv kort hva det gjelder.</span>
             </span>
           </button>
           <button class="opt" type="button" data-raise="nei" data-shape="round" aria-pressed="false">
-            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
+            <span class="tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg></span>
             <span>
               <span class="opt-t" data-i18n="wr.s6.no.t">Nei, ikke denne uken</span>
               <span class="opt-d" data-i18n="wr.s6.no.d">Helt greit.</span>
@@ -445,7 +448,7 @@
         <div class="chips" id="chips-neste" role="group" data-i18n-aria="wr.s7.aria"></div>
 
         <button type="button" class="reveal" data-reveal="neste-wrap" data-closed="wr.reveal.own" data-open="wr.reveal.less" aria-expanded="false">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           <span>Skriv ditt eget</span>
         </button>
         <div class="field" id="neste-wrap" hidden>
@@ -467,7 +470,7 @@
       <!-- 9 · Kvittering -->
       <section class="step" data-step="9">
         <div>
-          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--accent-deep)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg class="zigzag" viewBox="0 0 62 12" fill="none" aria-hidden="true"><path d="M1 10 8 2l7 8 7-8 7 8 7-8 7 8 7-8 6 7" stroke="var(--secondary-600)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <p class="eyebrow step-top" data-i18n="wr.s9.eyebrow">Sendt inn</p>
           <h1 id="s9-h" data-i18n="wr.s9.h">Takk. Uke 6 er i boks.</h1>
           <p class="lede" id="s9-lede" data-i18n="wr.s9.lede">Rapporten ligger hos Kristiane.</p>
@@ -530,7 +533,7 @@
             <span class="unit">cm</span>
           </div>
           <button type="button" class="reveal" data-reveal="howto-quick" data-closed="wr.reveal.howto" data-open="wr.reveal.howtoless" aria-expanded="false">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
             <span>Slik måler du livvidden</span>
           </button>
           <ol class="howto" id="howto-quick" hidden>
@@ -548,7 +551,7 @@
 
     <footer class="actionbar">
       <p class="alert" id="alert" data-state="hidden" role="status">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="flex:none;margin-top:2px"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5"/><path d="M12 16.4h.01"/></svg>
         <span id="alert-text"></span>
       </p>
       <button class="btn btn-primary" id="next" type="button"></button>
@@ -753,11 +756,11 @@ KS.addDict({
   "wr.s9.h.quick":    "Vekten er lagret.",
   "wr.s9.lede.quick": "Resten av rapporten kan du ta når det passer — fram til søndag kveld.",
   "wr.s9.weightk":  "Vekt denne uken",
-  "wr.s9.down":     "ned {n} kg fra forrige uke",
-  "wr.s9.up":       "opp {n} kg fra forrige uke",
+  "wr.s9.down":     "ned {n}\u00A0kg fra forrige uke",
+  "wr.s9.up":       "opp {n}\u00A0kg fra forrige uke",
   "wr.s9.same":     "uendret fra forrige uke",
-  "wr.s9.avg.down": "Snitt siden første veiing: ned {n} kg per uke",
-  "wr.s9.avg.up":   "Snitt siden første veiing: opp {n} kg per uke",
+  "wr.s9.avg.down": "Snitt siden første veiing: ned {n}\u00A0kg per uke",
+  "wr.s9.avg.up":   "Snitt siden første veiing: opp {n}\u00A0kg per uke",
   "wr.s9.avg.same": "Snitt siden første veiing: uendret",
   "wr.s9.weightnote": "Tidligere vekter er eksempeldata i prototypen.",
   "wr.s9.trendk":   "Egenvurdering · uke 1–6",
@@ -967,11 +970,11 @@ KS.addDict({
   "wr.s9.h.quick":    "Weight saved.",
   "wr.s9.lede.quick": "You can do the rest of the report whenever it suits — until Sunday evening.",
   "wr.s9.weightk":  "Weight this week",
-  "wr.s9.down":     "down {n} kg from last week",
-  "wr.s9.up":       "up {n} kg from last week",
+  "wr.s9.down":     "down {n}\u00A0kg from last week",
+  "wr.s9.up":       "up {n}\u00A0kg from last week",
   "wr.s9.same":     "unchanged from last week",
-  "wr.s9.avg.down": "Average since first weigh-in: down {n} kg per week",
-  "wr.s9.avg.up":   "Average since first weigh-in: up {n} kg per week",
+  "wr.s9.avg.down": "Average since first weigh-in: down {n}\u00A0kg per week",
+  "wr.s9.avg.up":   "Average since first weigh-in: up {n}\u00A0kg per week",
   "wr.s9.avg.same": "Average since first weigh-in: unchanged",
   "wr.s9.weightnote": "Earlier weights are example data in this prototype.",
   "wr.s9.trendk":   "Self-assessment · weeks 1–6",
@@ -1052,8 +1055,8 @@ KS.addDict({
   var elAlert     = $("#alert");
   var elAlertText = $("#alert-text");
 
-  var checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg>';
-  var chevronSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+  var checkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12.5 5.2 5.3L20 6.6"/></svg>';
+  var chevronSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
 
   /* ---------- Dato ---------- */
   function isoDate(d) {
@@ -1154,7 +1157,7 @@ KS.addDict({
       head.className = "cat-head";
       head.setAttribute("aria-controls", bodyId);
       head.setAttribute("data-cat", cat.key);
-      head.innerHTML = '<span class="cat-name"></span><span class="cat-count" hidden></span>' + chevronSvg;
+      head.innerHTML = '<span class="cat-name"></span><span class="cat-count badge" hidden></span>' + chevronSvg;
       $(".cat-name", head).textContent = t("cat." + cat.key);
 
       var body = document.createElement("div");
@@ -1409,8 +1412,8 @@ KS.addDict({
 
     box.appendChild(row(t("wr.sum.date"), prettyDate(state.dato), STEP.TALL));
     box.appendChild(row(t("wr.sum.weight"),
-      state.hoppOverVekt ? t("wr.sum.noweight") : (w ? decimal(w) + " kg" : ""), STEP.TALL));
-    box.appendChild(row(t("wr.sum.waist"), l ? decimal(l) + " cm" : t("wr.sum.nowaist"), STEP.TALL));
+      state.hoppOverVekt ? t("wr.sum.noweight") : (w ? decimal(w) + "\u00A0kg" : ""), STEP.TALL));
+    box.appendChild(row(t("wr.sum.waist"), l ? decimal(l) + "\u00A0cm" : t("wr.sum.nowaist"), STEP.TALL));
     box.appendChild(row(t("wr.sum.sessions"), String(state.okter), STEP.TALL));
     box.appendChild(row(t("wr.sum.scale"),
       state.uke ? state.uke + " " + t("wr.sum.of5") + " · " + t("uke." + state.uke + ".t") : "", STEP.SKALA));
@@ -1448,12 +1451,12 @@ KS.addDict({
     }
 
     add("line", { x1: x0, y1: yFor(3), x2: x1, y2: yFor(3),
-      stroke: "var(--line-strong)", "stroke-width": 1, "stroke-dasharray": "3 4" });
-    add("text", { x: 22, y: yTop + 4, "text-anchor": "end", "font-size": 11, fill: "var(--ink-3)" }).textContent = "5";
-    add("text", { x: 22, y: yBot + 4, "text-anchor": "end", "font-size": 11, fill: "var(--ink-3)" }).textContent = "1";
+      stroke: "var(--border-default)", "stroke-width": 1, "stroke-dasharray": "3 4" });
+    add("text", { x: 22, y: yTop + 4, "text-anchor": "end", "font-size": 11, fill: "var(--text-tertiary)" }).textContent = "5";
+    add("text", { x: 22, y: yBot + 4, "text-anchor": "end", "font-size": 11, fill: "var(--text-tertiary)" }).textContent = "1";
     add("polyline", {
       points: series.map(function (_, i) { var p = pt(i); return p.x + "," + p.y; }).join(" "),
-      fill: "none", stroke: "var(--ink)", "stroke-width": 2,
+      fill: "none", stroke: "var(--brand-primary)", "stroke-width": 2,
       "stroke-linejoin": "round", "stroke-linecap": "round"
     });
 
@@ -1461,11 +1464,11 @@ KS.addDict({
       var p = pt(i);
       var last = i === series.length - 1;
       add("circle", { cx: p.x, cy: p.y, r: last ? 6 : 4,
-        fill: last ? "var(--accent)" : "var(--surface)", stroke: "var(--ink)", "stroke-width": 2 });
+        fill: last ? "var(--brand-accent)" : "var(--surface-card)", stroke: "var(--brand-primary)", "stroke-width": 2 });
       var hit = add("circle", { cx: p.x, cy: p.y, r: 14, fill: "transparent" });
       add("title", {}, hit).textContent =
         t("wr.s9.week").replace("{n}", String(i + 1)) + ": " + value + " " + t("wr.sum.of5");
-      add("text", { x: p.x, y: 104, "text-anchor": "middle", "font-size": 11, fill: "var(--ink-3)" })
+      add("text", { x: p.x, y: 104, "text-anchor": "middle", "font-size": 11, fill: "var(--text-tertiary)" })
         .textContent = t("wr.s9.week").replace("{n}", String(i + 1));
     });
 
@@ -1499,7 +1502,7 @@ KS.addDict({
     var w = state.hoppOverVekt && !quick ? null : parseNum(state.vekt);
     $("#weight-stat").hidden = !w;
     if (w) {
-      $("#weight-value").textContent = decimal(w) + " kg";
+      $("#weight-value").textContent = decimal(w) + "\u00A0kg";
       var diff = Math.round((w - LAST_WEIGHT) * 10) / 10;
       $("#weight-delta").textContent = diff === 0
         ? t("wr.s9.same")
@@ -1519,6 +1522,7 @@ KS.addDict({
   /* ---------- Knapper ---------- */
   function paintChrome() {
     elNext.hidden = step === STEP.START;
+    $(".actionbar").hidden = step === STEP.START;
 
     if (step === STEP.NESTE)             { elNext.textContent = t("btn.summary"); }
     else if (step === STEP.OPPSUMMERING) { elNext.textContent = t("btn.send"); }
